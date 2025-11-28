@@ -1,0 +1,30 @@
+@startuml
+
+title Diagrama UML - Bank Backend
+
+class Customer {
+    - id : Long
+    - name : String
+    - dni : String
+    - email : String
+    - password : String
+    - address : String
+}
+
+class Account {
+    - id : Long
+    - nAccount : String
+    - balance : double
+}
+
+class Order {
+    - id : Long
+    - date : Date
+    - description : String
+    - price : double
+}
+
+Customer "1" o-- "1" Account : has >
+Customer "1" o-- "0...*" Order : orders >
+
+@enduml
