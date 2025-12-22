@@ -2,29 +2,55 @@
 
 title Diagrama UML - Bank Backend
 
-class Customer {
+class Cliente {
     - id : Long
-    - name : String
-    - dni : String
-    - email : String
+    - login : String
     - password : String
-    - address : String
+    - name : String
+    - lastName1 : String
+    - lastName2 : String
+    - dni : String
+    - api_token : String
 }
 
-class Account {
+class Cuenta {
     - id : Long
-    - nAccount : String
-    - balance : double
+    - saldo : BigDecimal
+    - iban : String
 }
 
-class Order {
+class MovimientoBancario {
     - id : Long
-    - date : Date
-    - description : String
-    - price : double
+    - tipoMovimiento : TipoMovimiento
+    - origenMovimiento : OrigenMovimiento
+    - tarjetaCredito : TarjetaCredito
+    - fecha : Date
+    - importe : BigDecimal
+    - concepto : String
 }
 
-Customer "1" o-- "1" Account : has >
-Customer "1" o-- "0...*" Order : orders >
+class TarjetaCredito {
+    - id : Long
+    - numeroTarjeta : BigInteger
+    - fechaCaducidad : Date
+    - cvv : String
+    - nombreCompleto : String
+}
+
+enum TipoMovimiento {
+    DEBE
+    HABER
+}
+
+enum OrigenMovimiento {
+    TRANSFERENCIA
+    DOMICILIACION
+    TARJETABANCARIA
+}
+
+Cliente -- "*" Cuenta
+
+Cuenta -- "*" MovimientoBancario
+Cuenta -- "*" TarjetaCredito
 
 @enduml

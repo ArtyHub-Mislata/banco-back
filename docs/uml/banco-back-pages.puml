@@ -1,0 +1,12 @@
+@startuml
+
+[*] --> Login
+
+Login --> User : button "Login"
+
+User --> Cuenta : link "Cuenta"
+User --> TarjetaCredito : link "TarjetaCredito"
+User --> MovimientoBancario : link "MovimientoBancario"
+User --> Logout : button "Logout"
+
+@enduml
