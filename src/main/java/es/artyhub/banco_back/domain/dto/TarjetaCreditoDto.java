@@ -1,19 +1,19 @@
-package es.artyhub.banco_back.domain.model;
+package es.artyhub.banco_back.domain.dto;
 
 import java.math.BigInteger;
 import java.util.Date;
 
-public class TarjetaCredito {
+public class TarjetaCreditoDto {
     private Long id;
     private BigInteger numeroTarjeta;
     private Date fechaCaducidad;
     private String cvv;
     private String nombreCompleto;
 
-    public TarjetaCredito() {
+    public TarjetaCreditoDto() {
     }
 
-    public TarjetaCredito(Long id, BigInteger numeroTarjeta, Date fechaCaducidad, String cvv, String nombreCompleto) {
+    public TarjetaCreditoDto(Long id, BigInteger numeroTarjeta, Date fechaCaducidad, String cvv, String nombreCompleto) {
         this.id = id;
         this.numeroTarjeta = numeroTarjeta;
         this.fechaCaducidad = fechaCaducidad;

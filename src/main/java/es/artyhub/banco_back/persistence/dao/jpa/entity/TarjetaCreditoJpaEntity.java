@@ -1,19 +1,30 @@
-package es.artyhub.banco_back.domain.model;
+package es.artyhub.banco_back.persistence.dao.jpa.entity;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
 
-public class TarjetaCredito {
+import jakarta.persistence.*;
+
+@Entity
+@Table(name= "tarjetas_credito")
+public class TarjetaCreditoJpaEntity implements Serializable{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "numero_tarjeta")
     private BigInteger numeroTarjeta;
+    @Column(name = "fecha_caducidad")
     private Date fechaCaducidad;
     private String cvv;
+    @Column(name = "nombre_completo")
     private String nombreCompleto;
-
-    public TarjetaCredito() {
+    
+    public TarjetaCreditoJpaEntity() {
     }
 
-    public TarjetaCredito(Long id, BigInteger numeroTarjeta, Date fechaCaducidad, String cvv, String nombreCompleto) {
+    public TarjetaCreditoJpaEntity(Long id, BigInteger numeroTarjeta, Date fechaCaducidad, String cvv,
+            String nombreCompleto) {
         this.id = id;
         this.numeroTarjeta = numeroTarjeta;
         this.fechaCaducidad = fechaCaducidad;
@@ -60,4 +71,5 @@ public class TarjetaCredito {
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
     }
+    
 }
