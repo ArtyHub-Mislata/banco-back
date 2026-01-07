@@ -19,17 +19,21 @@ public class TarjetaCreditoJpaEntity implements Serializable{
     private String cvv;
     @Column(name = "nombre_completo")
     private String nombreCompleto;
-    
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cuenta_id", nullable = false)
+    private CuentaJpaEntity cuenta;
     public TarjetaCreditoJpaEntity() {
     }
 
     public TarjetaCreditoJpaEntity(Long id, BigInteger numeroTarjeta, Date fechaCaducidad, String cvv,
-            String nombreCompleto) {
+            String nombreCompleto, CuentaJpaEntity cuenta) {
         this.id = id;
         this.numeroTarjeta = numeroTarjeta;
         this.fechaCaducidad = fechaCaducidad;
         this.cvv = cvv;
         this.nombreCompleto = nombreCompleto;
+        this.cuenta = cuenta;
     }
 
     public Long getId() {
@@ -71,5 +75,13 @@ public class TarjetaCreditoJpaEntity implements Serializable{
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
     }
-    
+
+    public CuentaJpaEntity getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(CuentaJpaEntity cuenta) {
+        this.cuenta = cuenta;
+    }
+
 }

@@ -18,25 +18,26 @@ public class MovimientoBancarioJpaEntity implements Serializable{
     private TipoMovimiento tipoMovimiento;
     @Column(name = "origen_movimiento")
     private OrigenMovimiento origenMovimiento;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tarjeta_credito_id")
-    private TarjetaCreditoJpaEntity tarjetaCredito;
+
     private Date fecha;
     private BigDecimal importe;
     private String concepto;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cuenta_id", nullable = false)
+    private CuentaJpaEntity cuenta;
+
     public MovimientoBancarioJpaEntity() {
     }
 
-    public MovimientoBancarioJpaEntity(Long id, TipoMovimiento tipoMovimiento, OrigenMovimiento origenMovimiento,
-            TarjetaCreditoJpaEntity tarjetaCredito, Date fecha, BigDecimal importe, String concepto) {
+    public MovimientoBancarioJpaEntity(Long id, TipoMovimiento tipoMovimiento, OrigenMovimiento origenMovimiento, Date fecha, BigDecimal importe, String concepto, CuentaJpaEntity cuenta) {
         this.id = id;
         this.tipoMovimiento = tipoMovimiento;
         this.origenMovimiento = origenMovimiento;
-        this.tarjetaCredito = tarjetaCredito;
         this.fecha = fecha;
         this.importe = importe;
         this.concepto = concepto;
+        this.cuenta = cuenta;
     }
 
     public Long getId() {
@@ -63,12 +64,12 @@ public class MovimientoBancarioJpaEntity implements Serializable{
         this.origenMovimiento = origenMovimiento;
     }
 
-    public TarjetaCreditoJpaEntity getTarjetaCredito() {
-        return tarjetaCredito;
+    public CuentaJpaEntity getCuenta() {
+        return cuenta;
     }
 
-    public void setTarjetaCredito(TarjetaCreditoJpaEntity tarjetaCredito) {
-        this.tarjetaCredito = tarjetaCredito;
+    public void setCuenta(CuentaJpaEntity cuenta) {
+        this.cuenta = cuenta;
     }
 
     public Date getFecha() {
