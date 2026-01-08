@@ -1,6 +1,6 @@
 package es.artyhub.banco_back.persistence.repository.mapper;
 
-import es.artyhub.banco_back.domain.dto.ClienteDto;
+import es.artyhub.banco_back.domain.model.Cliente;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.ClienteJpaEntity;
 
 public class ClienteMapper {
@@ -16,11 +16,26 @@ public class ClienteMapper {
         return instance;
     }
 
-    public ClienteDto fromClienteJpaEntityToClienteDto(ClienteJpaEntity cliente) {
+    public Cliente fromClienteJpaEntityToCliente(ClienteJpaEntity clienteJpaEntity) {
+        if (clienteJpaEntity == null) {
+            return null;
+        }
+        return new Cliente(
+            clienteJpaEntity.getId(), 
+            clienteJpaEntity.getLogin(), 
+            clienteJpaEntity.getPassword(), 
+            clienteJpaEntity.getName(), 
+            clienteJpaEntity.getLastName1(), 
+            clienteJpaEntity.getLastName2(), 
+            clienteJpaEntity.getDni(), 
+            clienteJpaEntity.getApi_token());
+    }
+
+    public ClienteJpaEntity fromClienteToClienteJpaEntity(Cliente cliente) {
         if (cliente == null) {
             return null;
         }
-        return new ClienteDto(
+        return new ClienteJpaEntity(
             cliente.getId(), 
             cliente.getLogin(), 
             cliente.getPassword(), 
@@ -29,20 +44,5 @@ public class ClienteMapper {
             cliente.getLastName2(), 
             cliente.getDni(), 
             cliente.getApi_token());
-    }
-
-    public ClienteJpaEntity fromClienteDtoToClienteJpaEntity(ClienteDto clienteDto) {
-        if (clienteDto == null) {
-            return null;
-        }
-        return new ClienteJpaEntity(
-            clienteDto.getId(), 
-            clienteDto.getLogin(), 
-            clienteDto.getPassword(), 
-            clienteDto.getName(), 
-            clienteDto.getLastName1(), 
-            clienteDto.getLastName2(), 
-            clienteDto.getDni(), 
-            clienteDto.getApi_token());
     }
 }
