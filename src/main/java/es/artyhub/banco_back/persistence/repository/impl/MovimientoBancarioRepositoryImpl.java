@@ -2,8 +2,14 @@ package es.artyhub.banco_back.persistence.repository.impl;
 
 import es.artyhub.banco_back.domain.model.MovimientoBancario;
 import es.artyhub.banco_back.domain.repository.MovimientoBancarioRepository;
+import es.artyhub.banco_back.persistence.dao.jpa.MovimientoBancarioJpaDao;
 
 public class MovimientoBancarioRepositoryImpl implements MovimientoBancarioRepository {
+    private final MovimientoBancarioJpaDao movimientoBancarioJpaDao;
+
+    public MovimientoBancarioRepositoryImpl(MovimientoBancarioJpaDao movimientoBancarioJpaDao) {
+        this.movimientoBancarioJpaDao = movimientoBancarioJpaDao;
+    }
 
     @Override
     public MovimientoBancario findById(Long id) {
