@@ -1,12 +1,12 @@
-package es.artyhub.banco_back.persistence.repository.impl;
-
-import es.artyhub.banco_back.domain.model.TarjetaCredito;
-import es.artyhub.banco_back.domain.repository.TarjetaCreditoRepository;
+package es.artyhub.banco_back.domain.service.impl;
 
 import java.math.BigInteger;
 
-public class TarjetaCreditoRepositoryImpl implements TarjetaCreditoRepository {
+import es.artyhub.banco_back.domain.model.TarjetaCredito;
+import es.artyhub.banco_back.domain.service.TarjetaCreditoService;
 
+public class TarjetaCreditoServiceImpl implements TarjetaCreditoService {
+    
     @Override
     public TarjetaCredito findById(Long id) {
         return null;

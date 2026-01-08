@@ -1,10 +1,10 @@
-package es.artyhub.banco_back.persistence.repository.impl;
+package es.artyhub.banco_back.domain.service.impl;
 
 import es.artyhub.banco_back.domain.model.Cliente;
-import es.artyhub.banco_back.domain.repository.ClienteRepository;
+import es.artyhub.banco_back.domain.service.ClienteService;
 
-public class ClienteRepositoryImpl implements ClienteRepository {
-
+public class ClienteServiceImpl implements ClienteService {
+    
     @Override
     public Cliente findById(Long id) {
         return null;
