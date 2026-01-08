@@ -1,10 +1,10 @@
-package es.artyhub.banco_back.persistence.repository.impl;
+package es.artyhub.banco_back.domain.service.impl;
 
 import es.artyhub.banco_back.domain.model.Cuenta;
-import es.artyhub.banco_back.domain.repository.CuentaRepository;
+import es.artyhub.banco_back.domain.service.CuentaService;
 
-public class CuentaRepositoryImpl implements CuentaRepository {
-
+public class CuentaServiceImpl implements CuentaService {
+    
     @Override
     public Cuenta findById(Long id) {
         return null;

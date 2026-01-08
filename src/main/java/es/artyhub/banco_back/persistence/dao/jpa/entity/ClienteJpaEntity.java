@@ -1,12 +1,15 @@
 package es.artyhub.banco_back.persistence.dao.jpa.entity;
 
-import java.io.Serializable;
-
+import es.artyhub.banco_back.domain.model.Cuenta;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Table(name= "clientes")
-public class ClienteJpaEntity implements Serializable{
+@Table(name = "clientes")
+public class ClienteJpaEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,11 +24,14 @@ public class ClienteJpaEntity implements Serializable{
     @Column(name = "api_token")
     private String api_token;
 
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CuentaJpaEntity> cuentas = new ArrayList<>();
+
     public ClienteJpaEntity() {
     }
 
     public ClienteJpaEntity(Long id, String login, String password, String name, String lastName1, String lastName2,
-            String dni, String api_token) {
+                            String dni, String api_token) {
         this.id = id;
         this.login = login;
         this.password = password;
