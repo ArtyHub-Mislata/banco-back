@@ -1,11 +1,10 @@
 package es.artyhub.banco_back.domain.model;
 
-import java.math.BigInteger;
 import java.util.Date;
 
 public class TarjetaCredito {
     private Long id;
-    private BigInteger numeroTarjeta;
+    private String numeroTarjeta;
     private Date fechaCaducidad;
     private String cvv;
     private String nombreCompleto;
@@ -14,7 +13,7 @@ public class TarjetaCredito {
     public TarjetaCredito() {
     }
 
-    public TarjetaCredito(Long id, BigInteger numeroTarjeta, Date fechaCaducidad, String cvv, String nombreCompleto, Cuenta cuenta) {
+    public TarjetaCredito(Long id, String numeroTarjeta, Date fechaCaducidad, String cvv, String nombreCompleto, Cuenta cuenta) {
         this.id = id;
         this.numeroTarjeta = numeroTarjeta;
         this.fechaCaducidad = fechaCaducidad;
@@ -31,11 +30,11 @@ public class TarjetaCredito {
         this.id = id;
     }
 
-    public BigInteger getNumeroTarjeta() {
+    public String getNumeroTarjeta() {
         return numeroTarjeta;
     }
 
-    public void setNumeroTarjeta(BigInteger numeroTarjeta) {
+    public void setNumeroTarjeta(String numeroTarjeta) {
         this.numeroTarjeta = numeroTarjeta;
     }
 

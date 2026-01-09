@@ -1,7 +1,6 @@
 package es.artyhub.banco_back.persistence.dao.jpa.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.Date;
 
 import jakarta.persistence.*;
@@ -13,7 +12,7 @@ public class TarjetaCreditoJpaEntity implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "numero_tarjeta")
-    private BigInteger numeroTarjeta;
+    private String numeroTarjeta;
     @Column(name = "fecha_caducidad")
     private Date fechaCaducidad;
     private String cvv;
@@ -26,7 +25,7 @@ public class TarjetaCreditoJpaEntity implements Serializable{
     public TarjetaCreditoJpaEntity() {
     }
 
-    public TarjetaCreditoJpaEntity(Long id, BigInteger numeroTarjeta, Date fechaCaducidad, String cvv,
+    public TarjetaCreditoJpaEntity(Long id, String numeroTarjeta, Date fechaCaducidad, String cvv,
             String nombreCompleto, CuentaJpaEntity cuenta) {
         this.id = id;
         this.numeroTarjeta = numeroTarjeta;
@@ -44,11 +43,11 @@ public class TarjetaCreditoJpaEntity implements Serializable{
         this.id = id;
     }
 
-    public BigInteger getNumeroTarjeta() {
+    public String getNumeroTarjeta() {
         return numeroTarjeta;
     }
 
-    public void setNumeroTarjeta(BigInteger numeroTarjeta) {
+    public void setNumeroTarjeta(String numeroTarjeta) {
         this.numeroTarjeta = numeroTarjeta;
     }
 
