@@ -9,4 +9,5 @@ public interface CuentaRepository {
     Cuenta findByIban(String iban);
     List<Cuenta> findByClienteId(Long cliente_id);
     List<Cuenta> findAll();
+    Cuenta save(Cuenta cuenta);
 }

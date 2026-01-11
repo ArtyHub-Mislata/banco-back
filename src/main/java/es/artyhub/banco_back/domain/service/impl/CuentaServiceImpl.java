@@ -94,7 +94,22 @@ public class CuentaServiceImpl implements CuentaService {
         if (cuenta.getSaldo().compareTo(importe) < 0) {
             throw new BusinessException("Saldo insuficiente");
         }
-
         return true;
+    }
+
+    @Override
+    public Cuenta save(Cuenta cuenta) {
+        if (cuenta == null) {
+            throw new ValidationException("La cuenta no puede ser nula");
+        }
+        return cuentaRepository.save(cuenta);
+    }
+
+    @Override
+    public void updateSaldo(Cuenta cuenta, BigDecimal importe) {
+        BigDecimal saldo = cuenta.getSaldo();
+        BigDecimal saldoFinal = saldo.subtract(importe);
+        cuenta.setSaldo(saldoFinal);
+        cuentaRepository.save(cuenta);
     }
 }

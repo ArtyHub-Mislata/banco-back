@@ -26,4 +26,9 @@ public class CuentaRepositoryImpl implements CuentaRepository {
     public List<Cuenta> findAll() {
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
+
+    @Override
+    public Cuenta save(Cuenta cuenta) {
+        throw new UnsupportedOperationException("Unimplemented method 'save'");
+    }
 }

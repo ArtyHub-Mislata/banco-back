@@ -11,4 +11,6 @@ public interface CuentaService {
     List<Cuenta> findByClienteId(Long cliente_id);
     List<Cuenta> findAll();
     Boolean saldoIsEnough(BigDecimal importe, String iban);
+    void updateSaldo(Cuenta cuenta, BigDecimal importe);
+    Cuenta save(Cuenta cuenta);
 }
