@@ -38,6 +38,7 @@ CREATE TABLE movimientos_bancarios (
                                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
                                        tipo_movimiento VARCHAR(50) NOT NULL,
                                        origen_movimiento VARCHAR(50) NOT NULL,
+                                       tarjeta_credito VARCHAR(16) NOT NULL,
                                        fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                        importe DECIMAL(19,2) NOT NULL,
                                        concepto VARCHAR(255),

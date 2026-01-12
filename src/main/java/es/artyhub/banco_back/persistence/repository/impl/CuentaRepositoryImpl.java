@@ -5,6 +5,7 @@ import java.util.List;
 import es.artyhub.banco_back.domain.model.Cuenta;
 import es.artyhub.banco_back.domain.repository.CuentaRepository;
 import es.artyhub.banco_back.persistence.dao.jpa.CuentaJpaDao;
+import es.artyhub.banco_back.persistence.repository.mapper.CuentaMapper;
 
 public class CuentaRepositoryImpl implements CuentaRepository {
     private final CuentaJpaDao cuentaJpaDao;
@@ -15,26 +16,26 @@ public class CuentaRepositoryImpl implements CuentaRepository {
 
     @Override
     public Cuenta findById(Long id) {
-        return null;
+        return CuentaMapper.getInstance().fromCuentaJpaEntityToCuenta(cuentaJpaDao.findById(id));
     }
 
     @Override
     public Cuenta findByIban(String iban) {
-        return null;
+        return CuentaMapper.getInstance().fromCuentaJpaEntityToCuenta(cuentaJpaDao.findByIban(iban));
     }
 
     @Override
     public List<Cuenta> findByClienteId(Long cliente_id) {
-        return null;
+        return CuentaMapper.getInstance().fromCuentaJpaEntityListToCuentaList(cuentaJpaDao.findByClienteId(cliente_id));
     }
 
     @Override
     public List<Cuenta> findAll() {
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        return CuentaMapper.getInstance().fromCuentaJpaEntityListToCuentaList(cuentaJpaDao.findAll());
     }
 
     @Override
     public Cuenta save(Cuenta cuenta) {
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
+        return CuentaMapper.getInstance().fromCuentaJpaEntityToCuenta(cuentaJpaDao.save(CuentaMapper.getInstance().fromCuentaToCuentaJpaEntity(cuenta)));
     }
 }

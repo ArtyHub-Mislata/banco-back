@@ -19,19 +19,18 @@ public class TarjetaCreditoMapper {
     }
 
     //Esto seria para crear tarjetas de crédito
-//    public TarjetaCreditoJpaEntity fromTarjetaCreditoToTarjetaCreditoJpaEntity(TarjetaCredito tarjetaCredito) {
-//        if (tarjetaCredito == null) {
-//            return null;
-//        }
-//        return new TarjetaCreditoJpaEntity(
-//            tarjetaCredito.getId(),
-//            tarjetaCredito.getNumeroTarjeta(),
-//            tarjetaCredito.getFechaCaducidad(),
-//            tarjetaCredito.getCvv(),
-//            tarjetaCredito.getNombreCompleto(),
-//            CuentaMapper.getInstance().fromCuentaToCuentaJpaEntity(tarjetaCredito.getCuenta())
-//        );
-//    }
+    public TarjetaCreditoJpaEntity fromTarjetaCreditoToTarjetaCreditoJpaEntity(TarjetaCredito tarjetaCredito) {
+        if (tarjetaCredito == null) {
+            return null;
+        }
+        return new TarjetaCreditoJpaEntity(
+            tarjetaCredito.getId(),
+            tarjetaCredito.getNumeroTarjeta(),
+            tarjetaCredito.getFechaCaducidad(),
+            tarjetaCredito.getCvv(),
+            tarjetaCredito.getNombreCompleto()
+        );
+    }
 
     public TarjetaCredito fromTarjetaCreditoJpaEntityToTarjetaCredito(TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity) {
         if (tarjetaCreditoJpaEntity == null) {
@@ -42,12 +41,11 @@ public class TarjetaCreditoMapper {
             tarjetaCreditoJpaEntity.getNumeroTarjeta(),
             tarjetaCreditoJpaEntity.getFechaCaducidad(),
             tarjetaCreditoJpaEntity.getCvv(),
-            tarjetaCreditoJpaEntity.getNombreCompleto(),
-            CuentaMapper.getInstance().fromCuentaJpaEntityToCuenta(tarjetaCreditoJpaEntity.getCuenta())
+            tarjetaCreditoJpaEntity.getNombreCompleto()
         );
     }
 
-    public List<TarjetaCredito> fromTarjetasJpaEntityToTarjetas(List<TarjetaCreditoJpaEntity> entities) {
+    public List<TarjetaCredito> fromTarjetaCreditoJpaEntityListToTarjetaCreditoList(List<TarjetaCreditoJpaEntity> entities) {
         if (entities == null) {
             return null;
         }
@@ -56,12 +54,12 @@ public class TarjetaCreditoMapper {
             .toList();
     }
 
-//    public List<TarjetaCreditoJpaEntity> fromTarjetasToTarjetasJpaEntity(List<TarjetaCredito> tarjetas) {
-//        if (tarjetas == null) {
-//            return null;
-//        }
-//        return tarjetas.stream()
-//            .map(this::fromTarjetaCreditoToTarjetaCreditoJpaEntity)
-//            .toList();
-//    }
+    public List<TarjetaCreditoJpaEntity> fromTarjetaCreditoListToTarjetaCreditoJpaEntityList(List<TarjetaCredito> tarjetas) {
+        if (tarjetas == null) {
+            return null;
+        }
+        return tarjetas.stream()
+            .map(this::fromTarjetaCreditoToTarjetaCreditoJpaEntity)
+            .toList();
+    }
 }
