@@ -1,6 +1,9 @@
 package es.artyhub.banco_back.persistence.repository.mapper;
 
 
+import java.util.List;
+
+import es.artyhub.banco_back.domain.model.MovimientoBancario;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.MovimientoBancarioJpaEntity;
 
 public class MovimientoBancarioMapper {
@@ -16,5 +19,51 @@ public class MovimientoBancarioMapper {
         return instance;
     }
 
+    public MovimientoBancarioJpaEntity fromMovimientoBancarioToMovimientoBancarioJpaEntity(MovimientoBancario movimientoBancario) {
+        if (movimientoBancario == null) {
+            return null;
+        }
+        return new MovimientoBancarioJpaEntity(
+            movimientoBancario.getId(), 
+            movimientoBancario.getTipoMovimiento(),
+            movimientoBancario.getOrigenMovimiento(),
+            TarjetaCreditoMapper.getInstance().fromTarjetaCreditoToTarjetaCreditoJpaEntity(movimientoBancario.getTarjetaCredito()),
+            movimientoBancario.getFecha(), 
+            movimientoBancario.getImporte(), 
+            movimientoBancario.getConcepto(),
+            CuentaMapper.getInstance().fromCuentaToCuentaJpaEntity(movimientoBancario.getCuenta()));
+    }
 
+    public MovimientoBancario fromMovimientoBancarioJpaEntityToMovimientoBancario(MovimientoBancarioJpaEntity movimientoBancarioJpaEntity) {
+        if (movimientoBancarioJpaEntity == null) {
+            return null;
+        }
+        return new MovimientoBancario(
+            movimientoBancarioJpaEntity.getId(), 
+            movimientoBancarioJpaEntity.getTipoMovimiento(),
+            movimientoBancarioJpaEntity.getOrigenMovimiento(),
+            TarjetaCreditoMapper.getInstance().fromTarjetaCreditoJpaEntityToTarjetaCredito(movimientoBancarioJpaEntity.getTarjetaCredito()),
+            movimientoBancarioJpaEntity.getFecha(), 
+            movimientoBancarioJpaEntity.getImporte(), 
+            movimientoBancarioJpaEntity.getConcepto(),
+            CuentaMapper.getInstance().fromCuentaJpaEntityToCuenta(movimientoBancarioJpaEntity.getCuenta()));
+    }
+    
+    public List<MovimientoBancarioJpaEntity> fromMovimientosBancariosToMovimientosBancariosJpaEntity(List<MovimientoBancario> movimientosBancarios) {
+        if (movimientosBancarios == null) {
+            return null;
+        }
+        return movimientosBancarios.stream()
+            .map(this::fromMovimientoBancarioToMovimientoBancarioJpaEntity)
+            .toList();
+    }
+
+    public List<MovimientoBancario> fromMovimientosBancariosJpaEntityToMovimientosBancarios(List<MovimientoBancarioJpaEntity> movimientosBancariosJpaEntity) {
+        if (movimientosBancariosJpaEntity == null) {
+            return null;
+        }
+        return movimientosBancariosJpaEntity.stream()
+            .map(this::fromMovimientoBancarioJpaEntityToMovimientoBancario)
+            .toList();
+    }
 }

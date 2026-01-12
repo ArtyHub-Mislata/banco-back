@@ -21,9 +21,4 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     public Cliente findByLogin(String login) {
         return null;
     }
-
-    @Override
-    public Cliente findByToken(String api_token) {
-        return null;
-    }
 }

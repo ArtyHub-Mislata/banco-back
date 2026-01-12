@@ -2,11 +2,8 @@ package es.artyhub.banco_back.persistence.dao.jpa.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
-import es.artyhub.banco_back.domain.model.Cliente;
-import es.artyhub.banco_back.persistence.dao.jpa.TarjetaCreditoJpaDao;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,16 +14,13 @@ public class CuentaJpaEntity implements Serializable{
     private Long id;
     private BigDecimal saldo;
     private String iban;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
     private ClienteJpaEntity cliente;
-
     @OneToMany(mappedBy = "cuenta")
-    private List<TarjetaCreditoJpaEntity> tarjetas = new ArrayList<>();
-
+    private List<TarjetaCreditoJpaEntity> tarjetas;
     @OneToMany(mappedBy = "cuenta")
-    private List<MovimientoBancarioJpaEntity> movimientos = new ArrayList<>();
+    private List<MovimientoBancarioJpaEntity> movimientos;
     
     public CuentaJpaEntity() {
     }
@@ -38,12 +32,6 @@ public class CuentaJpaEntity implements Serializable{
         this.cliente = cliente;
         this.tarjetas = tarjetas;
         this.movimientos = movimientos;
-    }
-
-    public CuentaJpaEntity(Long id, BigDecimal saldo, String iban) {
-        this.id = id;
-        this.saldo = saldo;
-        this.iban = iban;
     }
 
     public Long getId() {

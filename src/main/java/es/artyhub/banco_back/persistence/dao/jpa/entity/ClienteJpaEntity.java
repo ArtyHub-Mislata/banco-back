@@ -1,6 +1,5 @@
 package es.artyhub.banco_back.persistence.dao.jpa.entity;
 
-import es.artyhub.banco_back.domain.model.Cuenta;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
