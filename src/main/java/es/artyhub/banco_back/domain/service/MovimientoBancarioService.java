@@ -2,7 +2,6 @@ package es.artyhub.banco_back.domain.service;
 
 import java.util.List;
 
-import es.artyhub.banco_back.domain.dto.PagoTarjetaDto;
 import es.artyhub.banco_back.domain.model.MovimientoBancario;
 
 public interface MovimientoBancarioService {

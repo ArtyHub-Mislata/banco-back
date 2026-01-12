@@ -1,26 +1,18 @@
 package es.artyhub.banco_back.domain.service.impl;
 
-import java.util.Date;
 import java.util.List;
-
-import es.artyhub.banco_back.domain.dto.PagoTarjetaDto;
-import es.artyhub.banco_back.domain.enums.OrigenMovimiento;
-import es.artyhub.banco_back.domain.enums.TipoMovimiento;
 import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
 import es.artyhub.banco_back.domain.exception.ValidationException;
 import es.artyhub.banco_back.domain.model.MovimientoBancario;
-import es.artyhub.banco_back.domain.model.TarjetaCredito;
 import es.artyhub.banco_back.domain.repository.MovimientoBancarioRepository;
 import es.artyhub.banco_back.domain.service.MovimientoBancarioService;
 
 public class MovimientoBancarioServiceImpl implements MovimientoBancarioService {
     
     private final MovimientoBancarioRepository movimientoBancarioRepository;
-    private final TarjetaCreditoServiceImpl tarjetaCreditoServiceImpl;
 
-    public MovimientoBancarioServiceImpl(MovimientoBancarioRepository movimientoBancarioRepository, TarjetaCreditoServiceImpl tarjetaCreditoServiceImpl) {
+    public MovimientoBancarioServiceImpl(MovimientoBancarioRepository movimientoBancarioRepository) {
         this.movimientoBancarioRepository = movimientoBancarioRepository;
-        this.tarjetaCreditoServiceImpl = tarjetaCreditoServiceImpl;
     }
     
     @Override
@@ -91,6 +83,6 @@ public class MovimientoBancarioServiceImpl implements MovimientoBancarioService 
 
     @Override
     public MovimientoBancario saveMovimientoBancario(MovimientoBancario movimientoBancario) {
-
+        return movimientoBancarioRepository.save(movimientoBancario);
     }
 }

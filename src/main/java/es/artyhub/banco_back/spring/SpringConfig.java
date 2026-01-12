@@ -53,8 +53,8 @@ public class SpringConfig {
         return new CuentaRepositoryImpl(cuentaJpaDao);
     }
     @Bean
-    public CuentaService cuentaService(){
-        return new CuentaServiceImpl();
+    public CuentaService cuentaService(CuentaRepository cuentaRepository){
+        return new CuentaServiceImpl(cuentaRepository);
     }
     //BEANS DE TARJETA
     @Bean
@@ -66,8 +66,8 @@ public class SpringConfig {
         return new TarjetaCreditoRepositoryImpl(tarjetaCreditoJpaDao);
     }
     @Bean
-    public TarjetaCreditoService tarjetaCreditoService(){
-        return new TarjetaCreditoServiceImpl();
+    public TarjetaCreditoService tarjetaCreditoService(TarjetaCreditoRepository tarjetaCreditoRepository){
+        return new TarjetaCreditoServiceImpl(tarjetaCreditoRepository);
     }
     //BEANS DE MOVIMIENTO BANCARIO
     @Bean
@@ -79,8 +79,8 @@ public class SpringConfig {
         return new MovimientoBancarioRepositoryImpl(movimientoBancarioJpaDao);
     }
     @Bean
-    public MovimientoBancarioService movimientoBancarioService(){
-        return new MovimientoBancarioServiceImpl();
+    public MovimientoBancarioService movimientoBancarioService(MovimientoBancarioRepository movimientoBancarioRepository){
+        return new MovimientoBancarioServiceImpl(movimientoBancarioRepository);
     }
 
 
