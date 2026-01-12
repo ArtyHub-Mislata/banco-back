@@ -16,21 +16,13 @@ public class AutorizacionServiceImpl implements AutorizacionService {
     
     @Override
     public boolean autorizar(PagoTarjetaDto pagoTarjetaDto) {
-
-        if (pagoTarjetaDto == null) {
-            throw new ValidationException("El pagoTarjetaDto no puede ser null");
-        }
-
         Cuenta cuenta = cuentaService.findByIban(pagoTarjetaDto.destino().numeroCuenta());
 
         Cliente cliente = cuenta.getCliente();
 
-        if (pagoTarjetaDto.autorizacion().login().equals(cliente.getLogin()) && pagoTarjetaDto.autorizacion().api_token().equals(cliente.getApi_token())) {
-            return true;
-        }
+        return pagoTarjetaDto.autorizacion().login().equals(cliente.getLogin())
+                && pagoTarjetaDto.autorizacion().api_token().equals(cliente.getApi_token());
 
-        return false;
-        
     }
     
 }
