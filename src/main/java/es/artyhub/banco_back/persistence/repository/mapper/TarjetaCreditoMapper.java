@@ -45,7 +45,7 @@ public class TarjetaCreditoMapper {
         );
     }
 
-    public List<TarjetaCredito> fromTarjetasJpaEntityToTarjetas(List<TarjetaCreditoJpaEntity> entities) {
+    public List<TarjetaCredito> fromTarjetaCreditoJpaEntityListToTarjetaCreditoList(List<TarjetaCreditoJpaEntity> entities) {
         if (entities == null) {
             return null;
         }
@@ -54,7 +54,7 @@ public class TarjetaCreditoMapper {
             .toList();
     }
 
-    public List<TarjetaCreditoJpaEntity> fromTarjetasToTarjetasJpaEntity(List<TarjetaCredito> tarjetas) {
+    public List<TarjetaCreditoJpaEntity> fromTarjetaCreditoListToTarjetaCreditoJpaEntityList(List<TarjetaCredito> tarjetas) {
         if (tarjetas == null) {
             return null;
         }

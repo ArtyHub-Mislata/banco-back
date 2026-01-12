@@ -49,7 +49,7 @@ public class MovimientoBancarioMapper {
             CuentaMapper.getInstance().fromCuentaJpaEntityToCuenta(movimientoBancarioJpaEntity.getCuenta()));
     }
     
-    public List<MovimientoBancarioJpaEntity> fromMovimientosBancariosToMovimientosBancariosJpaEntity(List<MovimientoBancario> movimientosBancarios) {
+    public List<MovimientoBancarioJpaEntity> fromMovimientoBancarioListToMovimientoBancarioJpaEntityList(List<MovimientoBancario> movimientosBancarios) {
         if (movimientosBancarios == null) {
             return null;
         }
@@ -58,7 +58,7 @@ public class MovimientoBancarioMapper {
             .toList();
     }
 
-    public List<MovimientoBancario> fromMovimientosBancariosJpaEntityToMovimientosBancarios(List<MovimientoBancarioJpaEntity> movimientosBancariosJpaEntity) {
+    public List<MovimientoBancario> fromMovimientoBancarioJpaEntityListToMovimientoBancarioList(List<MovimientoBancarioJpaEntity> movimientosBancariosJpaEntity) {
         if (movimientosBancariosJpaEntity == null) {
             return null;
         }

@@ -3,6 +3,7 @@ package es.artyhub.banco_back.persistence.repository.impl;
 import es.artyhub.banco_back.domain.model.TarjetaCredito;
 import es.artyhub.banco_back.domain.repository.TarjetaCreditoRepository;
 import es.artyhub.banco_back.persistence.dao.jpa.TarjetaCreditoJpaDao;
+import es.artyhub.banco_back.persistence.repository.mapper.TarjetaCreditoMapper;
 
 import java.util.List;
 
@@ -16,21 +17,21 @@ public class TarjetaCreditoRepositoryImpl implements TarjetaCreditoRepository {
 
     @Override
     public TarjetaCredito findById(Long id) {
-        return null;
+        return TarjetaCreditoMapper.getInstance().fromTarjetaCreditoJpaEntityToTarjetaCredito(tarjetaCreditoJpaDao.findById(id));
     }
 
     @Override
     public TarjetaCredito findByNumeroTarjeta(String numeroTarjeta) {
-        return null;
+        return TarjetaCreditoMapper.getInstance().fromTarjetaCreditoJpaEntityToTarjetaCredito(tarjetaCreditoJpaDao.findByNumeroTarjeta(numeroTarjeta));
     }
 
     @Override
     public List<TarjetaCredito> findByCuentaId(Long cuenta_id) {
-        return null;
+        return TarjetaCreditoMapper.getInstance().fromTarjetaCreditoJpaEntityListToTarjetaCreditoList(tarjetaCreditoJpaDao.findByCuentaId(cuenta_id));
     }
 
     @Override
     public List<TarjetaCredito> findAll() {
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        return TarjetaCreditoMapper.getInstance().fromTarjetaCreditoJpaEntityListToTarjetaCreditoList(tarjetaCreditoJpaDao.findAll());
     }
 }

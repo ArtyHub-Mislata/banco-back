@@ -1,7 +1,6 @@
 package es.artyhub.banco_back.persistence.dao.jpa.impl;
 
 import es.artyhub.banco_back.persistence.dao.jpa.TarjetaCreditoJpaDao;
-import es.artyhub.banco_back.persistence.dao.jpa.entity.CuentaJpaEntity;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.TarjetaCreditoJpaEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -24,5 +23,30 @@ public class TarjetaCreditoJpaDaoImpl implements TarjetaCreditoJpaDao {
         TypedQuery<TarjetaCreditoJpaEntity> tarjetaCreditoJpaEntityTypedQuery =  entityManager
                 .createQuery(sql, TarjetaCreditoJpaEntity.class);
         return tarjetaCreditoJpaEntityTypedQuery.getResultList();
+    }
+
+    @Override
+    public TarjetaCreditoJpaEntity findByNumeroTarjeta(String numero) {
+        String sql = "SELECT tarjeta FROM TarjetaCreditoJpaEntity tarjeta WHERE tarjeta.numero = :numero";
+
+        TypedQuery<TarjetaCreditoJpaEntity> tarjetaCreditoJpaEntityTypedQuery = entityManager
+                .createQuery(sql, TarjetaCreditoJpaEntity.class)
+                .setParameter("numero", numero);
+        return tarjetaCreditoJpaEntityTypedQuery.getSingleResult();
+    }
+
+    @Override
+    public List<TarjetaCreditoJpaEntity> findByCuentaId(Long cuenta_id) {
+        String sql = "SELECT tarjeta FROM TarjetaCreditoJpaEntity tarjeta WHERE tarjeta.cuenta_id = :cuenta_id";
+
+        TypedQuery<TarjetaCreditoJpaEntity> tarjetaCreditoJpaEntityTypedQuery = entityManager
+                .createQuery(sql, TarjetaCreditoJpaEntity.class)
+                .setParameter("cuenta_id", cuenta_id);
+        return tarjetaCreditoJpaEntityTypedQuery.getResultList();
+    }
+
+    @Override
+    public TarjetaCreditoJpaEntity save(TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity) {
+        return entityManager.merge(tarjetaCreditoJpaEntity);
     }
 }

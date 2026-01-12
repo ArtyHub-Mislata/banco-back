@@ -1,8 +1,11 @@
 package es.artyhub.banco_back.persistence.repository.impl;
 
+import java.util.List;
+
 import es.artyhub.banco_back.domain.model.Cliente;
 import es.artyhub.banco_back.domain.repository.ClienteRepository;
 import es.artyhub.banco_back.persistence.dao.jpa.ClienteJpaDao;
+import es.artyhub.banco_back.persistence.repository.mapper.ClienteMapper;
 
 public class ClienteRepositoryImpl implements ClienteRepository {
 
@@ -14,11 +17,16 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     @Override
     public Cliente findById(Long id) {
-        return null;
+        return ClienteMapper.getInstance().fromClienteJpaEntityToCliente(clienteJpaDao.findById(id));
+    }
+
+    @Override
+    public List<Cliente> findAll() {
+        return ClienteMapper.getInstance().fromClienteJpaEntityListToClienteList(clienteJpaDao.findAll());
     }
 
     @Override
     public Cliente findByLogin(String login) {
-        return null;
+        return ClienteMapper.getInstance().fromClienteJpaEntityToCliente(clienteJpaDao.findByLogin(login));
     }
 }

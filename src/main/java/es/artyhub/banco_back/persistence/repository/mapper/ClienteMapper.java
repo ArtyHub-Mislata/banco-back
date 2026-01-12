@@ -1,5 +1,7 @@
 package es.artyhub.banco_back.persistence.repository.mapper;
 
+import java.util.List;
+
 import es.artyhub.banco_back.domain.model.Cliente;
 
 import es.artyhub.banco_back.persistence.dao.jpa.entity.ClienteJpaEntity;
@@ -45,5 +47,23 @@ public class ClienteMapper {
             cliente.getLastName2(), 
             cliente.getDni(), 
             cliente.getApi_token());
+    }
+
+    public List<Cliente> fromClienteJpaEntityListToClienteList(List<ClienteJpaEntity> clienteJpaEntityList) {
+        if (clienteJpaEntityList == null) {
+            return null;
+        }
+        return clienteJpaEntityList.stream()
+                .map(this::fromClienteJpaEntityToCliente)
+                .toList();
+    }
+
+    public List<ClienteJpaEntity> fromClienteListToClienteJpaEntityList(List<Cliente> clienteList) {
+        if (clienteList == null) {
+            return null;
+        }
+        return clienteList.stream()
+                .map(this::fromClienteToClienteJpaEntity)
+                .toList();
     }
 }
