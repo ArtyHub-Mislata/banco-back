@@ -90,28 +90,7 @@ public class MovimientoBancarioServiceImpl implements MovimientoBancarioService 
     }
 
     @Override
-    public MovimientoBancario saveMovimientoBancario(PagoTarjetaDto pagoTarjetaDto) {
+    public MovimientoBancario saveMovimientoBancario(MovimientoBancario movimientoBancario) {
 
-        if(pagoTarjetaDto == null) {
-            throw new ValidationException("Pago tarjeta nulo");
-        }
-
-        MovimientoBancario movimientoBancario = new MovimientoBancario();
-
-        TarjetaCredito tarjetaCredito = tarjetaCreditoServiceImpl.findByNumeroTarjeta(pagoTarjetaDto.origen().numeroTarjeta());
-
-        if(tarjetaCredito == null) {
-            throw new ResourceNotFoundException("Tarjeta de credito no encontrada");
-        }
-
-        movimientoBancario.setTipoMovimiento(TipoMovimiento.DEBE);
-        movimientoBancario.setOrigenMovimiento(OrigenMovimiento.TARJETABANCARIA);
-        movimientoBancario.setTarjetaCredito(tarjetaCredito);
-        movimientoBancario.setFecha(new Date());
-        movimientoBancario.setImporte(pagoTarjetaDto.pago().importe());
-        movimientoBancario.setConcepto(pagoTarjetaDto.pago().concepto());
-        movimientoBancario.setCuenta(tarjetaCredito.getCuenta());
-
-        return movimientoBancario;
     }
 }

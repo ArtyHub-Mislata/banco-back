@@ -1,5 +1,7 @@
 package es.artyhub.banco_back.persistence.dao.jpa;
 
-public interface MovimientoBancarioJpaDao {
+import es.artyhub.banco_back.persistence.dao.jpa.entity.MovimientoBancarioJpaEntity;
+
+public interface MovimientoBancarioJpaDao extends GenericJpaDao<MovimientoBancarioJpaEntity>{
     
 }

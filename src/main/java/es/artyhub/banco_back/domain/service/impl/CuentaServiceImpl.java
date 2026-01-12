@@ -3,6 +3,7 @@ package es.artyhub.banco_back.domain.service.impl;
 import java.math.BigDecimal;
 import java.util.List;
 
+import es.artyhub.banco_back.domain.enums.TipoMovimiento;
 import es.artyhub.banco_back.domain.exception.BusinessException;
 import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
 import es.artyhub.banco_back.domain.exception.ValidationException;
@@ -44,6 +45,11 @@ public class CuentaServiceImpl implements CuentaService {
         }
 
         return cuentaRepository.findByIban(iban);
+    }
+
+    @Override
+    public Cuenta findByNumeroTarjeta(String numeroTarjeta) {
+        return null;
     }
 
     @Override
@@ -106,9 +112,14 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
-    public void updateSaldo(Cuenta cuenta, BigDecimal importe) {
+    public void updateSaldo(Cuenta cuenta, BigDecimal importe, TipoMovimiento tipoMovimiento) {
         BigDecimal saldo = cuenta.getSaldo();
-        BigDecimal saldoFinal = saldo.subtract(importe);
+        BigDecimal saldoFinal;
+        if(tipoMovimiento.equals(TipoMovimiento.DEBE)){
+            saldoFinal = saldo.subtract(importe);
+        } else {
+            saldoFinal = saldo.add(importe);
+        }
         cuenta.setSaldo(saldoFinal);
         cuentaRepository.save(cuenta);
     }
