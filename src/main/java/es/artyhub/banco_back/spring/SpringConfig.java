@@ -40,7 +40,7 @@ public class SpringConfig {
     }
     @Bean
     public ClienteService clienteService(ClienteRepository clienteRepository){
-        return new ClienteServiceImpl();
+        return new ClienteServiceImpl(clienteRepository);
     }
 
     //BEANS DE CUENTA

@@ -29,18 +29,18 @@ public class CuentaMapper {
             MovimientoBancarioMapper.getInstance().fromMovimientosBancariosJpaEntityToMovimientosBancarios(cuentaJpaEntity.getMovimientos())
         );
     }
-
-    public CuentaJpaEntity fromCuentaToCuentaJpaEntity(Cuenta cuenta) {
-        if (cuenta == null) {
-            return null;
-        }
-        return new CuentaJpaEntity(
-            cuenta.getId(), 
-            cuenta.getSaldo(), 
-            cuenta.getIban(),
-            ClienteMapper.getInstance().fromClienteToClienteJpaEntity(cuenta.getCliente()),
-            TarjetaCreditoMapper.getInstance().fromTarjetasToTarjetasJpaEntity(cuenta.getTarjetas()),
-            MovimientoBancarioMapper.getInstance().fromMovimientosBancariosToMovimientosBancariosJpaEntity(cuenta.getMovimientos())
-        );
-    }
+//
+//    public CuentaJpaEntity fromCuentaToCuentaJpaEntity(Cuenta cuenta) {
+//        if (cuenta == null) {
+//            return null;
+//        }
+//        return new CuentaJpaEntity(
+//            cuenta.getId(),
+//            cuenta.getSaldo(),
+//            cuenta.getIban(),
+//            ClienteMapper.getInstance().fromClienteToClienteJpaEntity(cuenta.getCliente()),
+//            TarjetaCreditoMapper.getInstance().fromTarjetasToTarjetasJpaEntity(cuenta.getTarjetas()),
+//            MovimientoBancarioMapper.getInstance().fromMovimientosBancariosToMovimientosBancariosJpaEntity(cuenta.getMovimientos())
+//        );
+//    }
 }

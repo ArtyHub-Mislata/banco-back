@@ -35,6 +35,7 @@ public class TarjetaCreditoJpaEntity implements Serializable{
         this.cuenta = cuenta;
     }
 
+
     public Long getId() {
         return id;
     }

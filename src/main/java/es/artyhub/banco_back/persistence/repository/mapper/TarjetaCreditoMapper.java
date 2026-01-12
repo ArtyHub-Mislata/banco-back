@@ -18,19 +18,20 @@ public class TarjetaCreditoMapper {
         return instance;
     }
 
-    public TarjetaCreditoJpaEntity fromTarjetaCreditoToTarjetaCreditoJpaEntity(TarjetaCredito tarjetaCredito) {
-        if (tarjetaCredito == null) {
-            return null;
-        }
-        return new TarjetaCreditoJpaEntity(
-            tarjetaCredito.getId(), 
-            tarjetaCredito.getNumeroTarjeta(),
-            tarjetaCredito.getFechaCaducidad(),
-            tarjetaCredito.getCvv(),
-            tarjetaCredito.getNombreCompleto(),
-            CuentaMapper.getInstance().fromCuentaToCuentaJpaEntity(tarjetaCredito.getCuenta())
-        );
-    }
+    //Esto seria para crear tarjetas de crédito
+//    public TarjetaCreditoJpaEntity fromTarjetaCreditoToTarjetaCreditoJpaEntity(TarjetaCredito tarjetaCredito) {
+//        if (tarjetaCredito == null) {
+//            return null;
+//        }
+//        return new TarjetaCreditoJpaEntity(
+//            tarjetaCredito.getId(),
+//            tarjetaCredito.getNumeroTarjeta(),
+//            tarjetaCredito.getFechaCaducidad(),
+//            tarjetaCredito.getCvv(),
+//            tarjetaCredito.getNombreCompleto(),
+//            CuentaMapper.getInstance().fromCuentaToCuentaJpaEntity(tarjetaCredito.getCuenta())
+//        );
+//    }
 
     public TarjetaCredito fromTarjetaCreditoJpaEntityToTarjetaCredito(TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity) {
         if (tarjetaCreditoJpaEntity == null) {
@@ -55,12 +56,12 @@ public class TarjetaCreditoMapper {
             .toList();
     }
 
-    public List<TarjetaCreditoJpaEntity> fromTarjetasToTarjetasJpaEntity(List<TarjetaCredito> tarjetas) {
-        if (tarjetas == null) {
-            return null;
-        }
-        return tarjetas.stream()
-            .map(this::fromTarjetaCreditoToTarjetaCreditoJpaEntity)
-            .toList();
-    }
+//    public List<TarjetaCreditoJpaEntity> fromTarjetasToTarjetasJpaEntity(List<TarjetaCredito> tarjetas) {
+//        if (tarjetas == null) {
+//            return null;
+//        }
+//        return tarjetas.stream()
+//            .map(this::fromTarjetaCreditoToTarjetaCreditoJpaEntity)
+//            .toList();
+//    }
 }
