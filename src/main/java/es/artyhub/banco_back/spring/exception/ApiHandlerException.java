@@ -19,12 +19,16 @@ public class ApiHandlerException {
     public ErrorMessage handleResourceNotFoundException(ResourceNotFoundException ex) {
         return new ErrorMessage(ex);
     }
+
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({ValidationException.class,IllegalArgumentException.class, BusinessException.class})
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ErrorMessage handleValidationException(ResourceNotFoundException ex) {
+    public ErrorMessage handleValidationException(Exception ex) {
         return new ErrorMessage(ex);
     }
+
+
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({Exception.class,RuntimeException.class})
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)

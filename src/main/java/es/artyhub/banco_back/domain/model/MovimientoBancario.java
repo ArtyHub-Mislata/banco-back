@@ -30,6 +30,16 @@ public class MovimientoBancario {
         this.cuenta = cuenta;
     }
 
+    public MovimientoBancario(Long id, TipoMovimiento tipoMovimiento, OrigenMovimiento origenMovimiento, Date fecha, BigDecimal importe, String concepto, Cuenta cuenta) {
+        this.id = id;
+        this.tipoMovimiento = tipoMovimiento;
+        this.origenMovimiento = origenMovimiento;
+        this.fecha = fecha;
+        this.importe = importe;
+        this.concepto = concepto;
+        this.cuenta = cuenta;
+    }
+
     public Long getId() {
         return id;
     }

@@ -5,12 +5,13 @@ import es.artyhub.banco_back.domain.exception.ValidationException;
 import es.artyhub.banco_back.domain.model.Cliente;
 import es.artyhub.banco_back.domain.model.Cuenta;
 import es.artyhub.banco_back.domain.service.AutorizacionService;
+import es.artyhub.banco_back.domain.service.CuentaService;
 
 public class AutorizacionServiceImpl implements AutorizacionService {
 
-    private final CuentaServiceImpl cuentaService;
+    private final CuentaService cuentaService;
 
-    public AutorizacionServiceImpl(CuentaServiceImpl cuentaService) {
+    public AutorizacionServiceImpl(CuentaService cuentaService) {
         this.cuentaService = cuentaService;
     }
     

@@ -1,17 +1,12 @@
 package es.artyhub.banco_back.spring;
 
+import es.artyhub.banco_back.domain.model.MovimientoBancario;
 import es.artyhub.banco_back.domain.repository.ClienteRepository;
 import es.artyhub.banco_back.domain.repository.CuentaRepository;
 import es.artyhub.banco_back.domain.repository.MovimientoBancarioRepository;
 import es.artyhub.banco_back.domain.repository.TarjetaCreditoRepository;
-import es.artyhub.banco_back.domain.service.ClienteService;
-import es.artyhub.banco_back.domain.service.CuentaService;
-import es.artyhub.banco_back.domain.service.MovimientoBancarioService;
-import es.artyhub.banco_back.domain.service.TarjetaCreditoService;
-import es.artyhub.banco_back.domain.service.impl.ClienteServiceImpl;
-import es.artyhub.banco_back.domain.service.impl.CuentaServiceImpl;
-import es.artyhub.banco_back.domain.service.impl.MovimientoBancarioServiceImpl;
-import es.artyhub.banco_back.domain.service.impl.TarjetaCreditoServiceImpl;
+import es.artyhub.banco_back.domain.service.*;
+import es.artyhub.banco_back.domain.service.impl.*;
 import es.artyhub.banco_back.persistence.dao.jpa.ClienteJpaDao;
 import es.artyhub.banco_back.persistence.dao.jpa.CuentaJpaDao;
 import es.artyhub.banco_back.persistence.dao.jpa.MovimientoBancarioJpaDao;
@@ -81,6 +76,17 @@ public class SpringConfig {
     @Bean
     public MovimientoBancarioService movimientoBancarioService(MovimientoBancarioRepository movimientoBancarioRepository){
         return new MovimientoBancarioServiceImpl(movimientoBancarioRepository);
+    }
+    //BEANS DE AUTHORITATION
+    @Bean
+    public AutorizacionService autorizacionService(CuentaService cuentaService){
+        return new AutorizacionServiceImpl(cuentaService);
+    }
+    //BEANS DE PAGO_TARJETA
+    @Bean
+    public PagoTarjetaService pagoTarjetaService(AutorizacionService autorizacionService, CuentaService cuentaService,
+                                                 TarjetaCreditoService tarjetaCreditoService, MovimientoBancarioService movimientoBancarioService){
+        return new PagoTarjetaServiceImpl(autorizacionService, cuentaService, movimientoBancarioService, tarjetaCreditoService);
     }
 
 

@@ -18,6 +18,9 @@ public class TarjetaCreditoJpaEntity implements Serializable{
     private String cvv;
     @Column(name = "nombre_completo")
     private String nombreCompleto;
+    @ManyToOne
+    @JoinColumn(name = "cuenta_id") // opcional pero recomendado
+    private CuentaJpaEntity cuenta;
 
     public TarjetaCreditoJpaEntity() {
     }
@@ -70,5 +73,13 @@ public class TarjetaCreditoJpaEntity implements Serializable{
 
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
+    }
+
+    public CuentaJpaEntity getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(CuentaJpaEntity cuenta) {
+        this.cuenta = cuenta;
     }
 }

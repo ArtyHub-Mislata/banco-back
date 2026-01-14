@@ -14,8 +14,9 @@ public class CuentaJpaEntity implements Serializable{
     private Long id;
     private BigDecimal saldo;
     private String iban;
+    
     @ManyToOne
-    @JoinColumn(name = "cliente_id")
+    @JoinColumn(name = "client_id")
     private ClienteJpaEntity cliente;
     @OneToMany(mappedBy = "cuenta")
     private List<TarjetaCreditoJpaEntity> tarjetas;

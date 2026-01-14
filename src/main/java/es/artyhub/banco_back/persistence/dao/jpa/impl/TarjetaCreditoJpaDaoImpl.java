@@ -27,12 +27,13 @@ public class TarjetaCreditoJpaDaoImpl implements TarjetaCreditoJpaDao {
 
     @Override
     public TarjetaCreditoJpaEntity findByNumeroTarjeta(String numero) {
-        String sql = "SELECT tarjeta FROM TarjetaCreditoJpaEntity tarjeta WHERE tarjeta.numero = :numero";
+        String sql = "SELECT tarjeta FROM TarjetaCreditoJpaEntity tarjeta WHERE tarjeta.numeroTarjeta = :numero";
 
         TypedQuery<TarjetaCreditoJpaEntity> tarjetaCreditoJpaEntityTypedQuery = entityManager
                 .createQuery(sql, TarjetaCreditoJpaEntity.class)
                 .setParameter("numero", numero);
-        return tarjetaCreditoJpaEntityTypedQuery.getSingleResult();
+        TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity = tarjetaCreditoJpaEntityTypedQuery.getSingleResult();
+        return tarjetaCreditoJpaEntity;
     }
 
     @Override
