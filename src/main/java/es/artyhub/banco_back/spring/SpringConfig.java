@@ -89,6 +89,8 @@ public class SpringConfig {
         return new PagoTarjetaServiceImpl(autorizacionService, cuentaService, movimientoBancarioService, tarjetaCreditoService);
     }
 
+    // este proyecto es una mierda, deberia de ser borrado de este mundo y jamas mencionado otra vez.
+
 
 
 
