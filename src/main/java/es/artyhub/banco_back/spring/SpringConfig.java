@@ -1,24 +1,13 @@
 package es.artyhub.banco_back.spring;
 
+import es.artyhub.banco_back.domain.model.Cliente;
 import es.artyhub.banco_back.domain.model.MovimientoBancario;
-import es.artyhub.banco_back.domain.repository.ClienteRepository;
-import es.artyhub.banco_back.domain.repository.CuentaRepository;
-import es.artyhub.banco_back.domain.repository.MovimientoBancarioRepository;
-import es.artyhub.banco_back.domain.repository.TarjetaCreditoRepository;
+import es.artyhub.banco_back.domain.repository.*;
 import es.artyhub.banco_back.domain.service.*;
 import es.artyhub.banco_back.domain.service.impl.*;
-import es.artyhub.banco_back.persistence.dao.jpa.ClienteJpaDao;
-import es.artyhub.banco_back.persistence.dao.jpa.CuentaJpaDao;
-import es.artyhub.banco_back.persistence.dao.jpa.MovimientoBancarioJpaDao;
-import es.artyhub.banco_back.persistence.dao.jpa.TarjetaCreditoJpaDao;
-import es.artyhub.banco_back.persistence.dao.jpa.impl.ClienteJpaDaoImpl;
-import es.artyhub.banco_back.persistence.dao.jpa.impl.CuentaJpaDaoImpl;
-import es.artyhub.banco_back.persistence.dao.jpa.impl.MovimientoBancarioJpaDaoImpl;
-import es.artyhub.banco_back.persistence.dao.jpa.impl.TarjetaCreditoJpaDaoImpl;
-import es.artyhub.banco_back.persistence.repository.impl.ClienteRepositoryImpl;
-import es.artyhub.banco_back.persistence.repository.impl.CuentaRepositoryImpl;
-import es.artyhub.banco_back.persistence.repository.impl.MovimientoBancarioRepositoryImpl;
-import es.artyhub.banco_back.persistence.repository.impl.TarjetaCreditoRepositoryImpl;
+import es.artyhub.banco_back.persistence.dao.jpa.*;
+import es.artyhub.banco_back.persistence.dao.jpa.impl.*;
+import es.artyhub.banco_back.persistence.repository.impl.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -89,19 +78,18 @@ public class SpringConfig {
         return new PagoTarjetaServiceImpl(autorizacionService, cuentaService, movimientoBancarioService, tarjetaCreditoService);
     }
 
-    // este proyecto es una mierda, deberia de ser borrado de este mundo y jamas mencionado otra vez.
-
-
-
-
-
-
-
-
-
-
-
-
+    @Bean
+    public AuthService authService(SesionRepository sesionRepository, ClienteRepository clienteRepository){
+        return new AuthServiceImpl(sesionRepository, clienteRepository);
+    }
+    @Bean
+    public SesionRepository sesionRepository(SesionJpaDao sesionJpaDao){
+        return new SesionRepositoryImpl(sesionJpaDao);
+    }
+    @Bean
+    public SesionJpaDao sesionJpaDao(){
+        return new SesionJpaDaoImpl();
+    }
 
 
 }

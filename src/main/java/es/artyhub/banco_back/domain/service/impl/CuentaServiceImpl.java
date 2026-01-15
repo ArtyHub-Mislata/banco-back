@@ -10,6 +10,7 @@ import es.artyhub.banco_back.domain.exception.ValidationException;
 import es.artyhub.banco_back.domain.model.Cuenta;
 import es.artyhub.banco_back.domain.repository.CuentaRepository;
 import es.artyhub.banco_back.domain.service.CuentaService;
+import jakarta.transaction.Transactional;
 
 public class CuentaServiceImpl implements CuentaService {
 
@@ -77,6 +78,11 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
+    public List<Cuenta> findByToken(String token) {
+        return cuentaRepository.findByToken(token);
+    }
+
+    @Override
     public Boolean saldoIsEnough(BigDecimal importe, String iban) {
 
         if(importe == null) {
@@ -102,7 +108,7 @@ public class CuentaServiceImpl implements CuentaService {
         }
         return true;
     }
-
+    @Transactional
     @Override
     public Cuenta save(Cuenta cuenta) {
         if (cuenta == null) {
@@ -110,7 +116,7 @@ public class CuentaServiceImpl implements CuentaService {
         }
         return cuentaRepository.save(cuenta);
     }
-
+    @Transactional
     @Override
     public void updateSaldo(Cuenta cuenta, BigDecimal importe, TipoMovimiento tipoMovimiento) {
         BigDecimal saldo = cuenta.getSaldo();

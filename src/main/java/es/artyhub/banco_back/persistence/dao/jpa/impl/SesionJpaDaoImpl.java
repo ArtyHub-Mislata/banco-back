@@ -23,6 +23,7 @@ public class SesionJpaDaoImpl implements SesionJpaDao {
         SesionJpaEntity sesionJpaEntity = new SesionJpaEntity();
         sesionJpaEntity.setDateCreate(new Date());
         sesionJpaEntity.setToken(uuid);
+        sesionJpaEntity.setUserId(userId);
 
 
 

@@ -1,30 +1,31 @@
--- V2__insert_datos_iniciales.sql
+-- V2__sample_data.sql
 
--- =========================
--- CLIENTES
--- =========================
-INSERT INTO clientes (login, password, name, last_name1, last_name2, dni, api_token)
-VALUES
-('jlopez', '$2a$10$hashpassword1', 'Juan', 'López', 'Martínez', '12345678A', 'token_jlopez_123'),
-('mgarcia', '$2a$10$hashpassword2', 'María', 'García', 'Sánchez', '87654321B', 'token_mgarcia_456'),
-('cfernandez', '$2a$10$hashpassword3', 'Carlos', 'Fernández', NULL, '11223344C', 'token_cfernandez_789');
+-- Insertar clientes de ejemplo
+INSERT INTO clientes (login, password, name, last_name1, last_name2, dni, api_token) VALUES
+('juan.perez', 'password123', 'Juan', 'Pérez', 'García', '12345678A', 'token_juan_123'),
+('maria.lopez', 'securepass456', 'María', 'López', 'Fernández', '87654321B', 'token_maria_456'),
+('carlos.rodriguez', 'carlospass789', 'Carlos', 'Rodríguez', 'Martínez', '11223344C', 'token_carlos_789'),
+('ana.gomez', 'anapass101', 'Ana', 'Gómez', 'Sánchez', '55667788D', 'token_ana_101'),
+('luis.fernandez', 'luispass202', 'Luis', 'Fernández', 'Díaz', '99887766E', 'token_luis_202');
 
--- =========================
--- CUENTAS
--- =========================
-INSERT INTO cuentas (saldo, iban, client_id)
-VALUES
-(1500.75, 'ES9121000418450200051332', 1),
-(3200.00, 'ES7921000813610123456789', 2),
-(500.50,  'ES6621000418401234567891', 3);
+-- Insertar cuentas bancarias de ejemplo
+INSERT INTO cuentas (saldo, iban, client_id) VALUES
+(2500.50, 'ES9121000418450200051332', 1),
+(15000.75, 'ES2100812345678901234567', 1),
+(500.00, 'ES7620770024003102575766', 2),
+(3200.25, 'ES1000492352082414205416', 2),
+(7500.00, 'ES7100302053091234567890', 3),
+(12500.40, 'ES9000246912501234567891', 4),
+(300.75, 'ES8521006742081234567892', 5);
 
--- =========================
--- TARJETAS DE CRÉDITO
--- =========================
-INSERT INTO tarjetas_credito (numero_tarjeta, fecha_caducidad, cvv, nombre_completo, cuenta_id)
-VALUES
-(4539123412341234, '2027-06-30', '123', 'Juan López Martínez', 1),
-(4716123412345678, '2026-11-30', '456', 'María García Sánchez', 2),
-(4556123498765432, '2028-03-31', '789', 'Carlos Fernández', 3);
+-- Insertar tarjetas de crédito de ejemplo
+INSERT INTO tarjetas_credito (numero_tarjeta, fecha_caducidad, cvv, nombre_completo, cuenta_id) VALUES
+('4532123456789012', '2026-05-31', '123', 'JUAN PEREZ GARCIA', 1),
+('5500123456789010', '2025-12-31', '456', 'JUAN PEREZ GARCIA', 1),
+('4111111111111111', '2027-08-31', '789', 'MARIA LOPEZ FERNANDEZ', 3),
+('378282246310005', '2024-11-30', '321', 'CARLOS RODRIGUEZ MARTINEZ', 5),
+('371449635398431', '2028-02-28', '654', 'ANA GOMEZ SANCHEZ', 6),
+('30569309025904', '2025-06-30', '987', 'LUIS FERNANDEZ DIAZ', 7),
+('6011111111111117', '2026-09-30', '246', 'MARIA LOPEZ FERNANDEZ', 3),
+('3530111333300000', '2027-03-31', '135', 'ANA GOMEZ SANCHEZ', 6);
 
--- No se insertan movimientos bancarios intencionadamente

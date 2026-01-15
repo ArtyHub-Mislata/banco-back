@@ -9,6 +9,7 @@ import es.artyhub.banco_back.domain.model.MovimientoBancario;
 import es.artyhub.banco_back.domain.model.TarjetaCredito;
 import es.artyhub.banco_back.domain.service.*;
 import es.artyhub.banco_back.domain.validation.DtoValidator;
+import jakarta.transaction.Transactional;
 
 import java.util.Date;
 
@@ -26,7 +27,7 @@ public class PagoTarjetaServiceImpl implements PagoTarjetaService {
         this.movimientoBancarioService = movimientoBancarioService;
         this.tarjetaCreditoService = tarjetaCreditoService;
     }
-
+    @Transactional
     @Override
     public void save(PagoTarjetaDto pagoTarjetaDto) {
         DtoValidator.validate(pagoTarjetaDto);

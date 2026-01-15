@@ -35,6 +35,13 @@ public class CuentaRepositoryImpl implements CuentaRepository {
     }
 
     @Override
+    public List<Cuenta> findByToken(String token) {
+        return cuentaJpaDao.findByToken(token).stream().map(
+                CuentaMapper.getInstance()::fromCuentaJpaEntityToCuenta)
+                .toList();
+    }
+
+    @Override
     public Cuenta save(Cuenta cuenta) {
         return CuentaMapper.getInstance().fromCuentaJpaEntityToCuenta(cuentaJpaDao.save(CuentaMapper.getInstance().fromCuentaToCuentaJpaEntity(cuenta)));
     }

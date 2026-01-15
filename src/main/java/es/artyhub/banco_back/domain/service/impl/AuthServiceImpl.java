@@ -7,6 +7,7 @@ import es.artyhub.banco_back.domain.model.Cliente;
 import es.artyhub.banco_back.domain.repository.ClienteRepository;
 import es.artyhub.banco_back.domain.repository.SesionRepository;
 import es.artyhub.banco_back.domain.service.AuthService;
+import jakarta.transaction.Transactional;
 
 public class AuthServiceImpl implements AuthService {
     private final SesionRepository sesionRepository;
@@ -16,7 +17,7 @@ public class AuthServiceImpl implements AuthService {
         this.sesionRepository = sesionRepository;
         this.clienteRepository = clienteRepository;
     }
-
+    @Transactional
     @Override
     public String login(CredentialsDto credentialsDto) {
         Cliente cliente = clienteRepository.findByLogin(credentialsDto.username());
@@ -30,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
 
         return sesionRepository.insertSesion(cliente.getId());
     }
-
+    @Transactional
     @Override
     public void logout(String token) {
         if(token == null){

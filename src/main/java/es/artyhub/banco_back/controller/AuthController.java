@@ -1,7 +1,11 @@
 package es.artyhub.banco_back.controller;
 
 import es.artyhub.banco_back.domain.dto.CredentialsDto;
+import es.artyhub.banco_back.domain.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,10 +14,22 @@ import java.util.Map;
 
 @RestController
 public class AuthController {
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody CredentialsDto credentialsDto) {
-        System.out.println("LLEGA AL CONTROLLER");
-        String token = loginService.login(credentialsDto);
+        String token = authService.login(credentialsDto);
         return ResponseEntity.ok(Map.of("token", token));
+    }
+
+    @DeleteMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request) {
+        String token = request.getHeader("authorization").substring(7);
+        authService.logout(token);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

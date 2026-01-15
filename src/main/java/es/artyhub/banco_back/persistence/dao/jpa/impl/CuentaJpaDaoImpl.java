@@ -46,6 +46,21 @@ public class CuentaJpaDaoImpl implements CuentaJpaDao {
     }
 
     @Override
+    public List<CuentaJpaEntity> findByToken(String token) {
+        String sql = """
+        SELECT cta
+        FROM SesionJpaEntity s
+        JOIN s.cliente cli
+        JOIN cli.cuentas cta
+        WHERE s.token = :token
+        """;
+        TypedQuery<CuentaJpaEntity> cuentaJpaEntityTypedQuery = entityManager
+                .createQuery(sql, CuentaJpaEntity.class)
+                .setParameter("token", token);
+        return cuentaJpaEntityTypedQuery.getResultList();
+    }
+
+    @Override
     public CuentaJpaEntity save(CuentaJpaEntity cuentaJpaEntity) {
         return entityManager.merge(cuentaJpaEntity);
     }

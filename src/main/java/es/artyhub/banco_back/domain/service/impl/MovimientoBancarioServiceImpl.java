@@ -6,6 +6,7 @@ import es.artyhub.banco_back.domain.exception.ValidationException;
 import es.artyhub.banco_back.domain.model.MovimientoBancario;
 import es.artyhub.banco_back.domain.repository.MovimientoBancarioRepository;
 import es.artyhub.banco_back.domain.service.MovimientoBancarioService;
+import jakarta.transaction.Transactional;
 
 public class MovimientoBancarioServiceImpl implements MovimientoBancarioService {
     
@@ -80,7 +81,7 @@ public class MovimientoBancarioServiceImpl implements MovimientoBancarioService 
 
         return movimientoBancarioRepository.findAll();
     }
-
+    @Transactional
     @Override
     public MovimientoBancario saveMovimientoBancario(MovimientoBancario movimientoBancario) {
         return movimientoBancarioRepository.save(movimientoBancario);
