@@ -1,0 +1,481 @@
+package es.artyhub.banco_back.domain.service.impl;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.when;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import es.artyhub.banco_back.domain.enums.TipoMovimiento;
+import es.artyhub.banco_back.domain.exception.BusinessException;
+import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
+import es.artyhub.banco_back.domain.exception.ValidationException;
+import es.artyhub.banco_back.domain.model.Cliente;
+import es.artyhub.banco_back.domain.model.Cuenta;
+import es.artyhub.banco_back.domain.model.TarjetaCredito;
+import es.artyhub.banco_back.domain.repository.CuentaRepository;
+
+@ExtendWith(MockitoExtension.class)
+public class CuentaServiceImplTest {
+
+    @Mock
+    private CuentaRepository cuentaRepository;
+
+    @InjectMocks
+    private CuentaServiceImpl cuentaService;
+    
+    @Nested
+    @DisplayName("Find cuenta by id")
+    class FindCuentaById {
+        @Test
+        @DisplayName("While id doesn't exist should throw validation exception")
+        public void whileIdDoesntExist_ShouldThrowValidationException() {
+            Long id = null;
+            
+            assertThrows(ValidationException.class, () -> cuentaService.findById(id));
+
+            Mockito.verify(cuentaRepository, never()).findById(id);
+        }
+
+        @Test
+        @DisplayName("While cuenta doesn't exist should throw resource not found exception")
+        public void whileCuentaDoesntExist_ShouldThrowResourceNotFoundException() {
+            Long id = 1L;
+
+            when(cuentaRepository.findById(id)).thenReturn(null);
+            
+            assertThrows(ResourceNotFoundException.class, () -> cuentaService.findById(id));
+
+            Mockito.verify(cuentaRepository, never()).findById(id);
+        }
+
+        @Test
+        @DisplayName("While cuenta exists should return cuenta")
+        public void whileCuentaExists_ShouldReturnCuenta() {
+            Cuenta cuenta = new Cuenta();
+            cuenta.setId(1L);
+            cuenta.setSaldo(new BigDecimal(100.0));
+            cuenta.setIban("iban");
+            cuenta.setCliente(new Cliente());
+            cuenta.setTarjetas(null);
+            cuenta.setMovimientos(null);
+
+            when(cuentaRepository.findById(cuenta.getId())).thenReturn(cuenta);
+            
+            assertEquals(cuenta, cuentaService.findById(cuenta.getId()));
+
+            Mockito.verify(cuentaRepository).findById(cuenta.getId());
+        }
+    }
+
+    @Nested
+    @DisplayName("Find cuenta by iban")
+    class FindCuentaByIban {
+        @Test
+        @DisplayName("While iban doesn't exist should throw validation exception")
+        public void whileIbanDoesntExist_ShouldThrowValidationException() {
+            String iban = null;
+            
+            assertThrows(ValidationException.class, () -> cuentaService.findByIban(iban));
+
+            Mockito.verify(cuentaRepository, never()).findByIban(iban);
+        }
+
+        @Test
+        @DisplayName("While cuenta doesn't exist should throw resource not found exception")
+        public void whileCuentaDoesntExist_ShouldThrowResourceNotFoundException() {
+            String iban = "iban";
+
+            when(cuentaRepository.findByIban(iban)).thenReturn(null);
+            
+            assertThrows(ResourceNotFoundException.class, () -> cuentaService.findByIban(iban));
+
+            Mockito.verify(cuentaRepository, never()).findByIban(iban);
+        }
+
+        @Test
+        @DisplayName("While cuenta exists should return cuenta")
+        public void whileCuentaExists_ShouldReturnCuenta() {
+            Cuenta cuenta = new Cuenta();
+            cuenta.setId(1L);
+            cuenta.setSaldo(new BigDecimal(100.0));
+            cuenta.setIban("iban");
+            cuenta.setCliente(new Cliente());
+            cuenta.setTarjetas(null);
+            cuenta.setMovimientos(null);
+
+            when(cuentaRepository.findByIban(cuenta.getIban())).thenReturn(cuenta);
+            
+            assertEquals(cuenta, cuentaService.findByIban(cuenta.getIban()));
+
+            Mockito.verify(cuentaRepository).findByIban(cuenta.getIban());
+        }
+    }
+
+    @Nested
+    @DisplayName("Find cuenta by número tarjeta")
+    class FindCuentaByNumeroTarjeta {
+        @Test
+        @DisplayName("While número tarjeta doesn't exist should throw validation exception")
+        public void whileNumeroTarjetaDoesntExist_ShouldThrowValidationException() {
+            String numeroTarjeta = null;
+            
+            assertThrows(ValidationException.class, () -> cuentaService.findByNumeroTarjeta(numeroTarjeta));
+
+            Mockito.verify(cuentaRepository, never()).findByNumeroTarjeta(numeroTarjeta);
+        }
+
+        @Test
+        @DisplayName("While cuenta doesn't exist should throw resource not found exception")
+        public void whileCuentaDoesntExist_ShouldThrowResourceNotFoundException() {
+            String numeroTarjeta = "numeroTarjeta";
+
+            when(cuentaRepository.findByNumeroTarjeta(numeroTarjeta)).thenReturn(null);
+            
+            assertThrows(ResourceNotFoundException.class, () -> cuentaService.findByNumeroTarjeta(numeroTarjeta));
+
+            Mockito.verify(cuentaRepository, never()).findByNumeroTarjeta(numeroTarjeta);
+        }
+
+        @Test
+        @DisplayName("While cuenta exists should return cuenta")
+        public void whileCuentaExists_ShouldReturnCuenta() {
+            TarjetaCredito tarjetaCredito = new TarjetaCredito();
+            tarjetaCredito.setId(1L);
+            tarjetaCredito.setNumeroTarjeta("numeroTarjeta");
+            tarjetaCredito.setFechaCaducidad(new Date());
+            tarjetaCredito.setCvv("cvv");
+            tarjetaCredito.setCuenta(null);
+
+            List<TarjetaCredito> tarjetas = new ArrayList<>();
+            tarjetas.add(tarjetaCredito);
+
+            Cuenta cuenta = new Cuenta();
+            cuenta.setId(1L);
+            cuenta.setSaldo(new BigDecimal(100.0));
+            cuenta.setIban("iban");
+            cuenta.setCliente(new Cliente());
+            cuenta.setTarjetas(null);
+            cuenta.setMovimientos(null);
+            cuenta.setTarjetas(tarjetas);
+
+            when(cuentaRepository.findByNumeroTarjeta(cuenta.getTarjetas().get(0).getNumeroTarjeta())).thenReturn(cuenta);
+            
+            assertEquals(cuenta, cuentaService.findByNumeroTarjeta(cuenta.getTarjetas().get(0).getNumeroTarjeta()));
+
+            Mockito.verify(cuentaRepository).findByNumeroTarjeta(cuenta.getTarjetas().get(0).getNumeroTarjeta());
+        }
+    }
+
+    @Nested
+    @DisplayName("Find cuenta by cliente id")
+    class FindCuentaByClienteId {
+        @Test
+        @DisplayName("While cliente id doesn't exist should throw validation exception")
+        public void whileClienteIdDoesntExist_ShouldThrowValidationException() {
+            Long clienteId = null;
+            
+            assertThrows(ValidationException.class, () -> cuentaService.findByClienteId(clienteId));
+
+            Mockito.verify(cuentaRepository, never()).findByClienteId(clienteId);
+        }
+
+        @Test
+        @DisplayName("While cuenta doesn't exist should throw resource not found exception")
+        public void whileCuentaDoesntExist_ShouldThrowResourceNotFoundException() {
+            Long clienteId = 1L;
+
+            when(cuentaRepository.findByClienteId(clienteId)).thenReturn(null);
+            
+            assertThrows(ResourceNotFoundException.class, () -> cuentaService.findByClienteId(clienteId));
+
+            Mockito.verify(cuentaRepository, never()).findByClienteId(clienteId);
+        }
+
+        @Test
+        @DisplayName("While cuenta exists should return cuenta")
+        public void whileCuentaExists_ShouldReturnCuenta() {
+            Cuenta cuenta = new Cuenta();
+            cuenta.setId(1L);
+            cuenta.setSaldo(new BigDecimal(100.0));
+            cuenta.setIban("iban");
+            cuenta.setCliente(new Cliente());
+            cuenta.setTarjetas(null);
+            cuenta.setMovimientos(null);
+
+            List<Cuenta> cuentas = new ArrayList<>();
+            cuentas.add(cuenta);
+
+            when(cuentaRepository.findByClienteId(cuenta.getCliente().getId())).thenReturn(cuentas);
+            
+            assertEquals(cuentas, cuentaService.findByClienteId(cuenta.getCliente().getId()));
+
+            Mockito.verify(cuentaRepository).findByClienteId(cuenta.getCliente().getId());
+        }
+    }
+
+    @Nested
+    @DisplayName("Find all cuentas")
+    class FindAllCuentas {
+        @Test
+        @DisplayName("While cuentas doesn't exist should throw resource not found exception")
+        public void whileCuentasDoesntExist_ShouldThrowResourceNotFoundException() {
+            when(cuentaRepository.findAll()).thenReturn(null);
+            
+            assertThrows(ResourceNotFoundException.class, () -> cuentaService.findAll());
+
+            Mockito.verify(cuentaRepository, never()).findAll();
+        }
+
+        @Test
+        @DisplayName("While cuentas exists should return cuentas")
+        public void whileCuentasExists_ShouldReturnCuentas() {
+            Cuenta cuenta = new Cuenta();
+            cuenta.setId(1L);
+            cuenta.setSaldo(new BigDecimal(100.0));
+            cuenta.setIban("iban");
+            cuenta.setCliente(new Cliente());
+            cuenta.setTarjetas(null);
+            cuenta.setMovimientos(null);
+
+            List<Cuenta> cuentas = new ArrayList<>();
+            cuentas.add(cuenta);
+
+            when(cuentaRepository.findAll()).thenReturn(cuentas);
+            
+            assertEquals(cuentas, cuentaService.findAll());
+
+            Mockito.verify(cuentaRepository).findAll();
+        }
+    }
+
+    @Nested
+    @DisplayName("SaldoIsEnough")
+    class SaldoIsEnough {
+        @Test
+        @DisplayName("While importe is null should throw validation exception")
+        public void whileImporteIsNull_ShouldThrowValidationException() {
+            BigDecimal importe = null;
+            
+            assertThrows(ValidationException.class, () -> cuentaService.saldoIsEnough(importe, "iban"));
+
+            Mockito.verify(cuentaService, never()).saldoIsEnough(importe, "iban");
+        }
+
+        @Test
+        @DisplayName("While iban is null should throw validation exception")
+        public void whileIbanIsNull_ShouldThrowValidationException() {
+            String iban = null;
+            
+            assertThrows(ValidationException.class, () -> cuentaService.saldoIsEnough(new BigDecimal(100.0), iban));
+
+            Mockito.verify(cuentaService, never()).saldoIsEnough(new BigDecimal(100.0), iban);
+        }
+
+        @Test
+        @DisplayName("While cuenta doesn't exist should throw resource not found exception")
+        public void whileCuentaDoesntExist_ShouldThrowResourceNotFoundException() {
+            String iban = "iban";
+
+            when(cuentaRepository.findByIban(iban)).thenReturn(null);
+            
+            assertThrows(ResourceNotFoundException.class, () -> cuentaService.findByIban(iban));
+
+            Mockito.verify(cuentaRepository, never()).findByIban(iban);
+        }
+
+        @Test
+        @DisplayName("While saldo cuenta is null should throw resource not found exception")
+        public void whileSaldoCuentaIsNull_ShouldThrowResourceNotFoundException() {
+            BigDecimal saldo = null;
+            String iban = "iban";
+
+            Cuenta cuenta = cuentaRepository.findByIban(iban);
+            cuenta.setSaldo(saldo);
+
+            when(cuenta.getSaldo()).thenReturn(null);
+            
+            assertThrows(ResourceNotFoundException.class, () -> cuenta.getSaldo());
+
+            Mockito.verify(cuenta, never()).getSaldo();
+        }
+
+        @Test
+        @DisplayName("While saldo cuenta is 0 should throw resource not found exception")
+        public void whileSaldoCuentaIsZero_ShouldThrowResourceNotFoundException() {
+            BigDecimal saldo = new BigDecimal(0.0);
+            String iban = "iban";
+
+            Cuenta cuenta = cuentaRepository.findByIban(iban);
+            cuenta.setSaldo(saldo);
+
+            when(cuenta.getSaldo()).thenReturn(saldo);
+            
+            assertThrows(ResourceNotFoundException.class, () -> cuenta.getSaldo());
+
+            Mockito.verify(cuenta, never()).getSaldo();
+        }
+
+        @Test
+        @DisplayName("While saldo cuenta isn't enough should throw business exception")
+        public void whileSaldoCuentaIsntEnough_ShouldThrowBusinessException() {
+            BigDecimal saldo = new BigDecimal(100.0);
+            BigDecimal importe = new BigDecimal(200.0);
+            String iban = "iban";
+
+            Cuenta cuenta = cuentaRepository.findByIban(iban);
+            cuenta.setSaldo(saldo);
+
+            when(cuenta.getSaldo().compareTo(importe)).thenReturn(-1);
+            
+            assertThrows(BusinessException.class, () -> cuentaService.saldoIsEnough(importe, iban));
+
+            Mockito.verify(cuentaService, never()).saldoIsEnough(importe, iban);
+        }
+
+        @Test
+        @DisplayName("While saldo cuenta is enough should return true")
+        public void whileSaldoCuentaIsEnough_ShouldReturnTrue() {
+            BigDecimal saldo = new BigDecimal(300.0);
+            BigDecimal importe = new BigDecimal(200.0);
+            String iban = "iban";
+
+            Cuenta cuenta = cuentaRepository.findByIban(iban);
+            cuenta.setSaldo(saldo);
+
+            when(cuenta.getSaldo().compareTo(importe)).thenReturn(1);
+            
+            assertTrue(cuentaService.saldoIsEnough(importe, iban));
+
+            Mockito.verify(cuentaService).saldoIsEnough(importe, iban);
+        }
+    }
+
+    @Nested
+    @DisplayName("Save cuenta")
+    class SaveCuenta {
+        @Test
+        @DisplayName("While cuenta is null should throw validation exception")
+        public void whileCuentaIsNull_ShouldThrowValidationException() {
+            Cuenta cuenta = null;
+            
+            assertThrows(ValidationException.class, () -> cuentaService.save(cuenta));
+
+            Mockito.verify(cuentaRepository, never()).save(cuenta);
+        }
+
+        @Test
+        @DisplayName("While cuenta is valid should return cuenta")
+        public void whileCuentaIsValid_ShouldReturnCuenta() {
+            Cuenta cuenta = new Cuenta();
+            cuenta.setId(1L);
+            cuenta.setSaldo(new BigDecimal(100.0));
+            cuenta.setIban("iban");
+            cuenta.setCliente(new Cliente());
+            cuenta.setTarjetas(null);
+            cuenta.setMovimientos(null);
+
+            when(cuentaRepository.save(cuenta)).thenReturn(cuenta);
+            
+            assertEquals(cuenta, cuentaService.save(cuenta));
+
+            Mockito.verify(cuentaRepository).save(cuenta);
+        }
+    }
+
+    @Nested
+    @DisplayName("Update saldo cuenta")
+    class UpdateSaldoCuenta {
+        @Test
+        @DisplayName("While cuenta is null should throw validation exception")
+        public void whileCuentaIsNull_ShouldThrowValidationException() {
+            Cuenta cuenta = null;
+            
+            assertThrows(ValidationException.class, () -> cuentaService.updateSaldo(cuenta, new BigDecimal(100.0), TipoMovimiento.DEBE));
+
+            Mockito.verify(cuentaService, never()).updateSaldo(cuenta, new BigDecimal(100.0), TipoMovimiento.DEBE);
+        }
+
+        @Test
+        @DisplayName("While importe is null should throw validation exception")
+        public void whileImporteIsNull_ShouldThrowValidationException() {
+            BigDecimal importe = null;
+            
+            assertThrows(ValidationException.class, () -> cuentaService.updateSaldo(new Cuenta(), importe, TipoMovimiento.DEBE));
+
+            Mockito.verify(cuentaService, never()).updateSaldo(new Cuenta(), importe, TipoMovimiento.DEBE);
+        }
+
+        @Test
+        @DisplayName("While tipo movimiento is null should throw validation exception")
+        public void whileTipoMovimientoIsNull_ShouldThrowValidationException() {
+            TipoMovimiento tipoMovimiento = null;
+            
+            assertThrows(ValidationException.class, () -> cuentaService.updateSaldo(new Cuenta(), new BigDecimal(100.0), tipoMovimiento));
+
+            Mockito.verify(cuentaService, never()).updateSaldo(new Cuenta(), new BigDecimal(100.0), tipoMovimiento);
+        }
+
+        @Test
+        @DisplayName("While saldo cuenta is null should throw resource not found exception")
+        public void whileSaldoCuentaIsNull_ShouldThrowResourceNotFoundException() {
+            Cuenta cuenta = new Cuenta();
+            cuenta.setSaldo(null);
+            
+            assertThrows(ResourceNotFoundException.class, () -> cuentaService.updateSaldo(cuenta, new BigDecimal(100.0), TipoMovimiento.DEBE));
+
+            Mockito.verify(cuentaService, never()).updateSaldo(cuenta, new BigDecimal(100.0), TipoMovimiento.DEBE);
+        }
+
+        @Test
+        @DisplayName("While saldo cuenta is zero should throw resource not found exception")
+        public void whileSaldoCuentaIsZero_ShouldThrowResourceNotFoundException() {
+            Cuenta cuenta = new Cuenta();
+            cuenta.setSaldo(new BigDecimal(0.0));
+            
+            assertThrows(ResourceNotFoundException.class, () -> cuentaService.updateSaldo(cuenta, new BigDecimal(100.0), TipoMovimiento.DEBE));
+
+            Mockito.verify(cuentaService, never()).updateSaldo(cuenta, new BigDecimal(100.0), TipoMovimiento.DEBE);
+        }
+
+        @Test
+        @DisplayName("While tipo movimiento equals DEBE and saldo cuenta is enough should substract")
+        public void whileTipoMovimientoEqualsDebeAndSaldoCuentaIsEnough_ShouldSubstract() {
+            Cuenta cuenta = new Cuenta();
+            cuenta.setSaldo(new BigDecimal(100.0));
+
+            cuentaService.updateSaldo(cuenta, new BigDecimal(30.0), TipoMovimiento.DEBE);
+
+            assertEquals(new BigDecimal("70"), cuenta.getSaldo());
+
+            Mockito.verify(cuentaService).updateSaldo(cuenta, new BigDecimal(30.0), TipoMovimiento.DEBE);
+        }
+
+        @Test
+        @DisplayName("While tipo movimiento equals HABE and saldo cuenta is enough should add")
+        public void whileTipoMovimientoEqualsHabeAndSaldoCuentaIsEnough_ShouldAdd() {
+            Cuenta cuenta = new Cuenta();
+            cuenta.setSaldo(new BigDecimal(100.0));
+
+            cuentaService.updateSaldo(cuenta, new BigDecimal(30.0), TipoMovimiento.HABER);
+
+            assertEquals(new BigDecimal("130"), cuenta.getSaldo());
+
+            Mockito.verify(cuentaService).updateSaldo(cuenta, new BigDecimal(30.0), TipoMovimiento.HABER);
+        }
+    }
+}

@@ -9,8 +9,10 @@ import jakarta.persistence.TypedQuery;
 import java.util.List;
 
 public class CuentaJpaDaoImpl implements CuentaJpaDao {
+
     @PersistenceContext
     private EntityManager entityManager;
+    
     @Override
     public CuentaJpaEntity findById(Long id) {
         return entityManager.find(CuentaJpaEntity.class, id);
@@ -48,5 +50,15 @@ public class CuentaJpaDaoImpl implements CuentaJpaDao {
     @Override
     public CuentaJpaEntity save(CuentaJpaEntity cuentaJpaEntity) {
         return entityManager.merge(cuentaJpaEntity);
+    }
+
+    @Override
+    public CuentaJpaEntity findByNumeroTarjeta(String numeroTarjeta) {
+        String sql = "SELECT t.cuenta FROM TarjetaCreditoJpaEntity t WHERE t.numeroTarjeta = :numeroTarjeta";
+
+        TypedQuery<CuentaJpaEntity> cuentaJpaEntityTypedQuery = entityManager
+                .createQuery(sql, CuentaJpaEntity.class)
+                .setParameter("numeroTarjeta", numeroTarjeta);
+        return cuentaJpaEntityTypedQuery.getSingleResult();
     }
 }

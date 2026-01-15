@@ -4,6 +4,7 @@ import es.artyhub.banco_back.domain.dto.PagoTarjetaDto;
 import es.artyhub.banco_back.domain.enums.OrigenMovimiento;
 import es.artyhub.banco_back.domain.enums.TipoMovimiento;
 import es.artyhub.banco_back.domain.exception.BusinessException;
+import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
 import es.artyhub.banco_back.domain.model.Cuenta;
 import es.artyhub.banco_back.domain.model.MovimientoBancario;
 import es.artyhub.banco_back.domain.model.TarjetaCredito;
@@ -32,12 +33,26 @@ public class PagoTarjetaServiceImpl implements PagoTarjetaService {
         DtoValidator.validate(pagoTarjetaDto);
 
         TarjetaCredito tarjetaCredito = tarjetaCreditoService.findByNumeroTarjeta(pagoTarjetaDto.origen().numeroTarjeta());
+
+        if (tarjetaCredito == null) {
+            throw new ResourceNotFoundException("La tarjeta de origen no existe");
+        }
+
         if (!tarjetaCreditoService.tarjetaIsValid(pagoTarjetaDto.origen().numeroTarjeta())) {
             throw new BusinessException("La tarjeta de origen no es valida");
         }
 
         Cuenta cuentaOrigen = cuentaService.findByNumeroTarjeta(tarjetaCredito.getNumeroTarjeta());
+
+        if (cuentaOrigen == null) {
+            throw new ResourceNotFoundException("La cuenta de origen no existe");
+        }
+
         Cuenta cuentaDestino = cuentaService.findByIban(pagoTarjetaDto.destino().numeroCuenta());
+
+        if (cuentaDestino == null) {
+            throw new ResourceNotFoundException("La cuenta de destino no existe");
+        }
 
         if (!cuentaService.saldoIsEnough(pagoTarjetaDto.pago().importe(), cuentaOrigen.getIban())) {
             throw new BusinessException("El saldo de la cuenta no es suficiente");

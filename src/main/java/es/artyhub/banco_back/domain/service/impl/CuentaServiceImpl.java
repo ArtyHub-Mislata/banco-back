@@ -49,7 +49,16 @@ public class CuentaServiceImpl implements CuentaService {
 
     @Override
     public Cuenta findByNumeroTarjeta(String numeroTarjeta) {
-        return null;
+
+        if(numeroTarjeta == null) {
+            throw new ValidationException("Numero de tarjeta no valido");
+        }
+
+        if(cuentaRepository.findByNumeroTarjeta(numeroTarjeta) == null) {
+            throw new ResourceNotFoundException("Cuenta no encontrada");
+        }
+
+        return cuentaRepository.findByNumeroTarjeta(numeroTarjeta);
     }
 
     @Override
@@ -105,6 +114,7 @@ public class CuentaServiceImpl implements CuentaService {
 
     @Override
     public Cuenta save(Cuenta cuenta) {
+
         if (cuenta == null) {
             throw new ValidationException("La cuenta no puede ser nula");
         }
@@ -113,13 +123,31 @@ public class CuentaServiceImpl implements CuentaService {
 
     @Override
     public void updateSaldo(Cuenta cuenta, BigDecimal importe, TipoMovimiento tipoMovimiento) {
+
+        if (cuenta == null) {
+            throw new ValidationException("La cuenta no puede ser nula");
+        }
+        if (importe == null) {
+            throw new ValidationException("El importe no puede ser nulo");
+        }
+        if (tipoMovimiento == null) {
+            throw new ValidationException("El tipo de movimiento no puede ser nulo");
+        }
+
         BigDecimal saldo = cuenta.getSaldo();
+        
+        if (saldo == null || saldo.equals(BigDecimal.ZERO)) {
+            throw new ResourceNotFoundException("Saldo nulo o cero");
+        }
+
         BigDecimal saldoFinal;
-        if(tipoMovimiento.equals(TipoMovimiento.DEBE)){
+
+        if (tipoMovimiento.equals(TipoMovimiento.DEBE)){
             saldoFinal = saldo.subtract(importe);
         } else {
             saldoFinal = saldo.add(importe);
         }
+        
         cuenta.setSaldo(saldoFinal);
         cuentaRepository.save(cuenta);
     }

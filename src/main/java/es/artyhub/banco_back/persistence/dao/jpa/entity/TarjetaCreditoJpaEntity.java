@@ -19,19 +19,20 @@ public class TarjetaCreditoJpaEntity implements Serializable{
     @Column(name = "nombre_completo")
     private String nombreCompleto;
     @ManyToOne
-    @JoinColumn(name = "cuenta_id") // opcional pero recomendado
+    @JoinColumn(name = "cuenta_id")
     private CuentaJpaEntity cuenta;
 
     public TarjetaCreditoJpaEntity() {
     }
 
     public TarjetaCreditoJpaEntity(Long id, String numeroTarjeta, Date fechaCaducidad, String cvv,
-            String nombreCompleto) {
+            String nombreCompleto, CuentaJpaEntity cuenta) {
         this.id = id;
         this.numeroTarjeta = numeroTarjeta;
         this.fechaCaducidad = fechaCaducidad;
         this.cvv = cvv;
         this.nombreCompleto = nombreCompleto;
+        this.cuenta = cuenta;
     }
 
 

@@ -38,4 +38,9 @@ public class CuentaRepositoryImpl implements CuentaRepository {
     public Cuenta save(Cuenta cuenta) {
         return CuentaMapper.getInstance().fromCuentaJpaEntityToCuenta(cuentaJpaDao.save(CuentaMapper.getInstance().fromCuentaToCuentaJpaEntity(cuenta)));
     }
+
+    @Override
+    public Cuenta findByNumeroTarjeta(String numeroTarjeta) {
+        return CuentaMapper.getInstance().fromCuentaJpaEntityToCuenta(cuentaJpaDao.findByNumeroTarjeta(numeroTarjeta));
+    }
 }

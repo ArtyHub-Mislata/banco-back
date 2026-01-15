@@ -8,17 +8,19 @@ public class TarjetaCredito {
     private Date fechaCaducidad;
     private String cvv;
     private String nombreCompleto;
+    private Cuenta cuenta;
 
 
     public TarjetaCredito() {
     }
 
-    public TarjetaCredito(Long id, String numeroTarjeta, Date fechaCaducidad, String cvv, String nombreCompleto) {
+    public TarjetaCredito(Long id, String numeroTarjeta, Date fechaCaducidad, String cvv, String nombreCompleto, Cuenta cuenta) {
         this.id = id;
         this.numeroTarjeta = numeroTarjeta;
         this.fechaCaducidad = fechaCaducidad;
         this.cvv = cvv;
         this.nombreCompleto = nombreCompleto;
+        this.cuenta = cuenta;
     }
 
     public Long getId() {
@@ -59,5 +61,13 @@ public class TarjetaCredito {
 
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
+    }
+
+    public Cuenta getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(Cuenta cuenta) {
+        this.cuenta = cuenta;
     }
 }

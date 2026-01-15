@@ -28,7 +28,8 @@ public class TarjetaCreditoMapper {
             tarjetaCredito.getNumeroTarjeta(),
             tarjetaCredito.getFechaCaducidad(),
             tarjetaCredito.getCvv(),
-            tarjetaCredito.getNombreCompleto()
+            tarjetaCredito.getNombreCompleto(),
+            CuentaMapper.getInstance().fromCuentaToCuentaJpaEntity(tarjetaCredito.getCuenta())
         );
     }
 
@@ -41,7 +42,8 @@ public class TarjetaCreditoMapper {
             tarjetaCreditoJpaEntity.getNumeroTarjeta(),
             tarjetaCreditoJpaEntity.getFechaCaducidad(),
             tarjetaCreditoJpaEntity.getCvv(),
-            tarjetaCreditoJpaEntity.getNombreCompleto()
+            tarjetaCreditoJpaEntity.getNombreCompleto(),
+            CuentaMapper.getInstance().fromCuentaJpaEntityToCuenta(tarjetaCreditoJpaEntity.getCuenta())
         );
     }
 

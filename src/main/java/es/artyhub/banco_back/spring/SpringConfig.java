@@ -1,6 +1,5 @@
 package es.artyhub.banco_back.spring;
 
-import es.artyhub.banco_back.domain.model.MovimientoBancario;
 import es.artyhub.banco_back.domain.repository.ClienteRepository;
 import es.artyhub.banco_back.domain.repository.CuentaRepository;
 import es.artyhub.banco_back.domain.repository.MovimientoBancarioRepository;
@@ -24,6 +23,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SpringConfig {
+
     //BEANS DE CLIENTE
     @Bean
     public ClienteJpaDao clienteJpaDao(){
@@ -51,6 +51,7 @@ public class SpringConfig {
     public CuentaService cuentaService(CuentaRepository cuentaRepository){
         return new CuentaServiceImpl(cuentaRepository);
     }
+
     //BEANS DE TARJETA
     @Bean
     public TarjetaCreditoJpaDao tarjetaCreditoJpaDao(){
@@ -64,6 +65,7 @@ public class SpringConfig {
     public TarjetaCreditoService tarjetaCreditoService(TarjetaCreditoRepository tarjetaCreditoRepository){
         return new TarjetaCreditoServiceImpl(tarjetaCreditoRepository);
     }
+
     //BEANS DE MOVIMIENTO BANCARIO
     @Bean
     public MovimientoBancarioJpaDao movimientoBancarioJpaDao(){
@@ -77,29 +79,17 @@ public class SpringConfig {
     public MovimientoBancarioService movimientoBancarioService(MovimientoBancarioRepository movimientoBancarioRepository){
         return new MovimientoBancarioServiceImpl(movimientoBancarioRepository);
     }
+
     //BEANS DE AUTHORITATION
     @Bean
     public AutorizacionService autorizacionService(CuentaService cuentaService){
         return new AutorizacionServiceImpl(cuentaService);
     }
+
     //BEANS DE PAGO_TARJETA
     @Bean
     public PagoTarjetaService pagoTarjetaService(AutorizacionService autorizacionService, CuentaService cuentaService,
                                                  TarjetaCreditoService tarjetaCreditoService, MovimientoBancarioService movimientoBancarioService){
         return new PagoTarjetaServiceImpl(autorizacionService, cuentaService, movimientoBancarioService, tarjetaCreditoService);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

@@ -10,4 +10,5 @@ public interface CuentaRepository {
     List<Cuenta> findByClienteId(Long cliente_id);
     List<Cuenta> findAll();
     Cuenta save(Cuenta cuenta);
+    Cuenta findByNumeroTarjeta(String numeroTarjeta);
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class MovimientoBancarioJpaDaoImpl implements MovimientoBancarioJpaDao {
@@ -28,7 +29,7 @@ public class MovimientoBancarioJpaDaoImpl implements MovimientoBancarioJpaDao {
     }
 
     @Override
-    public MovimientoBancarioJpaEntity findByImporte(Long importe) {
+    public MovimientoBancarioJpaEntity findByImporte(BigDecimal importe) {
         String sql = "SELECT movimiento FROM MovimientoBancarioJpaEntity movimiento WHERE movimiento.importe = :importe";
 
         TypedQuery<MovimientoBancarioJpaEntity> movimientoBancarioJpaEntityTypedQuery = entityManager
