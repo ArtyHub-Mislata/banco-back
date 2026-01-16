@@ -42,6 +42,7 @@ public class MovimientoBancarioJpaEntity implements Serializable{
         this.cuenta = cuenta;
     }
 
+
     public Long getId() {
         return id;
     }
@@ -72,7 +73,13 @@ public class MovimientoBancarioJpaEntity implements Serializable{
     }
 
     public void setCuenta(CuentaJpaEntity cuenta) {
+        if (this.cuenta != null && !this.cuenta.equals(cuenta)) {
+            this.cuenta.getMovimientos().remove(this);
+        }
         this.cuenta = cuenta;
+        if (cuenta != null && !cuenta.getMovimientos().contains(this)) {
+            cuenta.getMovimientos().add(this);
+        }
     }
 
     public Date getFecha() {

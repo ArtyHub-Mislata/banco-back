@@ -1,7 +1,9 @@
 package es.artyhub.banco_back.domain.service.impl;
 
 import java.util.List;
+import java.util.Objects;
 
+import es.artyhub.banco_back.domain.dto.OrigenDto;
 import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
 import es.artyhub.banco_back.domain.model.TarjetaCredito;
 import es.artyhub.banco_back.domain.repository.TarjetaCreditoRepository;
@@ -36,11 +38,6 @@ public class TarjetaCreditoServiceImpl implements TarjetaCreditoService {
         if(numeroTarjeta == null) {
             throw new ValidationException("Numero de tarjeta no valido");
         }
-
-        if(tarjetaCreditoRepository.findByNumeroTarjeta(numeroTarjeta) == null) {
-            throw new ResourceNotFoundException("Tarjeta no encontrada");
-        }
-
         return tarjetaCreditoRepository.findByNumeroTarjeta(numeroTarjeta);
     }
 
@@ -69,20 +66,8 @@ public class TarjetaCreditoServiceImpl implements TarjetaCreditoService {
     }
 
     @Override
-    public Boolean tarjetaIsValid(String nTarjeta) {
-        
-        if(nTarjeta == null) {
-            throw new ValidationException("Numero de tarjeta nulo");
-        }
-
-        if(nTarjeta.length() != 16) {
-            throw new ValidationException("Numero de tarjeta invalido");
-        }
-
-        if(tarjetaCreditoRepository.findByNumeroTarjeta(nTarjeta) == null) {
-            throw new ResourceNotFoundException("Tarjeta no encontrada");
-        }
-
-        return true;
+    public Boolean tarjetaIsValid(OrigenDto tarjetaOrigen, TarjetaCredito tarjetaBD) {
+        return tarjetaOrigen.cvc().equals(tarjetaBD.getCvv()) && tarjetaOrigen.fechaCaducidad().equals(tarjetaBD.getFechaCaducidad()) &&
+                tarjetaOrigen.nombreCompleto().equals(tarjetaBD.getNombreCompleto()) && tarjetaOrigen.numeroTarjeta().equals(tarjetaBD.getNumeroTarjeta());
     }
 }

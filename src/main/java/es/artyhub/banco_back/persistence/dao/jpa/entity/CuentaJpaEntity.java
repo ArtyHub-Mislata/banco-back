@@ -2,6 +2,7 @@ package es.artyhub.banco_back.persistence.dao.jpa.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -33,6 +34,22 @@ public class CuentaJpaEntity implements Serializable{
         this.cliente = cliente;
         this.tarjetas = tarjetas;
         this.movimientos = movimientos;
+    }
+
+    public void agregarTarjeta(TarjetaCreditoJpaEntity tarjeta) {
+        if (tarjetas == null) {
+            tarjetas = new ArrayList<>();
+        }
+        tarjeta.setCuenta(this);
+        tarjetas.add(tarjeta);
+    }
+
+    public void agregarMovimiento(MovimientoBancarioJpaEntity movimiento) {
+        if (movimientos == null) {
+            movimientos = new ArrayList<>();
+        }
+        movimiento.setCuenta(this);
+        movimientos.add(movimiento);
     }
 
     public Long getId() {

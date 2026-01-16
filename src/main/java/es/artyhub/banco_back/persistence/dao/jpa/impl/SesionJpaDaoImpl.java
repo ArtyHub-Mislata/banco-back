@@ -4,27 +4,30 @@ import es.artyhub.banco_back.domain.exception.BusinessException;
 import es.artyhub.banco_back.persistence.dao.jpa.SesionJpaDao;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.ClienteJpaEntity;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.SesionJpaEntity;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public class SesionJpaDaoImpl implements SesionJpaDao {
     @PersistenceContext
     private EntityManager entityManager;
+
     @Override
     public String createSession(Long userId) {
-        if(userId == null){
+        ClienteJpaEntity clienteJpaEntity = entityManager.find(ClienteJpaEntity.class, userId);
+        if (userId == null) {
             throw new BusinessException("Nonononoo");
         }
         String uuid = UUID.randomUUID().toString();
         SesionJpaEntity sesionJpaEntity = new SesionJpaEntity();
         sesionJpaEntity.setDateCreate(new Date());
         sesionJpaEntity.setToken(uuid);
-        sesionJpaEntity.setUserId(userId);
-
+        sesionJpaEntity.setCliente(clienteJpaEntity);
 
 
         entityManager.persist(sesionJpaEntity);
@@ -32,17 +35,33 @@ public class SesionJpaDaoImpl implements SesionJpaDao {
     }
 
     @Override
-    public void logout(String token) {
+    public void deleteSesion(String token) {
+        SesionJpaEntity sesion = entityManager.createQuery(
+                        "SELECT s FROM SesionJpaEntity s WHERE s.token = :token", SesionJpaEntity.class)
+                .setParameter("token", token)
+                .getSingleResult();
 
+        if (sesion != null) {
+            entityManager.remove(sesion);
+        }
     }
 
     @Override
     public Optional<ClienteJpaEntity> findByToken(String token) {
-        return Optional.empty();
+
+        String jpql = "SELECT s.cliente FROM SesionJpaEntity s WHERE s.token = :token";
+
+        List<ClienteJpaEntity> result = entityManager
+                .createQuery(jpql, ClienteJpaEntity.class)
+                .setParameter("token", token)
+                .setMaxResults(1)
+                .getResultList();
+
+        return result.stream().findFirst();
     }
 
     @Override
     public Long count() {
-        return 0L;
+        return entityManager.createQuery("SELECT COUNT(s) FROM SesionJpaEntity s", Long.class).getSingleResult();
     }
 }

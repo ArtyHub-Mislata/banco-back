@@ -4,6 +4,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record DestinoDto(
     @NotNull
-    String numeroCuenta
+    String iban
 ) {
 }

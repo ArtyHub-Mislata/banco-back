@@ -14,7 +14,7 @@ public class TarjetaCreditoJpaEntity implements Serializable{
     @Column(name = "numero_tarjeta")
     private String numeroTarjeta;
     @Column(name = "fecha_caducidad")
-    private Date fechaCaducidad;
+    private String fechaCaducidad;
     private String cvv;
     @Column(name = "nombre_completo")
     private String nombreCompleto;
@@ -25,7 +25,7 @@ public class TarjetaCreditoJpaEntity implements Serializable{
     public TarjetaCreditoJpaEntity() {
     }
 
-    public TarjetaCreditoJpaEntity(Long id, String numeroTarjeta, Date fechaCaducidad, String cvv,
+    public TarjetaCreditoJpaEntity(Long id, String numeroTarjeta, String fechaCaducidad, String cvv,
             String nombreCompleto) {
         this.id = id;
         this.numeroTarjeta = numeroTarjeta;
@@ -51,11 +51,11 @@ public class TarjetaCreditoJpaEntity implements Serializable{
         this.numeroTarjeta = numeroTarjeta;
     }
 
-    public Date getFechaCaducidad() {
+    public String getFechaCaducidad() {
         return fechaCaducidad;
     }
 
-    public void setFechaCaducidad(Date fechaCaducidad) {
+    public void setFechaCaducidad(String fechaCaducidad) {
         this.fechaCaducidad = fechaCaducidad;
     }
 

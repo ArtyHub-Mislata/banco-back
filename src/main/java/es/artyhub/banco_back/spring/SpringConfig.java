@@ -66,14 +66,10 @@ public class SpringConfig {
     public MovimientoBancarioService movimientoBancarioService(MovimientoBancarioRepository movimientoBancarioRepository){
         return new MovimientoBancarioServiceImpl(movimientoBancarioRepository);
     }
-    //BEANS DE AUTHORITATION
-    @Bean
-    public AutorizacionService autorizacionService(CuentaService cuentaService){
-        return new AutorizacionServiceImpl(cuentaService);
-    }
+
     //BEANS DE PAGO_TARJETA
     @Bean
-    public PagoTarjetaService pagoTarjetaService(AutorizacionService autorizacionService, CuentaService cuentaService,
+    public PagoTarjetaService pagoTarjetaService(AuthService autorizacionService, CuentaService cuentaService,
                                                  TarjetaCreditoService tarjetaCreditoService, MovimientoBancarioService movimientoBancarioService){
         return new PagoTarjetaServiceImpl(autorizacionService, cuentaService, movimientoBancarioService, tarjetaCreditoService);
     }

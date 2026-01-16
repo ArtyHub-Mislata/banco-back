@@ -5,7 +5,7 @@ import java.util.Date;
 public class TarjetaCredito {
     private Long id;
     private String numeroTarjeta;
-    private Date fechaCaducidad;
+    private String fechaCaducidad;
     private String cvv;
     private String nombreCompleto;
 
@@ -13,7 +13,7 @@ public class TarjetaCredito {
     public TarjetaCredito() {
     }
 
-    public TarjetaCredito(Long id, String numeroTarjeta, Date fechaCaducidad, String cvv, String nombreCompleto) {
+    public TarjetaCredito(Long id, String numeroTarjeta, String fechaCaducidad, String cvv, String nombreCompleto) {
         this.id = id;
         this.numeroTarjeta = numeroTarjeta;
         this.fechaCaducidad = fechaCaducidad;
@@ -37,11 +37,11 @@ public class TarjetaCredito {
         this.numeroTarjeta = numeroTarjeta;
     }
 
-    public Date getFechaCaducidad() {
+    public String getFechaCaducidad() {
         return fechaCaducidad;
     }
 
-    public void setFechaCaducidad(Date fechaCaducidad) {
+    public void setFechaCaducidad(String fechaCaducidad) {
         this.fechaCaducidad = fechaCaducidad;
     }
 

@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface SesionJpaDao {
     String createSession(Long userId);
-    void logout(String token);
+    void deleteSesion(String token);
     Optional<ClienteJpaEntity> findByToken(String token);
     Long count();
 }

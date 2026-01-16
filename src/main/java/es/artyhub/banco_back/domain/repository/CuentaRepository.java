@@ -7,6 +7,7 @@ import es.artyhub.banco_back.domain.model.Cuenta;
 public interface CuentaRepository {
     Cuenta findById(Long id);
     Cuenta findByIban(String iban);
+    Cuenta findByNTarjeta(String nTarjeta);
     List<Cuenta> findByClienteId(Long cliente_id);
     List<Cuenta> findAll();
     List<Cuenta> findByToken(String token);

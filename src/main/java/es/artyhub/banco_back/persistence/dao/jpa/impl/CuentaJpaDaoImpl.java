@@ -2,6 +2,7 @@ package es.artyhub.banco_back.persistence.dao.jpa.impl;
 
 import es.artyhub.banco_back.persistence.dao.jpa.CuentaJpaDao;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.CuentaJpaEntity;
+import es.artyhub.banco_back.persistence.dao.jpa.entity.TarjetaCreditoJpaEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -63,5 +64,24 @@ public class CuentaJpaDaoImpl implements CuentaJpaDao {
     @Override
     public CuentaJpaEntity save(CuentaJpaEntity cuentaJpaEntity) {
         return entityManager.merge(cuentaJpaEntity);
+    }
+
+    @Override
+    public CuentaJpaEntity findByNDeTarjeta(String nTarjeta) {
+        try {
+            // Primero obtenemos la tarjeta con la relación cuenta cargada
+            String jpql = "SELECT t FROM TarjetaCreditoJpaEntity t " +
+                    "LEFT JOIN FETCH t.cuenta " +
+                    "WHERE t.numeroTarjeta = :numeroTarjeta";
+
+            TarjetaCreditoJpaEntity tarjeta = entityManager
+                    .createQuery(jpql, TarjetaCreditoJpaEntity.class)
+                    .setParameter("numeroTarjeta", nTarjeta)
+                    .getSingleResult();
+
+            return tarjeta.getCuenta();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

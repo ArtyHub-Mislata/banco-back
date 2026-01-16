@@ -41,16 +41,12 @@ public class CuentaServiceImpl implements CuentaService {
             throw new ValidationException("Iban no valido");
         }
 
-        if(cuentaRepository.findByIban(iban) == null) {
-            throw new ResourceNotFoundException("Cuenta no encontrada");
-        }
-
         return cuentaRepository.findByIban(iban);
     }
 
     @Override
     public Cuenta findByNumeroTarjeta(String numeroTarjeta) {
-        return null;
+        return cuentaRepository.findByNTarjeta(numeroTarjeta);
     }
 
     @Override
@@ -82,32 +78,6 @@ public class CuentaServiceImpl implements CuentaService {
         return cuentaRepository.findByToken(token);
     }
 
-    @Override
-    public Boolean saldoIsEnough(BigDecimal importe, String iban) {
-
-        if(importe == null) {
-            throw new ValidationException("Importe no valido");
-        }
-
-        if(iban == null) {
-            throw new ValidationException("Iban no valido");
-        }
-
-        Cuenta cuenta = cuentaRepository.findByIban(iban);
-
-        if (cuenta == null) {
-            throw new ResourceNotFoundException("Cuenta no encontrada");
-        }
-
-        if (cuenta.getSaldo() == null || cuenta.getSaldo().equals(BigDecimal.ZERO)) {
-            throw new ResourceNotFoundException("Saldo nulo o cero");
-        }
-
-        if (cuenta.getSaldo().compareTo(importe) < 0) {
-            throw new BusinessException("Saldo insuficiente");
-        }
-        return true;
-    }
     @Transactional
     @Override
     public Cuenta save(Cuenta cuenta) {

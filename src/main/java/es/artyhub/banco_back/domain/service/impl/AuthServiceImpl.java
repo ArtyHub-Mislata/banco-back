@@ -1,5 +1,6 @@
 package es.artyhub.banco_back.domain.service.impl;
 
+import es.artyhub.banco_back.domain.dto.AutorizacionDto;
 import es.artyhub.banco_back.domain.dto.CredentialsDto;
 import es.artyhub.banco_back.domain.exception.BusinessException;
 import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
@@ -46,5 +47,10 @@ public class AuthServiceImpl implements AuthService {
             throw new BusinessException("El token no es valido para hacer logout");
         }
         return sesionRepository.findByToken(token);
+    }
+
+    @Override
+    public boolean autorizar(AutorizacionDto autorizacion) {
+        return clienteRepository.clienAndApiTokenCorrect(autorizacion);
     }
 }

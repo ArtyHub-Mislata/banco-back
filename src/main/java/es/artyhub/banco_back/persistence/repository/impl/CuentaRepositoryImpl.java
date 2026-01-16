@@ -25,6 +25,11 @@ public class CuentaRepositoryImpl implements CuentaRepository {
     }
 
     @Override
+    public Cuenta findByNTarjeta(String nTarjeta) {
+        return CuentaMapper.getInstance().fromCuentaJpaEntityToCuenta(cuentaJpaDao.findByNDeTarjeta(nTarjeta));
+    }
+
+    @Override
     public List<Cuenta> findByClienteId(Long cliente_id) {
         return CuentaMapper.getInstance().fromCuentaJpaEntityListToCuentaList(cuentaJpaDao.findByClienteId(cliente_id));
     }

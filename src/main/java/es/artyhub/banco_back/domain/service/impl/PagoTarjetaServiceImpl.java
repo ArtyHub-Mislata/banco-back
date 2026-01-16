@@ -11,18 +11,19 @@ import es.artyhub.banco_back.domain.service.*;
 import es.artyhub.banco_back.domain.validation.DtoValidator;
 import jakarta.transaction.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class PagoTarjetaServiceImpl implements PagoTarjetaService {
 
-    private final AutorizacionService autorizacionService;
+    private final AuthService authService;
     private final CuentaService cuentaService;
     private final MovimientoBancarioService movimientoBancarioService;
     private final TarjetaCreditoService tarjetaCreditoService;
 
-    public PagoTarjetaServiceImpl(AutorizacionService autorizacionService, CuentaService cuentaService,
+    public PagoTarjetaServiceImpl(AuthService authService, CuentaService cuentaService,
                                   MovimientoBancarioService movimientoBancarioService, TarjetaCreditoService tarjetaCreditoService) {
-        this.autorizacionService = autorizacionService;
+        this.authService = authService;
         this.cuentaService = cuentaService;
         this.movimientoBancarioService = movimientoBancarioService;
         this.tarjetaCreditoService = tarjetaCreditoService;
@@ -30,22 +31,28 @@ public class PagoTarjetaServiceImpl implements PagoTarjetaService {
     @Transactional
     @Override
     public void save(PagoTarjetaDto pagoTarjetaDto) {
+
         DtoValidator.validate(pagoTarjetaDto);
 
+        //Comprobación de los datos de la tarjeta
         TarjetaCredito tarjetaCredito = tarjetaCreditoService.findByNumeroTarjeta(pagoTarjetaDto.origen().numeroTarjeta());
-        if (!tarjetaCreditoService.tarjetaIsValid(pagoTarjetaDto.origen().numeroTarjeta())) {
+
+        if (!tarjetaCreditoService.tarjetaIsValid(pagoTarjetaDto.origen(), tarjetaCredito)) {
             throw new BusinessException("La tarjeta de origen no es valida");
         }
 
         Cuenta cuentaOrigen = cuentaService.findByNumeroTarjeta(tarjetaCredito.getNumeroTarjeta());
-        Cuenta cuentaDestino = cuentaService.findByIban(pagoTarjetaDto.destino().numeroCuenta());
+        Cuenta cuentaDestino = cuentaService.findByIban(pagoTarjetaDto.destino().iban());
 
-        if (!cuentaService.saldoIsEnough(pagoTarjetaDto.pago().importe(), cuentaOrigen.getIban())) {
-            throw new BusinessException("El saldo de la cuenta no es suficiente");
+        if(!cuentaDestino.getCliente().getLogin().equals(pagoTarjetaDto.autorizacion().login())){
+            throw new BusinessException("La cuenta destino no coincide con el usuario login");
         }
-        if (!autorizacionService.autorizar(pagoTarjetaDto)) {
-            throw new BusinessException("La autorizacion no es valida");
+
+        //Comprobar saldo suficiente
+        if(cuentaOrigen.getSaldo().compareTo(pagoTarjetaDto.pago().importe()) < 0){
+            throw new BusinessException("La cuenta no tiene suficiente saldo");
         }
+
 
         MovimientoBancario movimientoBancarioDebe = new MovimientoBancario();
         movimientoBancarioDebe.setConcepto(pagoTarjetaDto.pago().concepto());
@@ -55,6 +62,9 @@ public class PagoTarjetaServiceImpl implements PagoTarjetaService {
         movimientoBancarioDebe.setImporte(pagoTarjetaDto.pago().importe());
         movimientoBancarioDebe.setTarjetaCredito(tarjetaCredito);
 
+
+
+
         MovimientoBancario movimientoBancarioHaber = new MovimientoBancario();
         movimientoBancarioHaber.setConcepto(pagoTarjetaDto.pago().concepto());
         movimientoBancarioHaber.setCuenta(cuentaDestino);
@@ -63,10 +73,13 @@ public class PagoTarjetaServiceImpl implements PagoTarjetaService {
         movimientoBancarioHaber.setImporte(pagoTarjetaDto.pago().importe());
         movimientoBancarioHaber.setTarjetaCredito(null);
 
+
         cuentaService.updateSaldo(cuentaOrigen, pagoTarjetaDto.pago().importe(), TipoMovimiento.DEBE);
+        movimientoBancarioService.saveMovimientoBancario(movimientoBancarioDebe);
+
         cuentaService.updateSaldo(cuentaDestino, pagoTarjetaDto.pago().importe(), TipoMovimiento.HABER);
 
         movimientoBancarioService.saveMovimientoBancario(movimientoBancarioHaber);
-        movimientoBancarioService.saveMovimientoBancario(movimientoBancarioDebe);
+
     }
 }

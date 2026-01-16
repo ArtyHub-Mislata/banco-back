@@ -43,7 +43,10 @@ public class MovimientoBancarioRepositoryImpl implements MovimientoBancarioRepos
     @Override
     public MovimientoBancario save(MovimientoBancario movimientoBancario) {
         if (movimientoBancario.getId() == null) {
-            return MovimientoBancarioMapper.getInstance().fromMovimientoBancarioJpaEntityToMovimientoBancario(movimientoBancarioJpaDao.insert(MovimientoBancarioMapper.getInstance().fromMovimientoBancarioToMovimientoBancarioJpaEntity(movimientoBancario)));
+            return MovimientoBancarioMapper
+                    .getInstance()
+                    .fromMovimientoBancarioJpaEntityToMovimientoBancario(
+                            movimientoBancarioJpaDao.insert(MovimientoBancarioMapper.getInstance().fromMovimientoBancarioToMovimientoBancarioJpaEntity(movimientoBancario)));
         }
         return MovimientoBancarioMapper.getInstance().fromMovimientoBancarioJpaEntityToMovimientoBancario(movimientoBancarioJpaDao.update(MovimientoBancarioMapper.getInstance().fromMovimientoBancarioToMovimientoBancarioJpaEntity(movimientoBancario)));
     }

@@ -22,11 +22,11 @@ public class SesionRepositoryImpl implements SesionRepository {
     public Cliente findByToken(String token) {
         return ClienteMapper
                 .getInstance()
-                .fromClienteJpaEntityToCliente(sesionJpaDao.findByToken(token).orElseThrow(()-> new ResourceNotFoundException("No e")));
+                .fromClienteJpaEntityToCliente(sesionJpaDao.findByToken(token).orElse(null));
     }
 
     @Override
     public void logout(String token) {
-        sesionJpaDao.logout(token);
+        sesionJpaDao.deleteSesion(token);
     }
 }

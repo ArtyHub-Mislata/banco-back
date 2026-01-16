@@ -1,5 +1,6 @@
 package es.artyhub.banco_back.persistence.dao.jpa.impl;
 
+import es.artyhub.banco_back.domain.dto.AutorizacionDto;
 import es.artyhub.banco_back.persistence.dao.jpa.ClienteJpaDao;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.ClienteJpaEntity;
 import jakarta.persistence.EntityManager;
@@ -36,5 +37,15 @@ public class ClienteJpaDaoImpl implements ClienteJpaDao {
                 .createQuery(sql, ClienteJpaEntity.class)
                 .setParameter("login", login);
         return clienteJpaEntityTypedQuery.getSingleResult();
+    }
+
+    @Override
+    public Boolean userAndApiTokenCorrect(AutorizacionDto autorizacionDto) {
+        String query = "SELECT COUNT(c) FROM ClienteJpaEntity c WHERE c.login = :login AND c.api_token = :apiKey";
+        Long count = entityManager.createQuery(query, Long.class)
+                .setParameter("login", autorizacionDto.login())
+                .setParameter("apiKey", autorizacionDto.api_token())
+                .getSingleResult();
+        return count > 0;
     }
 }

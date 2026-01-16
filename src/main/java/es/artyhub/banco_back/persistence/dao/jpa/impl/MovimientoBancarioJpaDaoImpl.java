@@ -59,6 +59,7 @@ public class MovimientoBancarioJpaDaoImpl implements MovimientoBancarioJpaDao {
 
     @Override
     public MovimientoBancarioJpaEntity insert(MovimientoBancarioJpaEntity movimientoBancarioJpaEntity) {
+
         entityManager.persist(movimientoBancarioJpaEntity);
         return movimientoBancarioJpaEntity;
     }
