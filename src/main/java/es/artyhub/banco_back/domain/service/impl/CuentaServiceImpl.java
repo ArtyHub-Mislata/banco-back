@@ -89,6 +89,7 @@ public class CuentaServiceImpl implements CuentaService {
     @Transactional
     @Override
     public void updateSaldo(Cuenta cuenta, BigDecimal importe, TipoMovimiento tipoMovimiento) {
+
         BigDecimal saldo = cuenta.getSaldo();
         BigDecimal saldoFinal;
         if(tipoMovimiento.equals(TipoMovimiento.DEBE)){

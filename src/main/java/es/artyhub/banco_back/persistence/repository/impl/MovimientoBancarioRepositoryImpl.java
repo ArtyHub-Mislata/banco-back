@@ -32,21 +32,27 @@ public class MovimientoBancarioRepositoryImpl implements MovimientoBancarioRepos
 
     @Override
     public List<MovimientoBancario> findByCuentaId(Long cuenta_id) {
-        return MovimientoBancarioMapper.getInstance().fromMovimientoBancarioJpaEntityListToMovimientoBancarioList(movimientoBancarioJpaDao.findByCuentaId(cuenta_id));
+        return movimientoBancarioJpaDao.findByCuentaId(cuenta_id)
+                .stream()
+                .map(MovimientoBancarioMapper.getInstance():: fromMovimientoBancarioJpaEntityToMovimientoBancario)
+                .toList();
     }
 
     @Override
     public List<MovimientoBancario> findAll() {
-        return MovimientoBancarioMapper.getInstance().fromMovimientoBancarioJpaEntityListToMovimientoBancarioList(movimientoBancarioJpaDao.findAll());
+        return movimientoBancarioJpaDao.findAll()
+                .stream()
+                .map(MovimientoBancarioMapper.getInstance():: fromMovimientoBancarioJpaEntityToMovimientoBancario)
+                .toList();
     }
 
     @Override
-    public MovimientoBancario save(MovimientoBancario movimientoBancario) {
+    public MovimientoBancario save(MovimientoBancario movimientoBancario, Long cuentaId) {
         if (movimientoBancario.getId() == null) {
             return MovimientoBancarioMapper
                     .getInstance()
                     .fromMovimientoBancarioJpaEntityToMovimientoBancario(
-                            movimientoBancarioJpaDao.insert(MovimientoBancarioMapper.getInstance().fromMovimientoBancarioToMovimientoBancarioJpaEntity(movimientoBancario)));
+                            movimientoBancarioJpaDao.insert(MovimientoBancarioMapper.getInstance().fromMovimientoBancarioToMovimientoBancarioJpaEntity(movimientoBancario), cuentaId));
         }
         return MovimientoBancarioMapper.getInstance().fromMovimientoBancarioJpaEntityToMovimientoBancario(movimientoBancarioJpaDao.update(MovimientoBancarioMapper.getInstance().fromMovimientoBancarioToMovimientoBancarioJpaEntity(movimientoBancario)));
     }

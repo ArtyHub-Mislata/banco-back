@@ -83,7 +83,7 @@ public class MovimientoBancarioServiceImpl implements MovimientoBancarioService 
     }
     @Transactional
     @Override
-    public MovimientoBancario saveMovimientoBancario(MovimientoBancario movimientoBancario) {
-        return movimientoBancarioRepository.save(movimientoBancario);
+    public MovimientoBancario saveMovimientoBancario(MovimientoBancario movimientoBancario, Long cuentaId) {
+        return movimientoBancarioRepository.save(movimientoBancario, cuentaId);
     }
 }

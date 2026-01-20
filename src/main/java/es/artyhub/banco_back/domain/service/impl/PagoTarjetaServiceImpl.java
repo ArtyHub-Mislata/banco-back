@@ -56,30 +56,30 @@ public class PagoTarjetaServiceImpl implements PagoTarjetaService {
 
         MovimientoBancario movimientoBancarioDebe = new MovimientoBancario();
         movimientoBancarioDebe.setConcepto(pagoTarjetaDto.pago().concepto());
-        movimientoBancarioDebe.setCuenta(cuentaOrigen);
         movimientoBancarioDebe.setFecha(new Date());
         movimientoBancarioDebe.setOrigenMovimiento(OrigenMovimiento.TARJETABANCARIA);
         movimientoBancarioDebe.setImporte(pagoTarjetaDto.pago().importe());
         movimientoBancarioDebe.setTarjetaCredito(tarjetaCredito);
-
+        movimientoBancarioDebe.setTipoMovimiento(TipoMovimiento.DEBE);
 
 
 
         MovimientoBancario movimientoBancarioHaber = new MovimientoBancario();
         movimientoBancarioHaber.setConcepto(pagoTarjetaDto.pago().concepto());
-        movimientoBancarioHaber.setCuenta(cuentaDestino);
         movimientoBancarioHaber.setFecha(new Date());
         movimientoBancarioHaber.setOrigenMovimiento(OrigenMovimiento.TRANSFERENCIA);
         movimientoBancarioHaber.setImporte(pagoTarjetaDto.pago().importe());
         movimientoBancarioHaber.setTarjetaCredito(null);
+        movimientoBancarioHaber.setTipoMovimiento(TipoMovimiento.HABER);
+
 
 
         cuentaService.updateSaldo(cuentaOrigen, pagoTarjetaDto.pago().importe(), TipoMovimiento.DEBE);
-        movimientoBancarioService.saveMovimientoBancario(movimientoBancarioDebe);
+        movimientoBancarioService.saveMovimientoBancario(movimientoBancarioDebe, cuentaOrigen.getId());
 
         cuentaService.updateSaldo(cuentaDestino, pagoTarjetaDto.pago().importe(), TipoMovimiento.HABER);
 
-        movimientoBancarioService.saveMovimientoBancario(movimientoBancarioHaber);
+        movimientoBancarioService.saveMovimientoBancario(movimientoBancarioHaber, cuentaDestino.getId());
 
     }
 }

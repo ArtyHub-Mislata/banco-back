@@ -1,6 +1,8 @@
 package es.artyhub.banco_back.persistence.dao.jpa.impl;
 
+import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
 import es.artyhub.banco_back.persistence.dao.jpa.MovimientoBancarioJpaDao;
+import es.artyhub.banco_back.persistence.dao.jpa.entity.CuentaJpaEntity;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.MovimientoBancarioJpaEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -49,7 +51,7 @@ public class MovimientoBancarioJpaDaoImpl implements MovimientoBancarioJpaDao {
 
     @Override
     public List<MovimientoBancarioJpaEntity> findByCuentaId(Long cuenta_id) {
-        String sql = "SELECT movimiento FROM MovimientoBancarioJpaEntity movimiento WHERE movimiento.cuenta_id = :cuenta_id";
+        String sql = "SELECT movimiento FROM MovimientoBancarioJpaEntity movimiento WHERE movimiento.cuenta.id = :cuenta_id";
 
         TypedQuery<MovimientoBancarioJpaEntity> movimientoBancarioJpaEntityTypedQuery = entityManager
                 .createQuery(sql, MovimientoBancarioJpaEntity.class)
@@ -58,8 +60,12 @@ public class MovimientoBancarioJpaDaoImpl implements MovimientoBancarioJpaDao {
     }
 
     @Override
-    public MovimientoBancarioJpaEntity insert(MovimientoBancarioJpaEntity movimientoBancarioJpaEntity) {
-
+    public MovimientoBancarioJpaEntity insert(MovimientoBancarioJpaEntity movimientoBancarioJpaEntity, Long id) {
+        CuentaJpaEntity cuentaJpaEntity = entityManager.find(CuentaJpaEntity.class, id);
+        if(cuentaJpaEntity == null){
+            throw new ResourceNotFoundException("No se ha insertado el movimiento porque el id de la cuenta es nulo");
+        }
+        movimientoBancarioJpaEntity.setCuenta(cuentaJpaEntity);
         entityManager.persist(movimientoBancarioJpaEntity);
         return movimientoBancarioJpaEntity;
     }

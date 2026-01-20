@@ -1,5 +1,7 @@
 package es.artyhub.banco_back.persistence.dao.jpa.impl;
 
+import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
+import es.artyhub.banco_back.domain.model.Cuenta;
 import es.artyhub.banco_back.persistence.dao.jpa.CuentaJpaDao;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.CuentaJpaEntity;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.TarjetaCreditoJpaEntity;
@@ -38,7 +40,7 @@ public class CuentaJpaDaoImpl implements CuentaJpaDao {
 
     @Override
     public List<CuentaJpaEntity> findByClienteId(Long cliente_id) {
-        String sql = "SELECT cuenta FROM CuentaJpaEntity cuenta WHERE cuenta.cliente_id = :cliente_id";
+        String sql = "SELECT cuenta FROM CuentaJpaEntity cuenta WHERE cuenta.cliente.id = :cliente_id";
 
         TypedQuery<CuentaJpaEntity> cuentaJpaEntityTypedQuery = entityManager
                 .createQuery(sql, CuentaJpaEntity.class)
@@ -50,10 +52,11 @@ public class CuentaJpaDaoImpl implements CuentaJpaDao {
     public List<CuentaJpaEntity> findByToken(String token) {
         String sql = """
         SELECT cta
-        FROM SesionJpaEntity s
-        JOIN s.cliente cli
-        JOIN cli.cuentas cta
+        FROM CuentaJpaEntity cta
+        JOIN cta.cliente cli
+        JOIN SesionJpaEntity s ON s.cliente = cli
         WHERE s.token = :token
+        
         """;
         TypedQuery<CuentaJpaEntity> cuentaJpaEntityTypedQuery = entityManager
                 .createQuery(sql, CuentaJpaEntity.class)
@@ -61,10 +64,6 @@ public class CuentaJpaDaoImpl implements CuentaJpaDao {
         return cuentaJpaEntityTypedQuery.getResultList();
     }
 
-    @Override
-    public CuentaJpaEntity save(CuentaJpaEntity cuentaJpaEntity) {
-        return entityManager.merge(cuentaJpaEntity);
-    }
 
     @Override
     public CuentaJpaEntity findByNDeTarjeta(String nTarjeta) {
@@ -83,5 +82,19 @@ public class CuentaJpaDaoImpl implements CuentaJpaDao {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public CuentaJpaEntity insert(CuentaJpaEntity cuentaJpaEntity) {
+        return null;
+    }
+
+    @Override
+    public CuentaJpaEntity update(CuentaJpaEntity cuentaJpaEntity) {
+        CuentaJpaEntity cuentaJpaEntityManaged = entityManager.find(CuentaJpaEntity.class, cuentaJpaEntity.getId());
+        if(cuentaJpaEntityManaged == null){
+            throw new ResourceNotFoundException("No se encuentra la cuenta que quieres updatear");
+        }
+        return entityManager.merge(cuentaJpaEntity);
     }
 }

@@ -40,7 +40,7 @@ public class TarjetaCreditoJpaDaoImpl implements TarjetaCreditoJpaDao {
 
     @Override
     public List<TarjetaCreditoJpaEntity> findByCuentaId(Long cuenta_id) {
-        String sql = "SELECT tarjeta FROM TarjetaCreditoJpaEntity tarjeta WHERE tarjeta.cuenta_id = :cuenta_id";
+        String sql = "SELECT tarjeta FROM TarjetaCreditoJpaEntity tarjeta WHERE tarjeta.cuenta.id = :cuenta_id";
 
         TypedQuery<TarjetaCreditoJpaEntity> tarjetaCreditoJpaEntityTypedQuery = entityManager
                 .createQuery(sql, TarjetaCreditoJpaEntity.class)

@@ -23,7 +23,10 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     @Override
     public List<Cliente> findAll() {
-        return ClienteMapper.getInstance().fromClienteJpaEntityListToClienteList(clienteJpaDao.findAll());
+        return clienteJpaDao.findAll()
+                .stream()
+                .map(ClienteMapper.getInstance():: fromClienteJpaEntityToCliente)
+                .toList();
     }
 
     @Override

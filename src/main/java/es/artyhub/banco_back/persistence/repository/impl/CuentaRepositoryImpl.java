@@ -31,23 +31,38 @@ public class CuentaRepositoryImpl implements CuentaRepository {
 
     @Override
     public List<Cuenta> findByClienteId(Long cliente_id) {
-        return CuentaMapper.getInstance().fromCuentaJpaEntityListToCuentaList(cuentaJpaDao.findByClienteId(cliente_id));
+        return cuentaJpaDao.findByClienteId(cliente_id)
+                .stream()
+                .map(CuentaMapper.getInstance()::fromCuentaJpaEntityToCuenta)
+                .toList();
     }
 
     @Override
     public List<Cuenta> findAll() {
-        return CuentaMapper.getInstance().fromCuentaJpaEntityListToCuentaList(cuentaJpaDao.findAll());
+        return cuentaJpaDao.findAll()
+                .stream()
+                .map(CuentaMapper.getInstance()::fromCuentaJpaEntityToCuenta)
+                .toList();
     }
 
     @Override
     public List<Cuenta> findByToken(String token) {
-        return cuentaJpaDao.findByToken(token).stream().map(
-                CuentaMapper.getInstance()::fromCuentaJpaEntityToCuenta)
+        return cuentaJpaDao.findByToken(token)
+                .stream()
+                .map(CuentaMapper.getInstance()::fromCuentaJpaEntityToCuenta)
                 .toList();
     }
 
     @Override
     public Cuenta save(Cuenta cuenta) {
-        return CuentaMapper.getInstance().fromCuentaJpaEntityToCuenta(cuentaJpaDao.save(CuentaMapper.getInstance().fromCuentaToCuentaJpaEntity(cuenta)));
+        if(cuenta.getId() == null){
+            return CuentaMapper.getInstance().fromCuentaJpaEntityToCuenta(
+                    cuentaJpaDao.insert(CuentaMapper.getInstance().fromCuentaToCuentaJpaEntity(cuenta))
+            );
+        } else {
+            return CuentaMapper.getInstance().fromCuentaJpaEntityToCuenta(
+                    cuentaJpaDao.update(CuentaMapper.getInstance().fromCuentaToCuentaJpaEntity(cuenta))
+            );
+        }
     }
 }

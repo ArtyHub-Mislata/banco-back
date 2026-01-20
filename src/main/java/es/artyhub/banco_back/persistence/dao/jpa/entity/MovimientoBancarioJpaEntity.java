@@ -19,11 +19,15 @@ public class MovimientoBancarioJpaEntity implements Serializable{
     private TipoMovimiento tipoMovimiento;
     @Column(name = "origen_movimiento")
     private OrigenMovimiento origenMovimiento;
-    @Column(name = "n_tarjeta")
-    private String nTarjetaCredito;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tarjeta_credito_id")
+    private TarjetaCreditoJpaEntity tarjetaCredito;
+
     private Date fecha;
     private BigDecimal importe;
     private String concepto;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cuenta_id", nullable = false)
     private CuentaJpaEntity cuenta;
@@ -31,17 +35,15 @@ public class MovimientoBancarioJpaEntity implements Serializable{
     public MovimientoBancarioJpaEntity() {
     }
 
-    public MovimientoBancarioJpaEntity(Long id, TipoMovimiento tipoMovimiento, OrigenMovimiento origenMovimiento, String tarjetaCredito, Date fecha, BigDecimal importe, String concepto, CuentaJpaEntity cuenta) {
+    public MovimientoBancarioJpaEntity(Long id, TipoMovimiento tipoMovimiento, OrigenMovimiento origenMovimiento, TarjetaCreditoJpaEntity tarjetaCredito, Date fecha, BigDecimal importe, String concepto) {
         this.id = id;
         this.tipoMovimiento = tipoMovimiento;
         this.origenMovimiento = origenMovimiento;
-        this.nTarjetaCredito = tarjetaCredito;
+        this.tarjetaCredito = tarjetaCredito;
         this.fecha = fecha;
         this.importe = importe;
         this.concepto = concepto;
-        this.cuenta = cuenta;
     }
-
 
     public Long getId() {
         return id;
@@ -106,11 +108,11 @@ public class MovimientoBancarioJpaEntity implements Serializable{
         this.concepto = concepto;
     }
 
-    public String getnTarjetaCredito() {
-        return nTarjetaCredito;
+    public TarjetaCreditoJpaEntity getTarjetaCredito() {
+        return tarjetaCredito;
     }
 
-    public void setnTarjetaCredito(String nTarjetaCredito) {
-        this.nTarjetaCredito = nTarjetaCredito;
+    public void setTarjetaCredito(TarjetaCreditoJpaEntity tarjetaCredito) {
+        this.tarjetaCredito = tarjetaCredito;
     }
 }

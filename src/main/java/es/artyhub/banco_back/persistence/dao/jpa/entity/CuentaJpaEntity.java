@@ -19,10 +19,12 @@ public class CuentaJpaEntity implements Serializable{
     @ManyToOne
     @JoinColumn(name = "client_id")
     private ClienteJpaEntity cliente;
+
     @OneToMany(mappedBy = "cuenta")
-    private List<TarjetaCreditoJpaEntity> tarjetas;
+    private List<TarjetaCreditoJpaEntity> tarjetas = new ArrayList<>();
+
     @OneToMany(mappedBy = "cuenta")
-    private List<MovimientoBancarioJpaEntity> movimientos;
+    private List<MovimientoBancarioJpaEntity> movimientos = new ArrayList<>();
     
     public CuentaJpaEntity() {
     }
@@ -93,10 +95,16 @@ public class CuentaJpaEntity implements Serializable{
     }
 
     public List<MovimientoBancarioJpaEntity> getMovimientos() {
+        if (movimientos == null) {
+            movimientos = new ArrayList<>();
+        }
         return movimientos;
     }
 
     public void setMovimientos(List<MovimientoBancarioJpaEntity> movimientos) {
-        this.movimientos = movimientos;
+        this.movimientos.clear();
+        if (movimientos != null) {
+            this.movimientos.addAll(movimientos);
+        }
     }
 }

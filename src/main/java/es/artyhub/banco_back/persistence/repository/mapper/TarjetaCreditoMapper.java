@@ -45,21 +45,5 @@ public class TarjetaCreditoMapper {
         );
     }
 
-    public List<TarjetaCredito> fromTarjetaCreditoJpaEntityListToTarjetaCreditoList(List<TarjetaCreditoJpaEntity> entities) {
-        if (entities == null) {
-            return null;
-        }
-        return entities.stream()
-            .map(this::fromTarjetaCreditoJpaEntityToTarjetaCredito)
-            .toList();
-    }
 
-    public List<TarjetaCreditoJpaEntity> fromTarjetaCreditoListToTarjetaCreditoJpaEntityList(List<TarjetaCredito> tarjetas) {
-        if (tarjetas == null) {
-            return null;
-        }
-        return tarjetas.stream()
-            .map(this::fromTarjetaCreditoToTarjetaCreditoJpaEntity)
-            .toList();
-    }
 }

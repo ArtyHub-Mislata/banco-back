@@ -1,27 +1,29 @@
--- Insertar datos de ejemplo en clientes
-INSERT INTO clientes (id, login, password, name, last_name1, last_name2, dni, api_token) VALUES
-                                                                                             (1, 'cliente1', 'password1', 'Juan', 'García', 'López', '12345678A', 'apitoken_1'),
-                                                                                             (2, 'cliente2', 'password2', 'María', 'Rodríguez', 'Sánchez', '87654321B', 'apitoken_2'),
-                                                                                             (3, 'cliente3', 'password3', 'Carlos', 'Martínez', 'Fernández', '11223344C', 'apitoken_3'),
-                                                                                             (4, 'cliente4', 'password4', 'Ana', 'Pérez', 'Gómez', '44332211D', 'apitoken_4'),
-                                                                                             (5, 'cliente5', 'password5', 'Luis', 'González', 'Ruiz', '55667788E', 'apitoken_5');
+-- V2__insert_test_data.sql
 
--- Insertar datos de ejemplo en cuentas
-INSERT INTO cuentas (id, saldo, iban, client_id) VALUES
-                                                     (1, 1500.50, 'ES9121000418450200051332', 1),
-                                                     (2, 2750.00, 'ES6621000418401234567891', 1),
-                                                     (3, 850.75, 'ES7921000813610123456789', 2),
-                                                     (4, 3200.25, 'ES1421000418400200054321', 3),
-                                                     (5, 125.00, 'ES8521000418400300067890', 4),
-                                                     (6, 4500.00, 'ES9121000418450200098765', 5);
+-- Insertar clientes de prueba
+INSERT INTO clientes (login, password, name, last_name1, last_name2, dni, api_token) VALUES
+                                                                                         ('juan.perez', 'password123', 'Juan', 'Pérez', 'García', '12345678A', 'token_juan_123'),
+                                                                                         ('maria.lopez', 'securepass456', 'María', 'López', 'Martínez', '87654321B', 'token_maria_456'),
+                                                                                         ('carlos.gomez', 'testpass789', 'Carlos', 'Gómez', 'Sánchez', '11223344C', 'token_carlos_789'),
+                                                                                         ('ana.rodriguez', 'anapass101', 'Ana', 'Rodríguez', 'Fernández', '55667788D', 'token_ana_101'),
+                                                                                         ('luis.martin', 'luispass202', 'Luis', 'Martín', 'Ruiz', '99887766E', 'token_luis_202');
 
--- Insertar datos de ejemplo en tarjetas_credito
-INSERT INTO tarjetas_credito (id, numero_tarjeta, fecha_caducidad, cvv, nombre_completo, cuenta_id) VALUES
-                                                                                                        (1, '4532123456789012', '2025-12-31', '123', 'JUAN GARCÍA LÓPEZ', 1),
-                                                                                                        (2, '5555123456789010', '2024-11-30', '456', 'JUAN GARCÍA LÓPEZ', 2),
-                                                                                                        (3, '4111111111111111', '2026-03-31', '789', 'MARÍA RODRÍGUEZ SÁNCHEZ', 3),
-                                                                                                        (4, '378282246310005', '2025-08-31', '234', 'CARLOS MARTÍNEZ FERNÁNDEZ', 4),
-                                                                                                        (5, '6011111111111117', '2027-05-31', '567', 'ANA PÉREZ GÓMEZ', 5),
-                                                                                                        (6, '3530111333300000', '2024-10-31', '890', 'LUIS GONZÁLEZ RUIZ', 6);
+-- Insertar cuentas de prueba
+INSERT INTO cuentas (saldo, iban, client_id) VALUES
+                                                 (1500.75, 'ES9121000418450200051332', 1),
+                                                 (2800.50, 'ES8521000418450200051333', 2),
+                                                 (500.25, 'ES7921000418450200051334', 2),
+                                                 (10000.00, 'ES7321000418450200051335', 3),
+                                                 (750.00, 'ES6721000418450200051336', 4),
+                                                 (3200.00, 'ES6121000418450200051337', 5),
+                                                 (125.50, 'ES5521000418450200051338', 1);
 
--- NOTA: Las tablas sesions y movimientos_bancarios se dejan vacías como se solicitó
+-- Insertar tarjetas de crédito de prueba
+INSERT INTO tarjetas_credito (numero_tarjeta, fecha_caducidad, cvv, nombre_completo, cuenta_id) VALUES
+                                                                                                    ('4532123456789012', '12/25', '123', 'JUAN PEREZ GARCIA', 1),
+                                                                                                    ('5555666677778888', '06/26', '456', 'JUAN PEREZ GARCIA', 1),
+                                                                                                    ('4111111111111111', '09/24', '789', 'MARIA LOPEZ MARTINEZ', 2),
+                                                                                                    ('378282246310005', '03/27', '321', 'CARLOS GOMEZ SANCHEZ', 4),
+                                                                                                    ('6011111111111117', '11/25', '654', 'ANA RODRIGUEZ FERNANDEZ', 5),
+                                                                                                    ('3530111333300000', '08/26', '987', 'LUIS MARTIN RUIZ', 6),
+                                                                                                    ('2223000048400011', '05/27', '147', 'MARIA LOPEZ MARTINEZ', 3);

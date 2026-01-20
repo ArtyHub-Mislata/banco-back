@@ -8,6 +8,7 @@ public interface CuentaJpaDao extends GenericJpaDao<CuentaJpaEntity>{
     CuentaJpaEntity findByIban(String iban);
     List<CuentaJpaEntity> findByClienteId(Long cliente_id);
     List<CuentaJpaEntity> findByToken(String token);
-    CuentaJpaEntity save(CuentaJpaEntity cuentaJpaEntity);
     CuentaJpaEntity findByNDeTarjeta(String nTarjeta);
+    CuentaJpaEntity insert(CuentaJpaEntity cuentaJpaEntity);
+    CuentaJpaEntity update(CuentaJpaEntity cuentaJpaEntity);
 }

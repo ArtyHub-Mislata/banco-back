@@ -10,6 +10,6 @@ public interface MovimientoBancarioService {
     MovimientoBancario findByConcepto(String concepto);
     List<MovimientoBancario> findByCuentaId(Long cuenta_id);
     List<MovimientoBancario> findAll();
-    MovimientoBancario saveMovimientoBancario(MovimientoBancario movimientoBancario);
+    MovimientoBancario saveMovimientoBancario(MovimientoBancario movimientoBancario, Long cuentaId);
 
 }

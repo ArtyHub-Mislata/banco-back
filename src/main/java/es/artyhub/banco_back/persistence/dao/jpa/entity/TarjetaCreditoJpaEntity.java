@@ -1,7 +1,9 @@
 package es.artyhub.banco_back.persistence.dao.jpa.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.*;
 
@@ -18,6 +20,10 @@ public class TarjetaCreditoJpaEntity implements Serializable{
     private String cvv;
     @Column(name = "nombre_completo")
     private String nombreCompleto;
+
+    @OneToMany(mappedBy = "tarjetaCredito", fetch = FetchType.LAZY)
+    private List<MovimientoBancarioJpaEntity> movements = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "cuenta_id") // opcional pero recomendado
     private CuentaJpaEntity cuenta;
@@ -81,5 +87,13 @@ public class TarjetaCreditoJpaEntity implements Serializable{
 
     public void setCuenta(CuentaJpaEntity cuenta) {
         this.cuenta = cuenta;
+    }
+
+    public List<MovimientoBancarioJpaEntity> getMovements() {
+        return movements;
+    }
+
+    public void setMovements(List<MovimientoBancarioJpaEntity> movements) {
+        this.movements = movements;
     }
 }

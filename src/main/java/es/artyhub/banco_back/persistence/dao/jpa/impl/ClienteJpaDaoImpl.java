@@ -41,7 +41,7 @@ public class ClienteJpaDaoImpl implements ClienteJpaDao {
 
     @Override
     public Boolean userAndApiTokenCorrect(AutorizacionDto autorizacionDto) {
-        String query = "SELECT COUNT(c) FROM ClienteJpaEntity c WHERE c.login = :login AND c.api_token = :apiKey";
+        String query = "SELECT COUNT(c) FROM ClienteJpaEntity c WHERE c.login = :login AND c.apiToken = :apiKey";
         Long count = entityManager.createQuery(query, Long.class)
                 .setParameter("login", autorizacionDto.login())
                 .setParameter("apiKey", autorizacionDto.api_token())
