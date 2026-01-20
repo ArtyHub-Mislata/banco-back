@@ -26,8 +26,11 @@ public class LoginFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-
-        String unprotectedPath = "/login";
+        if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        String unprotectedPath = "/api/login";
 
         String header = req.getHeader("authorization");
         String token = null;

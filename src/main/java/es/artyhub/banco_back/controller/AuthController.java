@@ -1,17 +1,16 @@
 package es.artyhub.banco_back.controller;
 
 import es.artyhub.banco_back.domain.dto.CredentialsDto;
+import es.artyhub.banco_back.domain.model.Cliente;
 import es.artyhub.banco_back.domain.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@RequestMapping("/api")
 @RestController
 public class AuthController {
     private final AuthService authService;
@@ -31,5 +30,11 @@ public class AuthController {
         String token = request.getHeader("authorization").substring(7);
         authService.logout(token);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @GetMapping("/islogged")
+    public ResponseEntity<Cliente> isLogged(HttpServletRequest request){
+        String token = request.getHeader("authorization").substring(7);
+        Cliente cliente = authService.getClienteByToken(token);
+        return new ResponseEntity<>(cliente, HttpStatus.OK);
     }
 }
