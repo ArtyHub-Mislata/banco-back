@@ -56,4 +56,12 @@ public class MovimientoBancarioRepositoryImpl implements MovimientoBancarioRepos
         }
         return MovimientoBancarioMapper.getInstance().fromMovimientoBancarioJpaEntityToMovimientoBancario(movimientoBancarioJpaDao.update(MovimientoBancarioMapper.getInstance().fromMovimientoBancarioToMovimientoBancarioJpaEntity(movimientoBancario)));
     }
+
+    @Override
+    public List<MovimientoBancario> findAllOfTarjeta(Long tarjetaId) {
+        return movimientoBancarioJpaDao.findByTarjetaId(tarjetaId)
+                .stream()
+                .map(MovimientoBancarioMapper.getInstance():: fromMovimientoBancarioJpaEntityToMovimientoBancario)
+                .toList();
+    }
 }

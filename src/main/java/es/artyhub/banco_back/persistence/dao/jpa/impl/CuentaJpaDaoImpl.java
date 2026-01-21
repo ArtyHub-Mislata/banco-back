@@ -56,7 +56,7 @@ public class CuentaJpaDaoImpl implements CuentaJpaDao {
         JOIN cta.cliente cli
         JOIN SesionJpaEntity s ON s.cliente = cli
         WHERE s.token = :token
-        
+      
         """;
         TypedQuery<CuentaJpaEntity> cuentaJpaEntityTypedQuery = entityManager
                 .createQuery(sql, CuentaJpaEntity.class)

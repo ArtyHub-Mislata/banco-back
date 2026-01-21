@@ -86,4 +86,9 @@ public class MovimientoBancarioServiceImpl implements MovimientoBancarioService 
     public MovimientoBancario saveMovimientoBancario(MovimientoBancario movimientoBancario, Long cuentaId) {
         return movimientoBancarioRepository.save(movimientoBancario, cuentaId);
     }
+
+    @Override
+    public List<MovimientoBancario> findByTarjetaId(Long idTarjeta) {
+        return movimientoBancarioRepository.findAllOfTarjeta(idTarjeta);
+    }
 }

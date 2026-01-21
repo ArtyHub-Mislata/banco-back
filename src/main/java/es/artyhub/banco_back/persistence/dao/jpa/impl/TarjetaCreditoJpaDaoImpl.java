@@ -52,4 +52,46 @@ public class TarjetaCreditoJpaDaoImpl implements TarjetaCreditoJpaDao {
     public TarjetaCreditoJpaEntity save(TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity) {
         return entityManager.merge(tarjetaCreditoJpaEntity);
     }
+
+    @Override
+    public List<TarjetaCreditoJpaEntity> findAllOfUser(String token) {
+        String sql = """
+        SELECT t 
+        FROM TarjetaCreditoJpaEntity t
+        JOIN t.cuenta c
+        JOIN c.cliente cli
+        JOIN SesionJpaEntity s ON s.cliente = cli
+        WHERE s.token = :token
+        ORDER BY t.id ASC
+        """;
+
+        TypedQuery<TarjetaCreditoJpaEntity> query = entityManager
+                .createQuery(sql, TarjetaCreditoJpaEntity.class)
+                .setParameter("token", token);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public Boolean tarjetaPerteneceAUsuario(Long tarjetaId, String token) {
+        String sql = """
+        SELECT COUNT(t) 
+        FROM TarjetaCreditoJpaEntity t
+        JOIN t.cuenta c
+        JOIN c.cliente cli
+        JOIN SesionJpaEntity s ON s.cliente = cli
+        WHERE s.token = :token 
+        AND t.id = :tarjetaId
+        """;
+
+        Long count = entityManager
+                .createQuery(sql, Long.class)
+                .setParameter("token", token)
+                .setParameter("tarjetaId", tarjetaId)
+                .getSingleResult();
+
+        return count > 0;
+    }
+
+
 }

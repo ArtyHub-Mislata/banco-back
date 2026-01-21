@@ -40,4 +40,17 @@ public class TarjetaCreditoRepositoryImpl implements TarjetaCreditoRepository {
                 .map(TarjetaCreditoMapper.getInstance()::fromTarjetaCreditoJpaEntityToTarjetaCredito)
                 .toList();
     }
+
+    @Override
+    public List<TarjetaCredito> findAllOfUser(String token) {
+        return tarjetaCreditoJpaDao.findAllOfUser(token)
+                .stream()
+                .map(TarjetaCreditoMapper.getInstance():: fromTarjetaCreditoJpaEntityToTarjetaCredito)
+                .toList();
+    }
+
+    @Override
+    public Boolean tarjetaPerteneceAUsuario(Long idTarjeta, String token) {
+        return tarjetaCreditoJpaDao.tarjetaPerteneceAUsuario(idTarjeta, token);
+    }
 }

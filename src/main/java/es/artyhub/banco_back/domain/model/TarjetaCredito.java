@@ -1,6 +1,6 @@
 package es.artyhub.banco_back.domain.model;
 
-import java.util.Date;
+
 
 public class TarjetaCredito {
     private Long id;

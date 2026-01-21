@@ -9,4 +9,6 @@ public interface TarjetaCreditoRepository {
     TarjetaCredito findByNumeroTarjeta(String numeroTarjeta);
     List<TarjetaCredito> findByCuentaId(Long cuenta_id);
     List<TarjetaCredito> findAll();
+    List<TarjetaCredito> findAllOfUser(String token);
+    Boolean tarjetaPerteneceAUsuario(Long idTarjeta, String token);
 }

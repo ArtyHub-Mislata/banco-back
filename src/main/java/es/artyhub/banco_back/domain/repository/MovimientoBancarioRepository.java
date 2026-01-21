@@ -11,4 +11,6 @@ public interface MovimientoBancarioRepository {
     List<MovimientoBancario> findByCuentaId(Long cuenta_id);
     List<MovimientoBancario> findAll();
     MovimientoBancario save(MovimientoBancario movimientoBancario, Long cuentaId);
+    List<MovimientoBancario> findAllOfTarjeta(Long tarjetaId);
+
 }

@@ -10,4 +10,6 @@ public interface MovimientoBancarioJpaDao extends GenericJpaDao<MovimientoBancar
     List<MovimientoBancarioJpaEntity> findByCuentaId(Long cuenta_id);
     MovimientoBancarioJpaEntity insert(MovimientoBancarioJpaEntity movimientoBancarioJpaEntity, Long cuentaId);
     MovimientoBancarioJpaEntity update(MovimientoBancarioJpaEntity movimientoBancarioJpaEntity);
+    List<MovimientoBancarioJpaEntity> findByTarjetaId(Long tarjetaId);
+
 }

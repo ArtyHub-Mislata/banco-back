@@ -66,8 +66,18 @@ public class TarjetaCreditoServiceImpl implements TarjetaCreditoService {
     }
 
     @Override
+    public List<TarjetaCredito> findAllOfUser(String token) {
+        return tarjetaCreditoRepository.findAllOfUser(token);
+    }
+
+    @Override
     public Boolean tarjetaIsValid(OrigenDto tarjetaOrigen, TarjetaCredito tarjetaBD) {
         return tarjetaOrigen.cvc().equals(tarjetaBD.getCvv()) && tarjetaOrigen.fechaCaducidad().equals(tarjetaBD.getFechaCaducidad()) &&
                 tarjetaOrigen.nombreCompleto().equals(tarjetaBD.getNombreCompleto()) && tarjetaOrigen.numeroTarjeta().equals(tarjetaBD.getNumeroTarjeta());
+    }
+
+    @Override
+    public Boolean tarjetaPerteneceAUsuario(Long idTarjeta, String token) {
+        return tarjetaCreditoRepository.tarjetaPerteneceAUsuario(idTarjeta, token);
     }
 }

@@ -74,4 +74,20 @@ public class MovimientoBancarioJpaDaoImpl implements MovimientoBancarioJpaDao {
     public MovimientoBancarioJpaEntity update(MovimientoBancarioJpaEntity movimientoBancarioJpaEntity) {
         return entityManager.merge(movimientoBancarioJpaEntity);
     }
+
+    @Override
+    public List<MovimientoBancarioJpaEntity> findByTarjetaId(Long tarjetaId) {
+        String sql = """
+            SELECT m 
+            FROM MovimientoBancarioJpaEntity m
+            WHERE m.tarjetaCredito.id = :tarjetaId
+            ORDER BY m.fecha DESC
+            """;
+
+        TypedQuery<MovimientoBancarioJpaEntity> query = entityManager
+                .createQuery(sql, MovimientoBancarioJpaEntity.class)
+                .setParameter("tarjetaId", tarjetaId);
+
+        return query.getResultList();
+    }
 }
