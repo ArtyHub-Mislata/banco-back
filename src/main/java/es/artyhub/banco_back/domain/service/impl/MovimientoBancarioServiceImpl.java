@@ -1,12 +1,12 @@
 package es.artyhub.banco_back.domain.service.impl;
 
-import java.math.BigDecimal;
 import java.util.List;
 import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
 import es.artyhub.banco_back.domain.exception.ValidationException;
 import es.artyhub.banco_back.domain.model.MovimientoBancario;
 import es.artyhub.banco_back.domain.repository.MovimientoBancarioRepository;
 import es.artyhub.banco_back.domain.service.MovimientoBancarioService;
+import jakarta.transaction.Transactional;
 
 public class MovimientoBancarioServiceImpl implements MovimientoBancarioService {
     
@@ -31,7 +31,7 @@ public class MovimientoBancarioServiceImpl implements MovimientoBancarioService 
     }
 
     @Override
-    public MovimientoBancario findByImporte(BigDecimal importe) {
+    public MovimientoBancario findByImporte(Long importe) {
         
         if(importe == null) {
             throw new ValidationException("Importe no valido");
@@ -81,9 +81,14 @@ public class MovimientoBancarioServiceImpl implements MovimientoBancarioService 
 
         return movimientoBancarioRepository.findAll();
     }
+    @Transactional
+    @Override
+    public MovimientoBancario saveMovimientoBancario(MovimientoBancario movimientoBancario, Long cuentaId) {
+        return movimientoBancarioRepository.save(movimientoBancario, cuentaId);
+    }
 
     @Override
-    public MovimientoBancario saveMovimientoBancario(MovimientoBancario movimientoBancario) {
-        return movimientoBancarioRepository.save(movimientoBancario);
+    public List<MovimientoBancario> findByTarjetaId(Long idTarjeta) {
+        return movimientoBancarioRepository.findAllOfTarjeta(idTarjeta);
     }
 }

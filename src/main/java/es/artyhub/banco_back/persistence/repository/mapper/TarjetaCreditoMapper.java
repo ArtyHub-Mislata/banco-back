@@ -28,8 +28,7 @@ public class TarjetaCreditoMapper {
             tarjetaCredito.getNumeroTarjeta(),
             tarjetaCredito.getFechaCaducidad(),
             tarjetaCredito.getCvv(),
-            tarjetaCredito.getNombreCompleto(),
-            CuentaMapper.getInstance().fromCuentaToCuentaJpaEntity(tarjetaCredito.getCuenta())
+            tarjetaCredito.getNombreCompleto()
         );
     }
 
@@ -42,26 +41,9 @@ public class TarjetaCreditoMapper {
             tarjetaCreditoJpaEntity.getNumeroTarjeta(),
             tarjetaCreditoJpaEntity.getFechaCaducidad(),
             tarjetaCreditoJpaEntity.getCvv(),
-            tarjetaCreditoJpaEntity.getNombreCompleto(),
-            CuentaMapper.getInstance().fromCuentaJpaEntityToCuenta(tarjetaCreditoJpaEntity.getCuenta())
+            tarjetaCreditoJpaEntity.getNombreCompleto()
         );
     }
 
-    public List<TarjetaCredito> fromTarjetaCreditoJpaEntityListToTarjetaCreditoList(List<TarjetaCreditoJpaEntity> entities) {
-        if (entities == null) {
-            return null;
-        }
-        return entities.stream()
-            .map(this::fromTarjetaCreditoJpaEntityToTarjetaCredito)
-            .toList();
-    }
 
-    public List<TarjetaCreditoJpaEntity> fromTarjetaCreditoListToTarjetaCreditoJpaEntityList(List<TarjetaCredito> tarjetas) {
-        if (tarjetas == null) {
-            return null;
-        }
-        return tarjetas.stream()
-            .map(this::fromTarjetaCreditoToTarjetaCreditoJpaEntity)
-            .toList();
-    }
 }

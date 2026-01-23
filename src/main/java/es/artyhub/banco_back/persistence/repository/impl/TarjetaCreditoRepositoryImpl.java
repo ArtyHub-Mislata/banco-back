@@ -27,11 +27,30 @@ public class TarjetaCreditoRepositoryImpl implements TarjetaCreditoRepository {
 
     @Override
     public List<TarjetaCredito> findByCuentaId(Long cuenta_id) {
-        return TarjetaCreditoMapper.getInstance().fromTarjetaCreditoJpaEntityListToTarjetaCreditoList(tarjetaCreditoJpaDao.findByCuentaId(cuenta_id));
+        return tarjetaCreditoJpaDao.findByCuentaId(cuenta_id)
+                .stream()
+                .map(TarjetaCreditoMapper.getInstance()::fromTarjetaCreditoJpaEntityToTarjetaCredito)
+                .toList();
     }
 
     @Override
     public List<TarjetaCredito> findAll() {
-        return TarjetaCreditoMapper.getInstance().fromTarjetaCreditoJpaEntityListToTarjetaCreditoList(tarjetaCreditoJpaDao.findAll());
+        return tarjetaCreditoJpaDao.findAll()
+                .stream()
+                .map(TarjetaCreditoMapper.getInstance()::fromTarjetaCreditoJpaEntityToTarjetaCredito)
+                .toList();
+    }
+
+    @Override
+    public List<TarjetaCredito> findAllOfUser(String token) {
+        return tarjetaCreditoJpaDao.findAllOfUser(token)
+                .stream()
+                .map(TarjetaCreditoMapper.getInstance():: fromTarjetaCreditoJpaEntityToTarjetaCredito)
+                .toList();
+    }
+
+    @Override
+    public Boolean tarjetaPerteneceAUsuario(Long idTarjeta, String token) {
+        return tarjetaCreditoJpaDao.tarjetaPerteneceAUsuario(idTarjeta, token);
     }
 }

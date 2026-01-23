@@ -12,7 +12,7 @@ public interface CuentaService {
     Cuenta findByNumeroTarjeta(String numeroTarjeta);
     List<Cuenta> findByClienteId(Long cliente_id);
     List<Cuenta> findAll();
-    Boolean saldoIsEnough(BigDecimal importe, String iban);
+    List<Cuenta> findByToken(String token);
     void updateSaldo(Cuenta cuenta, BigDecimal importe, TipoMovimiento tipoMovimiento);
     Cuenta save(Cuenta cuenta);
 }

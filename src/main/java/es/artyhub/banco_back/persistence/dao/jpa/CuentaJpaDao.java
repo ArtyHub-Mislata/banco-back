@@ -7,6 +7,8 @@ import es.artyhub.banco_back.persistence.dao.jpa.entity.CuentaJpaEntity;
 public interface CuentaJpaDao extends GenericJpaDao<CuentaJpaEntity>{
     CuentaJpaEntity findByIban(String iban);
     List<CuentaJpaEntity> findByClienteId(Long cliente_id);
-    CuentaJpaEntity findByNumeroTarjeta(String numeroTarjeta);
-    CuentaJpaEntity save(CuentaJpaEntity cuentaJpaEntity);
+    List<CuentaJpaEntity> findByToken(String token);
+    CuentaJpaEntity findByNDeTarjeta(String nTarjeta);
+    CuentaJpaEntity insert(CuentaJpaEntity cuentaJpaEntity);
+    CuentaJpaEntity update(CuentaJpaEntity cuentaJpaEntity);
 }

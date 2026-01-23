@@ -1,7 +1,9 @@
 package es.artyhub.banco_back.persistence.dao.jpa.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.*;
 
@@ -14,25 +16,28 @@ public class TarjetaCreditoJpaEntity implements Serializable{
     @Column(name = "numero_tarjeta")
     private String numeroTarjeta;
     @Column(name = "fecha_caducidad")
-    private Date fechaCaducidad;
+    private String fechaCaducidad;
     private String cvv;
     @Column(name = "nombre_completo")
     private String nombreCompleto;
+
+    @OneToMany(mappedBy = "tarjetaCredito", fetch = FetchType.LAZY)
+    private List<MovimientoBancarioJpaEntity> movements = new ArrayList<>();
+
     @ManyToOne
-    @JoinColumn(name = "cuenta_id")
+    @JoinColumn(name = "cuenta_id") // opcional pero recomendado
     private CuentaJpaEntity cuenta;
 
     public TarjetaCreditoJpaEntity() {
     }
 
-    public TarjetaCreditoJpaEntity(Long id, String numeroTarjeta, Date fechaCaducidad, String cvv,
-            String nombreCompleto, CuentaJpaEntity cuenta) {
+    public TarjetaCreditoJpaEntity(Long id, String numeroTarjeta, String fechaCaducidad, String cvv,
+            String nombreCompleto) {
         this.id = id;
         this.numeroTarjeta = numeroTarjeta;
         this.fechaCaducidad = fechaCaducidad;
         this.cvv = cvv;
         this.nombreCompleto = nombreCompleto;
-        this.cuenta = cuenta;
     }
 
 
@@ -52,11 +57,11 @@ public class TarjetaCreditoJpaEntity implements Serializable{
         this.numeroTarjeta = numeroTarjeta;
     }
 
-    public Date getFechaCaducidad() {
+    public String getFechaCaducidad() {
         return fechaCaducidad;
     }
 
-    public void setFechaCaducidad(Date fechaCaducidad) {
+    public void setFechaCaducidad(String fechaCaducidad) {
         this.fechaCaducidad = fechaCaducidad;
     }
 
@@ -82,5 +87,13 @@ public class TarjetaCreditoJpaEntity implements Serializable{
 
     public void setCuenta(CuentaJpaEntity cuenta) {
         this.cuenta = cuenta;
+    }
+
+    public List<MovimientoBancarioJpaEntity> getMovements() {
+        return movements;
+    }
+
+    public void setMovements(List<MovimientoBancarioJpaEntity> movements) {
+        this.movements = movements;
     }
 }

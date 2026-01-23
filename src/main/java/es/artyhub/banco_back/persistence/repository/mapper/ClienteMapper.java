@@ -31,7 +31,7 @@ public class ClienteMapper {
             clienteJpaEntity.getLastName1(), 
             clienteJpaEntity.getLastName2(), 
             clienteJpaEntity.getDni(), 
-            clienteJpaEntity.getApi_token());
+            clienteJpaEntity.getApiToken());
     }
 
     public ClienteJpaEntity fromClienteToClienteJpaEntity(Cliente cliente) {
@@ -47,23 +47,5 @@ public class ClienteMapper {
             cliente.getLastName2(), 
             cliente.getDni(), 
             cliente.getApi_token());
-    }
-
-    public List<Cliente> fromClienteJpaEntityListToClienteList(List<ClienteJpaEntity> clienteJpaEntityList) {
-        if (clienteJpaEntityList == null) {
-            return null;
-        }
-        return clienteJpaEntityList.stream()
-                .map(this::fromClienteJpaEntityToCliente)
-                .toList();
-    }
-
-    public List<ClienteJpaEntity> fromClienteListToClienteJpaEntityList(List<Cliente> clienteList) {
-        if (clienteList == null) {
-            return null;
-        }
-        return clienteList.stream()
-                .map(this::fromClienteToClienteJpaEntity)
-                .toList();
     }
 }

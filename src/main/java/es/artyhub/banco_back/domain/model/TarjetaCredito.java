@@ -1,26 +1,24 @@
 package es.artyhub.banco_back.domain.model;
 
-import java.util.Date;
+
 
 public class TarjetaCredito {
     private Long id;
     private String numeroTarjeta;
-    private Date fechaCaducidad;
+    private String fechaCaducidad;
     private String cvv;
     private String nombreCompleto;
-    private Cuenta cuenta;
 
 
     public TarjetaCredito() {
     }
 
-    public TarjetaCredito(Long id, String numeroTarjeta, Date fechaCaducidad, String cvv, String nombreCompleto, Cuenta cuenta) {
+    public TarjetaCredito(Long id, String numeroTarjeta, String fechaCaducidad, String cvv, String nombreCompleto) {
         this.id = id;
         this.numeroTarjeta = numeroTarjeta;
         this.fechaCaducidad = fechaCaducidad;
         this.cvv = cvv;
         this.nombreCompleto = nombreCompleto;
-        this.cuenta = cuenta;
     }
 
     public Long getId() {
@@ -39,11 +37,11 @@ public class TarjetaCredito {
         this.numeroTarjeta = numeroTarjeta;
     }
 
-    public Date getFechaCaducidad() {
+    public String getFechaCaducidad() {
         return fechaCaducidad;
     }
 
-    public void setFechaCaducidad(Date fechaCaducidad) {
+    public void setFechaCaducidad(String fechaCaducidad) {
         this.fechaCaducidad = fechaCaducidad;
     }
 
@@ -61,13 +59,5 @@ public class TarjetaCredito {
 
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
-    }
-
-    public Cuenta getCuenta() {
-        return cuenta;
-    }
-
-    public void setCuenta(Cuenta cuenta) {
-        this.cuenta = cuenta;
     }
 }

@@ -2,6 +2,7 @@ package es.artyhub.banco_back.persistence.dao.jpa.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -18,10 +19,12 @@ public class CuentaJpaEntity implements Serializable{
     @ManyToOne
     @JoinColumn(name = "client_id")
     private ClienteJpaEntity cliente;
+
     @OneToMany(mappedBy = "cuenta")
-    private List<TarjetaCreditoJpaEntity> tarjetas;
+    private List<TarjetaCreditoJpaEntity> tarjetas = new ArrayList<>();
+
     @OneToMany(mappedBy = "cuenta")
-    private List<MovimientoBancarioJpaEntity> movimientos;
+    private List<MovimientoBancarioJpaEntity> movimientos = new ArrayList<>();
     
     public CuentaJpaEntity() {
     }
@@ -33,6 +36,22 @@ public class CuentaJpaEntity implements Serializable{
         this.cliente = cliente;
         this.tarjetas = tarjetas;
         this.movimientos = movimientos;
+    }
+
+    public void agregarTarjeta(TarjetaCreditoJpaEntity tarjeta) {
+        if (tarjetas == null) {
+            tarjetas = new ArrayList<>();
+        }
+        tarjeta.setCuenta(this);
+        tarjetas.add(tarjeta);
+    }
+
+    public void agregarMovimiento(MovimientoBancarioJpaEntity movimiento) {
+        if (movimientos == null) {
+            movimientos = new ArrayList<>();
+        }
+        movimiento.setCuenta(this);
+        movimientos.add(movimiento);
     }
 
     public Long getId() {
@@ -76,10 +95,16 @@ public class CuentaJpaEntity implements Serializable{
     }
 
     public List<MovimientoBancarioJpaEntity> getMovimientos() {
+        if (movimientos == null) {
+            movimientos = new ArrayList<>();
+        }
         return movimientos;
     }
 
     public void setMovimientos(List<MovimientoBancarioJpaEntity> movimientos) {
-        this.movimientos = movimientos;
+        this.movimientos.clear();
+        if (movimientos != null) {
+            this.movimientos.addAll(movimientos);
+        }
     }
 }

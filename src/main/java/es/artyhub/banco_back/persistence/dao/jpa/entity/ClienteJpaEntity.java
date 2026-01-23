@@ -21,10 +21,7 @@ public class ClienteJpaEntity implements Serializable {
     private String lastName2;
     private String dni;
     @Column(name = "api_token")
-    private String api_token;
-
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CuentaJpaEntity> cuentas = new ArrayList<>();
+    private String apiToken;
 
     public ClienteJpaEntity() {
     }
@@ -38,7 +35,7 @@ public class ClienteJpaEntity implements Serializable {
         this.lastName1 = lastName1;
         this.lastName2 = lastName2;
         this.dni = dni;
-        this.api_token = api_token;
+        this.apiToken = api_token;
     }
 
     public Long getId() {
@@ -97,11 +94,11 @@ public class ClienteJpaEntity implements Serializable {
         this.dni = dni;
     }
 
-    public String getApi_token() {
-        return api_token;
+    public String getApiToken() {
+        return apiToken;
     }
 
-    public void setApi_token(String api_token) {
-        this.api_token = api_token;
+    public void setApiToken(String api_token) {
+        this.apiToken = api_token;
     }
 }

@@ -1,7 +1,11 @@
 package es.artyhub.banco_back.controller;
 
+import es.artyhub.banco_back.domain.dto.PagoDto;
 import es.artyhub.banco_back.domain.dto.PagoTarjetaDto;
 import es.artyhub.banco_back.domain.service.PagoTarjetaService;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

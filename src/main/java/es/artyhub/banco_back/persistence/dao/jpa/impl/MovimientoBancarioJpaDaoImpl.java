@@ -1,12 +1,13 @@
 package es.artyhub.banco_back.persistence.dao.jpa.impl;
 
+import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
 import es.artyhub.banco_back.persistence.dao.jpa.MovimientoBancarioJpaDao;
+import es.artyhub.banco_back.persistence.dao.jpa.entity.CuentaJpaEntity;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.MovimientoBancarioJpaEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class MovimientoBancarioJpaDaoImpl implements MovimientoBancarioJpaDao {
@@ -29,7 +30,7 @@ public class MovimientoBancarioJpaDaoImpl implements MovimientoBancarioJpaDao {
     }
 
     @Override
-    public MovimientoBancarioJpaEntity findByImporte(BigDecimal importe) {
+    public MovimientoBancarioJpaEntity findByImporte(Long importe) {
         String sql = "SELECT movimiento FROM MovimientoBancarioJpaEntity movimiento WHERE movimiento.importe = :importe";
 
         TypedQuery<MovimientoBancarioJpaEntity> movimientoBancarioJpaEntityTypedQuery = entityManager
@@ -50,7 +51,7 @@ public class MovimientoBancarioJpaDaoImpl implements MovimientoBancarioJpaDao {
 
     @Override
     public List<MovimientoBancarioJpaEntity> findByCuentaId(Long cuenta_id) {
-        String sql = "SELECT movimiento FROM MovimientoBancarioJpaEntity movimiento WHERE movimiento.cuenta_id = :cuenta_id";
+        String sql = "SELECT movimiento FROM MovimientoBancarioJpaEntity movimiento WHERE movimiento.cuenta.id = :cuenta_id";
 
         TypedQuery<MovimientoBancarioJpaEntity> movimientoBancarioJpaEntityTypedQuery = entityManager
                 .createQuery(sql, MovimientoBancarioJpaEntity.class)
@@ -59,7 +60,12 @@ public class MovimientoBancarioJpaDaoImpl implements MovimientoBancarioJpaDao {
     }
 
     @Override
-    public MovimientoBancarioJpaEntity insert(MovimientoBancarioJpaEntity movimientoBancarioJpaEntity) {
+    public MovimientoBancarioJpaEntity insert(MovimientoBancarioJpaEntity movimientoBancarioJpaEntity, Long id) {
+        CuentaJpaEntity cuentaJpaEntity = entityManager.find(CuentaJpaEntity.class, id);
+        if(cuentaJpaEntity == null){
+            throw new ResourceNotFoundException("No se ha insertado el movimiento porque el id de la cuenta es nulo");
+        }
+        movimientoBancarioJpaEntity.setCuenta(cuentaJpaEntity);
         entityManager.persist(movimientoBancarioJpaEntity);
         return movimientoBancarioJpaEntity;
     }
@@ -67,5 +73,21 @@ public class MovimientoBancarioJpaDaoImpl implements MovimientoBancarioJpaDao {
     @Override
     public MovimientoBancarioJpaEntity update(MovimientoBancarioJpaEntity movimientoBancarioJpaEntity) {
         return entityManager.merge(movimientoBancarioJpaEntity);
+    }
+
+    @Override
+    public List<MovimientoBancarioJpaEntity> findByTarjetaId(Long tarjetaId) {
+        String sql = """
+            SELECT m 
+            FROM MovimientoBancarioJpaEntity m
+            WHERE m.tarjetaCredito.id = :tarjetaId
+            ORDER BY m.fecha DESC
+            """;
+
+        TypedQuery<MovimientoBancarioJpaEntity> query = entityManager
+                .createQuery(sql, MovimientoBancarioJpaEntity.class)
+                .setParameter("tarjetaId", tarjetaId);
+
+        return query.getResultList();
     }
 }

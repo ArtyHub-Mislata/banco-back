@@ -27,18 +27,20 @@ public class TarjetaCreditoJpaDaoImpl implements TarjetaCreditoJpaDao {
 
     @Override
     public TarjetaCreditoJpaEntity findByNumeroTarjeta(String numero) {
-        String sql = "SELECT tarjeta FROM TarjetaCreditoJpaEntity tarjeta WHERE tarjeta.numeroTarjeta = :numero";
+        String sql = "SELECT t FROM TarjetaCreditoJpaEntity t WHERE t.numeroTarjeta = :numero";
 
-        TypedQuery<TarjetaCreditoJpaEntity> tarjetaCreditoJpaEntityTypedQuery = entityManager
+        List<TarjetaCreditoJpaEntity> resultados = entityManager
                 .createQuery(sql, TarjetaCreditoJpaEntity.class)
-                .setParameter("numero", numero);
-        TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity = tarjetaCreditoJpaEntityTypedQuery.getSingleResult();
-        return tarjetaCreditoJpaEntity;
+                .setParameter("numero", numero)
+                .setMaxResults(1)
+                .getResultList();
+
+        return resultados.isEmpty() ? null : resultados.get(0);
     }
 
     @Override
     public List<TarjetaCreditoJpaEntity> findByCuentaId(Long cuenta_id) {
-        String sql = "SELECT tarjeta FROM TarjetaCreditoJpaEntity tarjeta WHERE tarjeta.cuenta_id = :cuenta_id";
+        String sql = "SELECT tarjeta FROM TarjetaCreditoJpaEntity tarjeta WHERE tarjeta.cuenta.id = :cuenta_id";
 
         TypedQuery<TarjetaCreditoJpaEntity> tarjetaCreditoJpaEntityTypedQuery = entityManager
                 .createQuery(sql, TarjetaCreditoJpaEntity.class)
@@ -50,4 +52,46 @@ public class TarjetaCreditoJpaDaoImpl implements TarjetaCreditoJpaDao {
     public TarjetaCreditoJpaEntity save(TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity) {
         return entityManager.merge(tarjetaCreditoJpaEntity);
     }
+
+    @Override
+    public List<TarjetaCreditoJpaEntity> findAllOfUser(String token) {
+        String sql = """
+        SELECT t 
+        FROM TarjetaCreditoJpaEntity t
+        JOIN t.cuenta c
+        JOIN c.cliente cli
+        JOIN SesionJpaEntity s ON s.cliente = cli
+        WHERE s.token = :token
+        ORDER BY t.id ASC
+        """;
+
+        TypedQuery<TarjetaCreditoJpaEntity> query = entityManager
+                .createQuery(sql, TarjetaCreditoJpaEntity.class)
+                .setParameter("token", token);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public Boolean tarjetaPerteneceAUsuario(Long tarjetaId, String token) {
+        String sql = """
+        SELECT COUNT(t) 
+        FROM TarjetaCreditoJpaEntity t
+        JOIN t.cuenta c
+        JOIN c.cliente cli
+        JOIN SesionJpaEntity s ON s.cliente = cli
+        WHERE s.token = :token 
+        AND t.id = :tarjetaId
+        """;
+
+        Long count = entityManager
+                .createQuery(sql, Long.class)
+                .setParameter("token", token)
+                .setParameter("tarjetaId", tarjetaId)
+                .getSingleResult();
+
+        return count > 0;
+    }
+
+
 }
