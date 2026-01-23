@@ -23,7 +23,7 @@ public class AutorizacionServiceImpl implements AutorizacionService {
             throw new ValidationException("El pago no puede ser nulo");
         }
         
-        Cuenta cuenta = cuentaService.findByIban(pagoTarjetaDto.destino().numeroCuenta());
+        Cuenta cuenta = cuentaService.findByIban(pagoTarjetaDto.destino().iban());
 
         if (cuenta == null) {
             throw new ResourceNotFoundException("El número de cuenta no existe");
