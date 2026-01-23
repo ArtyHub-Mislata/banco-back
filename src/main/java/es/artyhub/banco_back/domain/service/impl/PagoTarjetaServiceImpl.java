@@ -33,6 +33,10 @@ public class PagoTarjetaServiceImpl implements PagoTarjetaService {
     public void save(PagoTarjetaDto pagoTarjetaDto) {
 
         DtoValidator.validate(pagoTarjetaDto);
+        DtoValidator.validate(pagoTarjetaDto.pago());
+        DtoValidator.validate(pagoTarjetaDto.autorizacion());
+        DtoValidator.validate(pagoTarjetaDto.destino());
+        DtoValidator.validate(pagoTarjetaDto.origen());
 
         //Comprobación de los datos de la tarjeta
         TarjetaCredito tarjetaCredito = tarjetaCreditoService.findByNumeroTarjeta(pagoTarjetaDto.origen().numeroTarjeta());

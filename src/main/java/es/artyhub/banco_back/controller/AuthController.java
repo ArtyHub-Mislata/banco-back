@@ -32,9 +32,17 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     @GetMapping("/islogged")
-    public ResponseEntity<Cliente> isLogged(HttpServletRequest request){
-        String token = request.getHeader("authorization").substring(7);
-        Cliente cliente = authService.getClienteByToken(token);
-        return new ResponseEntity<>(cliente, HttpStatus.OK);
+    public ResponseEntity<Boolean> isLogged(HttpServletRequest request){
+        Boolean isLogged = Boolean.FALSE;
+        String header = request.getHeader("authorization");
+
+        if(header != null){
+            String token = header.substring(7);
+            Cliente cliente = authService.getClienteByToken(token);
+            if(cliente != null) {
+                isLogged = Boolean.TRUE;
+            }
+        }
+        return new ResponseEntity<>(isLogged, HttpStatus.OK);
     }
 }

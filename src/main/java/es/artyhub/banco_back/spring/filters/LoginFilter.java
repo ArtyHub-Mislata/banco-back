@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileFilter;
 import java.io.IOException;
+import java.util.List;
 
 @Component
 @Order(0)
@@ -30,7 +31,10 @@ public class LoginFilter implements Filter {
             filterChain.doFilter(request, response);
             return;
         }
-        String unprotectedPath = "/api/login";
+        List<String> unprotectedPaths = List.of(
+                "/api/login",
+                "/api/islogged"
+        );
 
         String header = req.getHeader("authorization");
         String token = null;
@@ -47,7 +51,7 @@ public class LoginFilter implements Filter {
             cliente = authService.getClienteByToken(token);
         }
 
-        if(cliente == null && !req.getRequestURI().equals(unprotectedPath)){
+        if(cliente == null && !unprotectedPaths.contains(req.getRequestURI())){
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
