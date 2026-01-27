@@ -18,7 +18,7 @@ public class DestinoDtoTest {
     @Test
     @DisplayName("Create DestinoDto with valid data should not throw ValidationException")
     void createDestinoDto_WithValidData_ShouldNotThrowValidationException() {
-        DestinoDto destinoDto = new DestinoDto("1234567890123456");
+        DestinoDto destinoDto = new DestinoDto("123456789012345678901234");
 
         assertDoesNotThrow(() -> DtoValidator.validate(destinoDto));
     }

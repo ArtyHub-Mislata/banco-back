@@ -22,6 +22,10 @@ public class AutorizacionServiceImpl implements AutorizacionService {
         if (pagoTarjetaDto == null) {
             throw new ValidationException("El pago no puede ser nulo");
         }
+
+        if (pagoTarjetaDto.destino() == null) {
+            throw new ValidationException("El destino no puede ser nulo");
+        }
         
         Cuenta cuenta = cuentaService.findByIban(pagoTarjetaDto.destino().iban());
 

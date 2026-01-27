@@ -35,7 +35,7 @@ public class TarjetaCreditoJpaDaoImplTest {
     public void findTarjetaById() {
         TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity = new TarjetaCreditoJpaEntity();
         tarjetaCreditoJpaEntity.setNumeroTarjeta("numeroTarjeta");
-        tarjetaCreditoJpaEntity.setFechaCaducidad(new Date());
+        tarjetaCreditoJpaEntity.setFechaCaducidad("fechaCaducidad");
         tarjetaCreditoJpaEntity.setCvv("cvv");
         tarjetaCreditoJpaEntity.setNombreCompleto("nombreCompleto");
         entityManager.persist(tarjetaCreditoJpaEntity);
@@ -51,7 +51,7 @@ public class TarjetaCreditoJpaDaoImplTest {
     void findAllTarjetas() {
         TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity = new TarjetaCreditoJpaEntity();
         tarjetaCreditoJpaEntity.setNumeroTarjeta("numeroTarjeta");
-        tarjetaCreditoJpaEntity.setFechaCaducidad(new Date());
+        tarjetaCreditoJpaEntity.setFechaCaducidad("fechaCaducidad");
         tarjetaCreditoJpaEntity.setCvv("cvv");
         tarjetaCreditoJpaEntity.setNombreCompleto("nombreCompleto");
         entityManager.persist(tarjetaCreditoJpaEntity);
@@ -59,7 +59,7 @@ public class TarjetaCreditoJpaDaoImplTest {
 
         TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity2 = new TarjetaCreditoJpaEntity();
         tarjetaCreditoJpaEntity.setNumeroTarjeta("numeroTarjeta2");
-        tarjetaCreditoJpaEntity.setFechaCaducidad(new Date());
+        tarjetaCreditoJpaEntity.setFechaCaducidad("fechaCaducidad2");
         tarjetaCreditoJpaEntity.setCvv("cvv2");
         tarjetaCreditoJpaEntity.setNombreCompleto("nombreCompleto2");
         entityManager.persist(tarjetaCreditoJpaEntity2);
@@ -74,7 +74,7 @@ public class TarjetaCreditoJpaDaoImplTest {
     public void findTarjetaByNumeroTarjeta() {
         TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity = new TarjetaCreditoJpaEntity();
         tarjetaCreditoJpaEntity.setNumeroTarjeta("numeroTarjeta");
-        tarjetaCreditoJpaEntity.setFechaCaducidad(new Date());
+        tarjetaCreditoJpaEntity.setFechaCaducidad("fechaCaducidad");
         tarjetaCreditoJpaEntity.setCvv("cvv");
         tarjetaCreditoJpaEntity.setNombreCompleto("nombreCompleto");
         entityManager.persist(tarjetaCreditoJpaEntity);
@@ -99,7 +99,7 @@ public class TarjetaCreditoJpaDaoImplTest {
 
         TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity = new TarjetaCreditoJpaEntity();
         tarjetaCreditoJpaEntity.setNumeroTarjeta("numeroTarjeta");
-        tarjetaCreditoJpaEntity.setFechaCaducidad(new Date());
+        tarjetaCreditoJpaEntity.setFechaCaducidad("fechaCaducidad");
         tarjetaCreditoJpaEntity.setCvv("cvv");
         tarjetaCreditoJpaEntity.setNombreCompleto("nombreCompleto");
         tarjetaCreditoJpaEntity.setCuenta(cuentaJpaEntity);
@@ -115,7 +115,7 @@ public class TarjetaCreditoJpaDaoImplTest {
     public void saveTarjeta() {
         TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity = new TarjetaCreditoJpaEntity();
         tarjetaCreditoJpaEntity.setNumeroTarjeta("numeroTarjeta");
-        tarjetaCreditoJpaEntity.setFechaCaducidad(new Date());
+        tarjetaCreditoJpaEntity.setFechaCaducidad("fechaCaducidad");
         tarjetaCreditoJpaEntity.setCvv("cvv");
         tarjetaCreditoJpaEntity.setNombreCompleto("nombreCompleto");
         entityManager.persist(tarjetaCreditoJpaEntity);

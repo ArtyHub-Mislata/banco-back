@@ -20,12 +20,14 @@ public class ClienteServiceImpl implements ClienteService {
         if(id == null) {
             throw new ValidationException("Id no valido");
         }
+
+        Cliente cliente = clienteRepository.findById(id);
         
-        if(clienteRepository.findById(id) == null) {
+        if(cliente == null) {
             throw new ResourceNotFoundException("Cliente no encontrado");
         }
 
-        return clienteRepository.findById(id);
+        return cliente;
     }
 
     @Override
@@ -35,10 +37,12 @@ public class ClienteServiceImpl implements ClienteService {
             throw new ValidationException("Login no valido");
         }
 
-        if(clienteRepository.findByLogin(login) == null) {
+        Cliente cliente = clienteRepository.findByLogin(login);
+        
+        if(cliente == null) {
             throw new ResourceNotFoundException("Cliente no encontrado");
         }
 
-        return clienteRepository.findByLogin(login);
+        return cliente;
     }
 }

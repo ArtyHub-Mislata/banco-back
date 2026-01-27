@@ -1,5 +1,6 @@
 package es.artyhub.banco_back.domain.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
 import es.artyhub.banco_back.domain.exception.ValidationException;
@@ -23,25 +24,29 @@ public class MovimientoBancarioServiceImpl implements MovimientoBancarioService 
             throw new ValidationException("Id no valido");
         }
 
-        if(movimientoBancarioRepository.findById(id) == null) {
+        MovimientoBancario movimientoBancario = movimientoBancarioRepository.findById(id);
+
+        if(movimientoBancario == null) {
             throw new ResourceNotFoundException("Movimiento bancario no encontrado");
         }
 
-        return movimientoBancarioRepository.findById(id);
+        return movimientoBancario;
     }
 
     @Override
-    public MovimientoBancario findByImporte(Long importe) {
+    public MovimientoBancario findByImporte(BigDecimal importe) {
         
         if(importe == null) {
             throw new ValidationException("Importe no valido");
         }
 
-        if(movimientoBancarioRepository.findByImporte(importe) == null) {
+        MovimientoBancario movimientoBancario = movimientoBancarioRepository.findByImporte(importe);
+
+        if(movimientoBancario == null) {
             throw new ResourceNotFoundException("Movimiento bancario no encontrado");
         }
 
-        return movimientoBancarioRepository.findByImporte(importe);
+        return movimientoBancario;
     }
 
     @Override
@@ -51,11 +56,13 @@ public class MovimientoBancarioServiceImpl implements MovimientoBancarioService 
             throw new ValidationException("Concepto no valido");
         }
 
-        if(movimientoBancarioRepository.findByConcepto(concepto) == null) {
+        MovimientoBancario movimientoBancario = movimientoBancarioRepository.findByConcepto(concepto);
+
+        if(movimientoBancario == null) {
             throw new ResourceNotFoundException("Movimiento bancario no encontrado");
         }
 
-        return movimientoBancarioRepository.findByConcepto(concepto);
+        return movimientoBancario;
     }
 
     @Override
@@ -65,21 +72,25 @@ public class MovimientoBancarioServiceImpl implements MovimientoBancarioService 
             throw new ValidationException("Id de la cuenta no valido");
         }
 
-        if(movimientoBancarioRepository.findByCuentaId(cuenta_id) == null) {
+        List<MovimientoBancario> movimientoBancario = movimientoBancarioRepository.findByCuentaId(cuenta_id);
+
+        if(movimientoBancario == null) {
             throw new ResourceNotFoundException("Movimientos bancarios no encontrados");
         }
 
-        return movimientoBancarioRepository.findByCuentaId(cuenta_id);
+        return movimientoBancario;
     }
 
     @Override
     public List<MovimientoBancario> findAll() {
         
-        if(movimientoBancarioRepository.findAll() == null) {
+        List<MovimientoBancario> movimientoBancario = movimientoBancarioRepository.findAll();
+
+        if(movimientoBancario == null) {
             throw new ResourceNotFoundException("Movimientos bancarios no encontrados");
         }
 
-        return movimientoBancarioRepository.findAll();
+        return movimientoBancario;
     }
     @Transactional
     @Override

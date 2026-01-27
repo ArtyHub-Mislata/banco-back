@@ -5,6 +5,7 @@ import es.artyhub.banco_back.domain.repository.MovimientoBancarioRepository;
 import es.artyhub.banco_back.persistence.dao.jpa.MovimientoBancarioJpaDao;
 import es.artyhub.banco_back.persistence.repository.mapper.MovimientoBancarioMapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class MovimientoBancarioRepositoryImpl implements MovimientoBancarioRepository {
@@ -21,7 +22,7 @@ public class MovimientoBancarioRepositoryImpl implements MovimientoBancarioRepos
     }
 
     @Override
-    public MovimientoBancario findByImporte(Long importe) {
+    public MovimientoBancario findByImporte(BigDecimal importe) {
         return MovimientoBancarioMapper.getInstance().fromMovimientoBancarioJpaEntityToMovimientoBancario(movimientoBancarioJpaDao.findByImporte(importe));
     }
 

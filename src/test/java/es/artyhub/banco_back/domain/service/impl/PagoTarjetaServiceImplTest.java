@@ -97,11 +97,11 @@ public class PagoTarjetaServiceImplTest {
 
             TarjetaCredito tarjetaCredito = tarjetaCreditoService.findByNumeroTarjeta(pagoTarjetaDto.origen().numeroTarjeta());
             
-            when(tarjetaCreditoService.tarjetaIsValid(tarjetaCredito.getNumeroTarjeta())).thenReturn(false);
+            when(tarjetaCreditoService.tarjetaIsValid(pagoTarjetaDto.origen(), tarjetaCredito)).thenReturn(false);
             
-            assertThrows(BusinessException.class, () -> tarjetaCreditoService.tarjetaIsValid(tarjetaCredito.getNumeroTarjeta()));
+            assertThrows(BusinessException.class, () -> tarjetaCreditoService.tarjetaIsValid(pagoTarjetaDto.origen(), tarjetaCredito));
 
-            Mockito.verify(tarjetaCreditoService, never()).tarjetaIsValid(tarjetaCredito.getNumeroTarjeta());
+            Mockito.verify(tarjetaCreditoService, never()).tarjetaIsValid(pagoTarjetaDto.origen(), tarjetaCredito);
         }
 
         @Test
@@ -135,33 +135,11 @@ public class PagoTarjetaServiceImplTest {
             
             PagoTarjetaDto pagoTarjetaDto = new PagoTarjetaDto(autorizacionDto, origenDto, destinoDto, pagoDto);
             
-            when(cuentaService.findByIban(pagoTarjetaDto.destino().numeroCuenta())).thenReturn(null);
+            when(cuentaService.findByIban(pagoTarjetaDto.destino().iban())).thenReturn(null);
             
-            assertThrows(ResourceNotFoundException.class, () -> cuentaService.findByIban(pagoTarjetaDto.destino().numeroCuenta()));
+            assertThrows(ResourceNotFoundException.class, () -> cuentaService.findByIban(pagoTarjetaDto.destino().iban()));
 
-            Mockito.verify(cuentaService, never()).findByIban(pagoTarjetaDto.destino().numeroCuenta());
-        }
-
-        @Test
-        @DisplayName("While saldo isn't enough should throw business exception")
-        public void whileSaldoIsntEnough_ShouldThrowBusinessException() {
-
-            AutorizacionDto autorizacionDto = new AutorizacionDto("login", "api_token");
-            OrigenDto origenDto = new OrigenDto("1234567890123456", "12/24", "123", "nombre_completo");
-            DestinoDto destinoDto = new DestinoDto("iban");
-            PagoDto pagoDto = new PagoDto(new BigDecimal(100), "concepto");
-            
-            PagoTarjetaDto pagoTarjetaDto = new PagoTarjetaDto(autorizacionDto, origenDto, destinoDto, pagoDto);
-
-            TarjetaCredito tarjetaCredito = tarjetaCreditoService.findByNumeroTarjeta(pagoTarjetaDto.origen().numeroTarjeta());
-
-            Cuenta cuentaOrigen = cuentaService.findByNumeroTarjeta(tarjetaCredito.getNumeroTarjeta());
-            
-            when(cuentaService.saldoIsEnough(pagoTarjetaDto.pago().importe(), cuentaOrigen.getIban())).thenReturn(false);
-            
-            assertThrows(BusinessException.class, () -> cuentaService.saldoIsEnough(pagoTarjetaDto.pago().importe(), cuentaOrigen.getIban()));
-
-            Mockito.verify(cuentaService, never()).saldoIsEnough(pagoTarjetaDto.pago().importe(), cuentaOrigen.getIban());
+            Mockito.verify(cuentaService, never()).findByIban(pagoTarjetaDto.destino().iban());
         }
 
         @Test
@@ -197,11 +175,10 @@ public class PagoTarjetaServiceImplTest {
 
             Cuenta cuentaOrigen = cuentaService.findByNumeroTarjeta(tarjetaCredito.getNumeroTarjeta());
 
-            Cuenta cuentaDestino = cuentaService.findByIban(pagoTarjetaDto.destino().numeroCuenta());
+            Cuenta cuentaDestino = cuentaService.findByIban(pagoTarjetaDto.destino().iban());
 
             MovimientoBancario movimientoBancarioDebe = new MovimientoBancario();
             movimientoBancarioDebe.setConcepto(pagoTarjetaDto.pago().concepto());
-            movimientoBancarioDebe.setCuenta(cuentaOrigen);
             movimientoBancarioDebe.setFecha(new Date());
             movimientoBancarioDebe.setOrigenMovimiento(OrigenMovimiento.TARJETABANCARIA);
             movimientoBancarioDebe.setImporte(pagoTarjetaDto.pago().importe());
@@ -209,7 +186,6 @@ public class PagoTarjetaServiceImplTest {
             
             MovimientoBancario movimientoBancarioHaber = new MovimientoBancario();
             movimientoBancarioHaber.setConcepto(pagoTarjetaDto.pago().concepto());
-            movimientoBancarioHaber.setCuenta(cuentaDestino);
             movimientoBancarioHaber.setFecha(new Date());
             movimientoBancarioHaber.setOrigenMovimiento(OrigenMovimiento.TRANSFERENCIA);
             movimientoBancarioHaber.setImporte(pagoTarjetaDto.pago().importe());
@@ -218,13 +194,13 @@ public class PagoTarjetaServiceImplTest {
             cuentaService.updateSaldo(cuentaOrigen, pagoTarjetaDto.pago().importe(), TipoMovimiento.DEBE);
             cuentaService.updateSaldo(cuentaDestino, pagoTarjetaDto.pago().importe(), TipoMovimiento.HABER);
 
-            when(movimientoBancarioService.saveMovimientoBancario(movimientoBancarioDebe)).thenReturn(movimientoBancarioDebe);
-            when(movimientoBancarioService.saveMovimientoBancario(movimientoBancarioHaber)).thenReturn(movimientoBancarioHaber);
+            when(movimientoBancarioService.saveMovimientoBancario(movimientoBancarioDebe, cuentaOrigen.getId())).thenReturn(movimientoBancarioDebe);
+            when(movimientoBancarioService.saveMovimientoBancario(movimientoBancarioHaber, cuentaDestino.getId())).thenReturn(movimientoBancarioHaber);
 
-            assertEquals(movimientoBancarioDebe, movimientoBancarioService.saveMovimientoBancario(movimientoBancarioDebe));
-            assertEquals(movimientoBancarioHaber, movimientoBancarioService.saveMovimientoBancario(movimientoBancarioHaber));
+            assertEquals(movimientoBancarioDebe, movimientoBancarioService.saveMovimientoBancario(movimientoBancarioDebe, cuentaOrigen.getId()));
+            assertEquals(movimientoBancarioHaber, movimientoBancarioService.saveMovimientoBancario(movimientoBancarioHaber, cuentaDestino.getId()));
 
-            Mockito.verify(movimientoBancarioService, times(2)).saveMovimientoBancario(any(MovimientoBancario.class));
+            Mockito.verify(movimientoBancarioService, times(2)).saveMovimientoBancario(any(MovimientoBancario.class), any(Long.class));
         }
     }
 }

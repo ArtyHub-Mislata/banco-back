@@ -37,7 +37,7 @@ public class ClienteJpaDaoImplTest {
         clienteJpaEntity.setLastName1("lastName1");
         clienteJpaEntity.setLastName2("lastName2");
         clienteJpaEntity.setDni("dni");
-        clienteJpaEntity.setApi_token("api_token");
+        clienteJpaEntity.setApiToken("api_token");
         entityManager.persist(clienteJpaEntity);
         entityManager.flush();
 
@@ -56,7 +56,7 @@ public class ClienteJpaDaoImplTest {
         clienteJpaEntity1.setLastName1("lastName1");
         clienteJpaEntity1.setLastName2("lastName2");
         clienteJpaEntity1.setDni("dni");
-        clienteJpaEntity1.setApi_token("api_token");
+        clienteJpaEntity1.setApiToken("api_token");
         entityManager.persist(clienteJpaEntity1);
         entityManager.flush();
         
@@ -67,7 +67,7 @@ public class ClienteJpaDaoImplTest {
         clienteJpaEntity2.setLastName1("lastName12");
         clienteJpaEntity2.setLastName2("lastName22");
         clienteJpaEntity2.setDni("dni2");
-        clienteJpaEntity2.setApi_token("api_token2");
+        clienteJpaEntity2.setApiToken("api_token2");
         entityManager.persist(clienteJpaEntity2);
         entityManager.flush();
         
@@ -85,7 +85,7 @@ public class ClienteJpaDaoImplTest {
         clienteJpaEntity.setLastName1("lastName1");
         clienteJpaEntity.setLastName2("lastName2");
         clienteJpaEntity.setDni("dni");
-        clienteJpaEntity.setApi_token("api_token");
+        clienteJpaEntity.setApiToken("api_token");
         entityManager.persist(clienteJpaEntity);
         entityManager.flush();
     

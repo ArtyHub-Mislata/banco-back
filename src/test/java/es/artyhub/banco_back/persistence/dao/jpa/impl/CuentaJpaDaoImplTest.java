@@ -40,7 +40,7 @@ public class CuentaJpaDaoImplTest {
         clienteJpaEntity.setLastName1("lastName1");
         clienteJpaEntity.setLastName2("lastName2");
         clienteJpaEntity.setDni("dni");
-        clienteJpaEntity.setApi_token("api_token");
+        clienteJpaEntity.setApiToken("api_token");
         entityManager.persist(clienteJpaEntity);
         entityManager.flush();
 
@@ -68,7 +68,7 @@ public class CuentaJpaDaoImplTest {
         clienteJpaEntity.setLastName1("lastName1");
         clienteJpaEntity.setLastName2("lastName2");
         clienteJpaEntity.setDni("dni");
-        clienteJpaEntity.setApi_token("api_token");
+        clienteJpaEntity.setApiToken("api_token");
         entityManager.persist(clienteJpaEntity);
         entityManager.flush();
 
@@ -104,7 +104,7 @@ public class CuentaJpaDaoImplTest {
         clienteJpaEntity.setLastName1("lastName1");
         clienteJpaEntity.setLastName2("lastName2");
         clienteJpaEntity.setDni("dni");
-        clienteJpaEntity.setApi_token("api_token");
+        clienteJpaEntity.setApiToken("api_token");
         entityManager.persist(clienteJpaEntity);
         entityManager.flush();
 
@@ -133,7 +133,7 @@ public class CuentaJpaDaoImplTest {
         clienteJpaEntity.setLastName1("lastName1");
         clienteJpaEntity.setLastName2("lastName2");
         clienteJpaEntity.setDni("dni");
-        clienteJpaEntity.setApi_token("api_token");
+        clienteJpaEntity.setApiToken("api_token");
         entityManager.persist(clienteJpaEntity);
         entityManager.flush();
 
@@ -160,7 +160,7 @@ public class CuentaJpaDaoImplTest {
         clienteJpaEntity.setLastName1("lastName1");
         clienteJpaEntity.setLastName2("lastName2");
         clienteJpaEntity.setDni("dni");
-        clienteJpaEntity.setApi_token("api_token");
+        clienteJpaEntity.setApiToken("api_token");
         entityManager.persist(clienteJpaEntity);
         entityManager.flush();
 
@@ -173,7 +173,7 @@ public class CuentaJpaDaoImplTest {
         entityManager.persist(cuentaJpaEntity);
         entityManager.flush();
 
-        CuentaJpaEntity cuenta = cuentaJpaDao.save(cuentaJpaEntity);
+        CuentaJpaEntity cuenta = cuentaJpaDao.insert(cuentaJpaEntity);
         assertEquals(cuentaJpaEntity.getId(), cuenta.getId());
     }
 }

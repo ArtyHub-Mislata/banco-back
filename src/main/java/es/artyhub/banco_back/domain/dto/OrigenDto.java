@@ -11,5 +11,4 @@ public record OrigenDto(
         @NotNull String fechaCaducidad,
         @NotNull String cvc,
         @NotNull String nombreCompleto) {
-    
 }

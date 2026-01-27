@@ -16,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import es.artyhub.banco_back.persistence.dao.jpa.MovimientoBancarioJpaDao;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.CuentaJpaEntity;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.MovimientoBancarioJpaEntity;
+import es.artyhub.banco_back.persistence.dao.jpa.entity.TarjetaCreditoJpaEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
@@ -33,10 +34,18 @@ public class MovimientoBancarioJpaDaoImplTest {
     @Test
     @DisplayName("Find movimiento bancario by id")
     void findMovimientoBancarioById() {
+        TarjetaCreditoJpaEntity tarjetaCredito = new TarjetaCreditoJpaEntity();
+        tarjetaCredito.setNumeroTarjeta("1234567890123456");
+        tarjetaCredito.setFechaCaducidad("12/25");
+        tarjetaCredito.setCvv("123");
+        tarjetaCredito.setNombreCompleto("nombre");
+        entityManager.persist(tarjetaCredito);
+        entityManager.flush();
+        
         MovimientoBancarioJpaEntity movimientoBancarioJpaEntity = new MovimientoBancarioJpaEntity();
         movimientoBancarioJpaEntity.setTipoMovimiento(null);
         movimientoBancarioJpaEntity.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity.setnTarjetaCredito("1234567890123456");
+        movimientoBancarioJpaEntity.setTarjetaCredito(tarjetaCredito);
         movimientoBancarioJpaEntity.setFecha(new Date());
         movimientoBancarioJpaEntity.setImporte(new BigDecimal(100.0));
         movimientoBancarioJpaEntity.setConcepto("concepto");
@@ -55,7 +64,7 @@ public class MovimientoBancarioJpaDaoImplTest {
         MovimientoBancarioJpaEntity movimientoBancarioJpaEntity1 = new MovimientoBancarioJpaEntity();
         movimientoBancarioJpaEntity1.setTipoMovimiento(null);
         movimientoBancarioJpaEntity1.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity1.setnTarjetaCredito("1234567890123456");
+        movimientoBancarioJpaEntity1.setTarjetaCredito(null);
         movimientoBancarioJpaEntity1.setFecha(new Date());
         movimientoBancarioJpaEntity1.setImporte(new BigDecimal(100.0));
         movimientoBancarioJpaEntity1.setConcepto("concepto");
@@ -66,7 +75,7 @@ public class MovimientoBancarioJpaDaoImplTest {
         MovimientoBancarioJpaEntity movimientoBancarioJpaEntity2 = new MovimientoBancarioJpaEntity();
         movimientoBancarioJpaEntity2.setTipoMovimiento(null);
         movimientoBancarioJpaEntity2.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity2.setnTarjetaCredito("1234567890123456");
+        movimientoBancarioJpaEntity2.setTarjetaCredito(null);
         movimientoBancarioJpaEntity2.setFecha(new Date());
         movimientoBancarioJpaEntity2.setImporte(new BigDecimal(200.0));
         movimientoBancarioJpaEntity2.setConcepto("concepto2");
@@ -84,7 +93,7 @@ public class MovimientoBancarioJpaDaoImplTest {
         MovimientoBancarioJpaEntity movimientoBancarioJpaEntity = new MovimientoBancarioJpaEntity();
         movimientoBancarioJpaEntity.setTipoMovimiento(null);
         movimientoBancarioJpaEntity.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity.setnTarjetaCredito("1234567890123456");
+        movimientoBancarioJpaEntity.setTarjetaCredito(null);
         movimientoBancarioJpaEntity.setFecha(new Date());
         movimientoBancarioJpaEntity.setImporte(new BigDecimal(100.0));
         movimientoBancarioJpaEntity.setConcepto("concepto");
@@ -103,7 +112,7 @@ public class MovimientoBancarioJpaDaoImplTest {
         MovimientoBancarioJpaEntity movimientoBancarioJpaEntity = new MovimientoBancarioJpaEntity();
         movimientoBancarioJpaEntity.setTipoMovimiento(null);
         movimientoBancarioJpaEntity.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity.setnTarjetaCredito("1234567890123456");
+        movimientoBancarioJpaEntity.setTarjetaCredito(null);
         movimientoBancarioJpaEntity.setFecha(new Date());
         movimientoBancarioJpaEntity.setImporte(new BigDecimal(100.0));
         movimientoBancarioJpaEntity.setConcepto("concepto");
@@ -131,7 +140,7 @@ public class MovimientoBancarioJpaDaoImplTest {
         MovimientoBancarioJpaEntity movimientoBancarioJpaEntity = new MovimientoBancarioJpaEntity();
         movimientoBancarioJpaEntity.setTipoMovimiento(null);
         movimientoBancarioJpaEntity.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity.setnTarjetaCredito("1234567890123456");
+        movimientoBancarioJpaEntity.setTarjetaCredito(null);
         movimientoBancarioJpaEntity.setFecha(new Date());
         movimientoBancarioJpaEntity.setImporte(new BigDecimal(100.0));
         movimientoBancarioJpaEntity.setConcepto("concepto");
@@ -149,7 +158,7 @@ public class MovimientoBancarioJpaDaoImplTest {
         MovimientoBancarioJpaEntity movimientoBancarioJpaEntity = new MovimientoBancarioJpaEntity();
         movimientoBancarioJpaEntity.setTipoMovimiento(null);
         movimientoBancarioJpaEntity.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity.setnTarjetaCredito("1234567890123456");
+        movimientoBancarioJpaEntity.setTarjetaCredito(null);
         movimientoBancarioJpaEntity.setFecha(new Date());
         movimientoBancarioJpaEntity.setImporte(new BigDecimal(100.0));
         movimientoBancarioJpaEntity.setConcepto("concepto");
@@ -167,7 +176,7 @@ public class MovimientoBancarioJpaDaoImplTest {
         MovimientoBancarioJpaEntity movimientoBancarioJpaEntity = new MovimientoBancarioJpaEntity();
         movimientoBancarioJpaEntity.setTipoMovimiento(null);
         movimientoBancarioJpaEntity.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity.setnTarjetaCredito("1234567890123456");
+        movimientoBancarioJpaEntity.setTarjetaCredito(null);
         movimientoBancarioJpaEntity.setFecha(new Date());
         movimientoBancarioJpaEntity.setImporte(new BigDecimal(100.0));
         movimientoBancarioJpaEntity.setConcepto("concepto");

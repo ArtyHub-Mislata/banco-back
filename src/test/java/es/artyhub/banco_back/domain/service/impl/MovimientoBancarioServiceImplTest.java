@@ -55,7 +55,7 @@ public class MovimientoBancarioServiceImplTest {
             
             assertThrows(ResourceNotFoundException.class, () -> movimientoBancarioService.findById(id));
 
-            Mockito.verify(movimientoBancarioRepository, never()).findById(id);
+            Mockito.verify(movimientoBancarioRepository).findById(id);
         }
 
         @Test
@@ -69,7 +69,6 @@ public class MovimientoBancarioServiceImplTest {
             movimientoBancario.setFecha(new Date());
             movimientoBancario.setImporte(new BigDecimal(100.0));
             movimientoBancario.setConcepto("concepto");
-            movimientoBancario.setCuenta(null);
 
             when(movimientoBancarioRepository.findById(movimientoBancario.getId())).thenReturn(movimientoBancario);
             
@@ -115,7 +114,6 @@ public class MovimientoBancarioServiceImplTest {
             movimientoBancario.setFecha(new Date());
             movimientoBancario.setImporte(new BigDecimal(100.0));
             movimientoBancario.setConcepto("concepto");
-            movimientoBancario.setCuenta(null);
 
             when(movimientoBancarioRepository.findByImporte(movimientoBancario.getImporte())).thenReturn(movimientoBancario);
             
@@ -161,7 +159,6 @@ public class MovimientoBancarioServiceImplTest {
             movimientoBancario.setFecha(new Date());
             movimientoBancario.setImporte(new BigDecimal(100.0));
             movimientoBancario.setConcepto("concepto");
-            movimientoBancario.setCuenta(null);
 
             when(movimientoBancarioRepository.findByConcepto(movimientoBancario.getConcepto())).thenReturn(movimientoBancario);
             
@@ -207,7 +204,6 @@ public class MovimientoBancarioServiceImplTest {
             movimientoBancario.setFecha(new Date());
             movimientoBancario.setImporte(new BigDecimal(100.0));
             movimientoBancario.setConcepto("concepto");
-            movimientoBancario.setCuenta(null);
 
             List<MovimientoBancario> movimientosBancarios = new ArrayList<>();
             movimientosBancarios.add(movimientoBancario);
@@ -244,7 +240,6 @@ public class MovimientoBancarioServiceImplTest {
             movimientoBancario.setFecha(new Date());
             movimientoBancario.setImporte(new BigDecimal(100.0));
             movimientoBancario.setConcepto("concepto");
-            movimientoBancario.setCuenta(null);
 
             List<MovimientoBancario> movimientoBancarios = new ArrayList<>();
             movimientoBancarios.add(movimientoBancario);
@@ -265,9 +260,9 @@ public class MovimientoBancarioServiceImplTest {
         public void whileMovimientoBancarioIsNull_ShouldThrowValidationException() {
             MovimientoBancario movimientoBancario = null;
             
-            assertThrows(ValidationException.class, () -> movimientoBancarioService.saveMovimientoBancario(movimientoBancario));
+            assertThrows(ValidationException.class, () -> movimientoBancarioService.saveMovimientoBancario(movimientoBancario, 1L));
 
-            Mockito.verify(movimientoBancarioRepository, never()).save(movimientoBancario);
+            Mockito.verify(movimientoBancarioRepository, never()).save(movimientoBancario, 1L);
         }
 
         @Test
@@ -281,13 +276,12 @@ public class MovimientoBancarioServiceImplTest {
             movimientoBancario.setFecha(new Date());
             movimientoBancario.setImporte(new BigDecimal(100.0));
             movimientoBancario.setConcepto("concepto");
-            movimientoBancario.setCuenta(null);
 
-            when(movimientoBancarioRepository.save(movimientoBancario)).thenReturn(movimientoBancario);
+            when(movimientoBancarioRepository.save(movimientoBancario, 1L)).thenReturn(movimientoBancario);
             
-            assertEquals(movimientoBancario, movimientoBancarioService.saveMovimientoBancario(movimientoBancario));
+            assertEquals(movimientoBancario, movimientoBancarioService.saveMovimientoBancario(movimientoBancario, 1L));
 
-            Mockito.verify(movimientoBancarioRepository).save(movimientoBancario);
+            Mockito.verify(movimientoBancarioRepository).save(movimientoBancario, 1L);
         }
     }
 }

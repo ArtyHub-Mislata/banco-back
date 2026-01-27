@@ -26,12 +26,14 @@ public class CuentaServiceImpl implements CuentaService {
         if(id == null) {
             throw new ValidationException("Id no valido");
         }
+
+        Cuenta cuenta = cuentaRepository.findById(id);
         
-        if(cuentaRepository.findById(id) == null) {
+        if(cuenta == null) {
             throw new ResourceNotFoundException("Cuenta no encontrada");
         }
 
-        return cuentaRepository.findById(id);
+        return cuenta;
     }
 
     @Override
@@ -56,21 +58,25 @@ public class CuentaServiceImpl implements CuentaService {
             throw new ValidationException("Id del cliente no valido");
         }
 
-        if(cuentaRepository.findByClienteId(cliente_id) == null) {
+        List<Cuenta> cuentas = cuentaRepository.findByClienteId(cliente_id);
+        
+        if(cuentas == null) {
             throw new ResourceNotFoundException("No se ha encontrado ninguna cuenta");
         }
 
-        return cuentaRepository.findByClienteId(cliente_id);
+        return cuentas;
     }
 
     @Override
     public List<Cuenta> findAll() {
 
-        if(cuentaRepository.findAll() == null) {
+        List<Cuenta> cuentas = cuentaRepository.findAll();
+        
+        if(cuentas == null) {
             throw new ResourceNotFoundException("No se ha encontrado ninguna cuenta");
         }
 
-        return cuentaRepository.findAll();
+        return cuentas;
     }
 
     @Override

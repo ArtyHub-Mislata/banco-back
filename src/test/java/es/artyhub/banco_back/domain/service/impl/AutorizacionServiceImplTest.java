@@ -17,6 +17,7 @@ import es.artyhub.banco_back.domain.model.Cuenta;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
@@ -47,7 +48,7 @@ public class AutorizacionServiceImplTest {
             
             assertThrows(ValidationException.class, () -> autorizacionService.autorizar(pagoTarjetaDto));
 
-            Mockito.verify(cuentaService, never()).findByIban(pagoTarjetaDto.destino().numeroCuenta());
+            Mockito.verify(cuentaService, never()).findByIban(any());
         }
 
         @Test
@@ -57,17 +58,17 @@ public class AutorizacionServiceImplTest {
 
             OrigenDto origenDto = new OrigenDto("numeroTarjeta", "fechaCaducidad", "cvc", "nombreCompleto");
 
-            DestinoDto destinoDto = new DestinoDto("numeroCuenta");
+            DestinoDto destinoDto = new DestinoDto("123456789012345678901234");
 
             PagoDto pagoDto = new PagoDto(new BigDecimal(100.0), "concepto");
 
             PagoTarjetaDto pagoTarjetaDto = new PagoTarjetaDto(autorizacionDto, origenDto, destinoDto, pagoDto);
 
-            when(cuentaService.findByIban(pagoTarjetaDto.destino().numeroCuenta())).thenReturn(null);
+            when(cuentaService.findByIban(pagoTarjetaDto.destino().iban())).thenReturn(null);
             
-            assertThrows(ResourceNotFoundException.class, () -> cuentaService.findByIban(pagoTarjetaDto.destino().numeroCuenta()));
+            assertThrows(ResourceNotFoundException.class, () -> autorizacionService.autorizar(pagoTarjetaDto));
 
-            Mockito.verify(cuentaService, never()).findByIban(pagoTarjetaDto.destino().numeroCuenta());
+            Mockito.verify(cuentaService).findByIban(pagoTarjetaDto.destino().iban());
         }
 
         @Test
@@ -77,19 +78,22 @@ public class AutorizacionServiceImplTest {
 
             OrigenDto origenDto = new OrigenDto("numeroTarjeta", "fechaCaducidad", "cvc", "nombreCompleto");
 
-            DestinoDto destinoDto = new DestinoDto("numeroCuenta");
+            DestinoDto destinoDto = new DestinoDto("123456789012345678901234");
 
             PagoDto pagoDto = new PagoDto(new BigDecimal(100.0), "concepto");
 
             PagoTarjetaDto pagoTarjetaDto = new PagoTarjetaDto(autorizacionDto, origenDto, destinoDto, pagoDto);
 
-            Cuenta cuenta = cuentaService.findByIban(pagoTarjetaDto.destino().numeroCuenta());
+            Cuenta cuentaMock = Mockito.mock(Cuenta.class);
 
-            when(cuenta.getCliente()).thenReturn(null);
-            
-            assertThrows(ResourceNotFoundException.class, () -> cuenta.getCliente());
+            when(cuentaService.findByIban(pagoTarjetaDto.destino().iban())).thenReturn(cuentaMock);
 
-            Mockito.verify(cuenta, never()).getCliente();
+            when(cuentaMock.getCliente()).thenReturn(null);
+
+            assertThrows(ResourceNotFoundException.class, () -> autorizacionService.autorizar(pagoTarjetaDto));
+
+            Mockito.verify(cuentaService).findByIban(pagoTarjetaDto.destino().iban());
+            Mockito.verify(cuentaMock).getCliente();
         }
 
         @Test
@@ -97,25 +101,31 @@ public class AutorizacionServiceImplTest {
         public void whileLoginDoesntMatch_ShouldReturnFalse() {
             AutorizacionDto autorizacionDto = new AutorizacionDto("login", "api_token");
 
-            OrigenDto origenDto = new OrigenDto("numeroTarjeta", "fechaCaducidad", "cvc", "nombreCompleto");
+            OrigenDto origenDto = new OrigenDto("1234567890123456", "fechaCaducidad", "cvc", "nombreCompleto");
 
-            DestinoDto destinoDto = new DestinoDto("numeroCuenta");
+            DestinoDto destinoDto = new DestinoDto("123456789012345678901234");
 
             PagoDto pagoDto = new PagoDto(new BigDecimal(100.0), "concepto");
 
             PagoTarjetaDto pagoTarjetaDto = new PagoTarjetaDto(autorizacionDto, origenDto, destinoDto, pagoDto);
 
-            Cuenta cuenta = cuentaService.findByIban(pagoTarjetaDto.destino().numeroCuenta());
+            Cuenta cuentaMock = Mockito.mock(Cuenta.class);
 
-            Cliente cliente = cuenta.getCliente();
+            when(cuentaService.findByIban(pagoTarjetaDto.destino().iban())).thenReturn(cuentaMock);
 
-            when(pagoTarjetaDto.autorizacion().login().equals(cliente.getLogin())).thenReturn(false);
+            Cliente clienteMock = Mockito.mock(Cliente.class);
 
-            Boolean result = pagoTarjetaDto.autorizacion().login().equals(cliente.getLogin());
+            when(cuentaMock.getCliente()).thenReturn(clienteMock);
+
+            when(clienteMock.getLogin()).thenReturn("otroLogin");
+
+            boolean result = autorizacionService.autorizar(pagoTarjetaDto);
 
             assertFalse(result);
 
-            Mockito.verify(autorizacionService, never()).autorizar(pagoTarjetaDto);
+            Mockito.verify(cuentaService).findByIban(pagoTarjetaDto.destino().iban());
+            Mockito.verify(cuentaMock).getCliente();
+            Mockito.verify(clienteMock).getLogin();
         }
 
         @Test
@@ -131,17 +141,25 @@ public class AutorizacionServiceImplTest {
 
             PagoTarjetaDto pagoTarjetaDto = new PagoTarjetaDto(autorizacionDto, origenDto, destinoDto, pagoDto);
 
-            Cuenta cuenta = cuentaService.findByIban(pagoTarjetaDto.destino().numeroCuenta());
+            Cuenta cuentaMock = Mockito.mock(Cuenta.class);
 
-            Cliente cliente = cuenta.getCliente();
+            when(cuentaService.findByIban(pagoTarjetaDto.destino().iban())).thenReturn(cuentaMock);
 
-            when(pagoTarjetaDto.autorizacion().api_token().equals(cliente.getApi_token())).thenReturn(false);
+            Cliente clienteMock = Mockito.mock(Cliente.class);
 
-            Boolean result = pagoTarjetaDto.autorizacion().api_token().equals(cliente.getApi_token());
+            when(cuentaMock.getCliente()).thenReturn(clienteMock);
+
+            when(clienteMock.getLogin()).thenReturn("login");
+            when(clienteMock.getApi_token()).thenReturn("otroApi_token");
+
+            boolean result = autorizacionService.autorizar(pagoTarjetaDto);
 
             assertFalse(result);
 
-            Mockito.verify(autorizacionService, never()).autorizar(pagoTarjetaDto);
+            Mockito.verify(cuentaService).findByIban(pagoTarjetaDto.destino().iban());
+            Mockito.verify(cuentaMock).getCliente();
+            Mockito.verify(clienteMock).getLogin();
+            Mockito.verify(clienteMock).getApi_token();
         }
 
         @Test
@@ -157,17 +175,25 @@ public class AutorizacionServiceImplTest {
 
             PagoTarjetaDto pagoTarjetaDto = new PagoTarjetaDto(autorizacionDto, origenDto, destinoDto, pagoDto);
 
-            Cuenta cuenta = cuentaService.findByIban(pagoTarjetaDto.destino().numeroCuenta());
+            Cuenta cuentaMock = Mockito.mock(Cuenta.class);
 
-            Cliente cliente = cuenta.getCliente();
+            when(cuentaService.findByIban(pagoTarjetaDto.destino().iban())).thenReturn(cuentaMock);
 
-            when(pagoTarjetaDto.autorizacion().login().equals(cliente.getLogin())).thenReturn(true);
+            Cliente clienteMock = Mockito.mock(Cliente.class);
 
-            Boolean result = pagoTarjetaDto.autorizacion().login().equals(cliente.getLogin());
+            when(cuentaMock.getCliente()).thenReturn(clienteMock);
+
+            when(clienteMock.getLogin()).thenReturn("login");
+            when(clienteMock.getApi_token()).thenReturn("api_token");
+
+            boolean result = autorizacionService.autorizar(pagoTarjetaDto);
 
             assertTrue(result);
 
-            Mockito.verify(autorizacionService).autorizar(pagoTarjetaDto);
+            Mockito.verify(cuentaService).findByIban(pagoTarjetaDto.destino().iban());
+            Mockito.verify(cuentaMock).getCliente();
+            Mockito.verify(clienteMock).getLogin();
+            Mockito.verify(clienteMock).getApi_token();
         }
     }
 }

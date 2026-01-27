@@ -50,27 +50,21 @@ public class ClienteServiceImplTest {
             
             assertThrows(ResourceNotFoundException.class, () -> clienteService.findById(id));
 
-            Mockito.verify(clienteRepository, never()).findById(id);
+            Mockito.verify(clienteRepository).findById(id);
         }
 
         @Test
         @DisplayName("While cliente exists should return cliente")
         public void whileClienteExists_ShouldReturnCliente() {
-            Cliente cliente = new Cliente();
-            cliente.setId(1L);
-            cliente.setLogin("login");
-            cliente.setPassword("password");
-            cliente.setName("nombre");
-            cliente.setLastName1("apellido1");
-            cliente.setLastName2("apellido2");
-            cliente.setDni("dni");
-            cliente.setApi_token("api_token");
+            Cliente clienteMock = Mockito.mock(Cliente.class);
 
-            when(clienteRepository.findById(cliente.getId())).thenReturn(cliente);
+            Long id = 1L;
+
+            when(clienteRepository.findById(id)).thenReturn(clienteMock);
             
-            assertEquals(cliente, clienteService.findById(cliente.getId()));
+            assertEquals(clienteMock, clienteService.findById(id));
 
-            Mockito.verify(clienteRepository).findById(cliente.getId());
+            Mockito.verify(clienteRepository).findById(id);
         }
     }
 
@@ -96,27 +90,21 @@ public class ClienteServiceImplTest {
             
             assertThrows(ResourceNotFoundException.class, () -> clienteService.findByLogin(login));
 
-            Mockito.verify(clienteRepository, never()).findByLogin(login);
+            Mockito.verify(clienteRepository).findByLogin(login);
         }
 
         @Test
         @DisplayName("While cliente exists should return cliente")
         public void whileClienteExists_ShouldReturnCliente() {
-            Cliente cliente = new Cliente();
-            cliente.setId(1L);
-            cliente.setLogin("login");
-            cliente.setPassword("password");
-            cliente.setName("nombre");
-            cliente.setLastName1("apellido1");
-            cliente.setLastName2("apellido2");
-            cliente.setDni("dni");
-            cliente.setApi_token("api_token");
+            Cliente clienteMock = Mockito.mock(Cliente.class);
 
-            when(clienteRepository.findByLogin(cliente.getLogin())).thenReturn(cliente);
+            String login = "login";
+
+            when(clienteRepository.findByLogin(login)).thenReturn(clienteMock);
             
-            assertEquals(cliente, clienteService.findByLogin(cliente.getLogin()));
+            assertEquals(clienteMock, clienteService.findByLogin(login));
 
-            Mockito.verify(clienteRepository).findByLogin(cliente.getLogin());
+            Mockito.verify(clienteRepository).findByLogin(login);
         }
     }
 }
