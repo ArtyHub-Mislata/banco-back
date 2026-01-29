@@ -45,11 +45,16 @@ public class PagoTarjetaServiceImpl implements PagoTarjetaService {
             throw new BusinessException("La tarjeta de origen no es valida");
         }
 
+
         Cuenta cuentaOrigen = cuentaService.findByNumeroTarjeta(tarjetaCredito.getNumeroTarjeta());
         Cuenta cuentaDestino = cuentaService.findByIban(pagoTarjetaDto.destino().iban());
 
         if(!cuentaDestino.getCliente().getLogin().equals(pagoTarjetaDto.autorizacion().login())){
             throw new BusinessException("La cuenta destino no coincide con el usuario login");
+        }
+
+        if(!authService.autorizar(pagoTarjetaDto.autorizacion())){
+            throw new BusinessException("El usuario no tiene token correcto para hacer la operación");
         }
 
         //Comprobar saldo suficiente
