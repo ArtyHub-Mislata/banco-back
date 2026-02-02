@@ -1,11 +1,8 @@
 package es.artyhub.banco_back.controller;
 
 import es.artyhub.banco_back.domain.model.Cuenta;
-import es.artyhub.banco_back.domain.model.TarjetaCredito;
 import es.artyhub.banco_back.domain.service.CuentaService;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

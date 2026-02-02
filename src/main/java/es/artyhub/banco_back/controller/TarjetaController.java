@@ -2,7 +2,6 @@ package es.artyhub.banco_back.controller;
 
 import es.artyhub.banco_back.domain.model.MovimientoBancario;
 import es.artyhub.banco_back.domain.model.TarjetaCredito;
-import es.artyhub.banco_back.domain.repository.MovimientoBancarioRepository;
 import es.artyhub.banco_back.domain.service.MovimientoBancarioService;
 import es.artyhub.banco_back.domain.service.TarjetaCreditoService;
 import jakarta.servlet.http.HttpServletRequest;
