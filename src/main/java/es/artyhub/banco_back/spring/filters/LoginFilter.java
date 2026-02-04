@@ -33,7 +33,9 @@ public class LoginFilter implements Filter {
         }
         List<String> unprotectedPaths = List.of(
                 "/api/login",
-                "/api/islogged"
+                "/api/islogged",
+                "/api/pagos/pago_tarjeta",
+                "/api/pagos/transferencia"
         );
 
         String header = req.getHeader("authorization");

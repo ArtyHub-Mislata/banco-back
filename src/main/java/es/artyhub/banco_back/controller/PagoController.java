@@ -24,6 +24,7 @@ public class PagoController {
     @RequestMapping("/pago_tarjeta")
     @PostMapping
     public void pagarConTarjeta(@RequestBody PagoTarjetaDto pagoTarjetaDto){
+        
         pagoTarjetaService.save(pagoTarjetaDto);
     }
     @RequestMapping("/transferencia")

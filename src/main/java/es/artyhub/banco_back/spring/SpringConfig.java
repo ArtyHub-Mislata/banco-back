@@ -1,7 +1,5 @@
 package es.artyhub.banco_back.spring;
 
-import es.artyhub.banco_back.domain.model.Cliente;
-import es.artyhub.banco_back.domain.model.MovimientoBancario;
 import es.artyhub.banco_back.domain.repository.*;
 import es.artyhub.banco_back.domain.service.*;
 import es.artyhub.banco_back.domain.service.impl.*;
