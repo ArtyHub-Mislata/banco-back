@@ -6,7 +6,7 @@ INSERT INTO clientes (login, password, name, last_name1, last_name2, dni, api_to
                                                                                          ('maria.lopez', 'securepass456', 'María', 'López', 'Martínez', '87654321B', 'token_maria_456'),
                                                                                          ('carlos.gomez', 'testpass789', 'Carlos', 'Gómez', 'Sánchez', '11223344C', 'token_carlos_789'),
                                                                                          ('ana.rodriguez', 'anapass101', 'Ana', 'Rodríguez', 'Fernández', '55667788D', 'token_ana_101'),
-                                                                                         ('luis.martin', 'luispass202', 'Luis', 'Martín', 'Ruiz', '99887766E', 'token_luis_202');
+                                                                                         ('luis.martin', 'luispass202', 'Luis', 'Martín', 'Ruiz', '99887766E', 'token_luis_202'),
                                                                                          ('artyhub', 'artyhub123', 'ArtyHub', 'ArtyHub', 'ArtyHub', '12345678A', 'token_artyhub_123');
 
 -- Insertar cuentas de prueba
@@ -17,7 +17,7 @@ INSERT INTO cuentas (saldo, iban, client_id) VALUES
                                                  (10000.00, 'ES7321000418450200051335', 3),
                                                  (750.00, 'ES6721000418450200051336', 4),
                                                  (3200.00, 'ES6121000418450200051337', 5),
-                                                 (125.50, 'ES5521000418450200051338', 1);
+                                                 (125.50, 'ES5521000418450200051338', 1),
                                                  (125.50, 'ES5521000418450200051339', 6);
 
 -- Insertar tarjetas de crédito de prueba
@@ -28,5 +28,5 @@ INSERT INTO tarjetas_credito (numero_tarjeta, fecha_caducidad, cvv, nombre_compl
                                                                                                     ('378282246310005', '03/27', '321', 'CARLOS GOMEZ SANCHEZ', 4),
                                                                                                     ('6011111111111117', '11/25', '654', 'ANA RODRIGUEZ FERNANDEZ', 5),
                                                                                                     ('3530111333300000', '08/26', '987', 'LUIS MARTIN RUIZ', 6),
-                                                                                                    ('2223000048400011', '05/27', '147', 'MARIA LOPEZ MARTINEZ', 3);
+                                                                                                    ('2223000048400011', '05/27', '147', 'MARIA LOPEZ MARTINEZ', 3),
                                                                                                     ('2223000048400012', '06/27', '149', 'ARTYHUB ARTYHUB ARTYHUB', 6);
