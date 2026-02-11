@@ -25,7 +25,7 @@ INSERT INTO tarjetas_credito (numero_tarjeta, fecha_caducidad, cvv, nombre_compl
                                                                                                     ('4532123456789012', '12/25', '123', 'JUAN PEREZ GARCIA', 1),
                                                                                                     ('5555666677778888', '06/26', '456', 'JUAN PEREZ GARCIA', 1),
                                                                                                     ('4111111111111111', '09/24', '789', 'MARIA LOPEZ MARTINEZ', 2),
-                                                                                                    ('378282246310005', '03/27', '321', 'CARLOS GOMEZ SANCHEZ', 4),
+                                                                                                    ('3782822463100052', '03/27', '321', 'CARLOS GOMEZ SANCHEZ', 4),
                                                                                                     ('6011111111111117', '11/25', '654', 'ANA RODRIGUEZ FERNANDEZ', 5),
                                                                                                     ('3530111333300000', '08/26', '987', 'LUIS MARTIN RUIZ', 6),
                                                                                                     ('2223000048400011', '05/27', '147', 'MARIA LOPEZ MARTINEZ', 3),
