@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
-@Order(0)
+@Order(1)
 public class LoginFilter implements Filter {
 
     private final AuthService authService;
