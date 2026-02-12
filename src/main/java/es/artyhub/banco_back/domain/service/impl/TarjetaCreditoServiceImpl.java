@@ -1,14 +1,13 @@
 package es.artyhub.banco_back.domain.service.impl;
 
 import java.util.List;
-import java.util.Objects;
 
 import es.artyhub.banco_back.domain.dto.OrigenDto;
 import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
 import es.artyhub.banco_back.domain.model.TarjetaCredito;
 import es.artyhub.banco_back.domain.repository.TarjetaCreditoRepository;
 import es.artyhub.banco_back.domain.service.TarjetaCreditoService;
-import jakarta.validation.ValidationException;
+import es.artyhub.banco_back.domain.exception.ValidationException;
 
 public class TarjetaCreditoServiceImpl implements TarjetaCreditoService {
 

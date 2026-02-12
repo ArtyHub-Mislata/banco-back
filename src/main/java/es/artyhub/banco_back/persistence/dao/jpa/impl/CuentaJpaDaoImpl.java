@@ -1,7 +1,6 @@
 package es.artyhub.banco_back.persistence.dao.jpa.impl;
 
 import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
-import es.artyhub.banco_back.domain.model.Cuenta;
 import es.artyhub.banco_back.persistence.dao.jpa.CuentaJpaDao;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.CuentaJpaEntity;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.TarjetaCreditoJpaEntity;
@@ -12,8 +11,10 @@ import jakarta.persistence.TypedQuery;
 import java.util.List;
 
 public class CuentaJpaDaoImpl implements CuentaJpaDao {
+
     @PersistenceContext
     private EntityManager entityManager;
+    
     @Override
     public CuentaJpaEntity findById(Long id) {
         return entityManager.find(CuentaJpaEntity.class, id);

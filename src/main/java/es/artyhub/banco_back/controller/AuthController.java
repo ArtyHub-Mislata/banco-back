@@ -41,8 +41,12 @@ public class AuthController {
             Cliente cliente = authService.getClienteByToken(token);
             if(cliente != null) {
                 isLogged = Boolean.TRUE;
+                return new ResponseEntity<>(isLogged, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(isLogged, HttpStatus.UNAUTHORIZED);
             }
+        } else {
+            return new ResponseEntity<>(isLogged, HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(isLogged, HttpStatus.OK);
     }
 }

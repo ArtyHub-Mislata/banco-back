@@ -9,8 +9,10 @@ import jakarta.persistence.TypedQuery;
 import java.util.List;
 
 public class TarjetaCreditoJpaDaoImpl implements TarjetaCreditoJpaDao {
+
     @PersistenceContext
     private EntityManager entityManager;
+
     @Override
     public TarjetaCreditoJpaEntity findById(Long id) {
         return entityManager.find(TarjetaCreditoJpaEntity.class, id);

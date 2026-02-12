@@ -1,6 +1,7 @@
 package es.artyhub.banco_back.persistence.dao.jpa.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,48 +12,33 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 
+import es.artyhub.banco_back.domain.enums.OrigenMovimiento;
+import es.artyhub.banco_back.domain.enums.TipoMovimiento;
+import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
+import es.artyhub.banco_back.persistence.TestConfig;
 import es.artyhub.banco_back.persistence.dao.jpa.MovimientoBancarioJpaDao;
-import es.artyhub.banco_back.persistence.dao.jpa.entity.CuentaJpaEntity;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.MovimientoBancarioJpaEntity;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.TarjetaCreditoJpaEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 @DataJpaTest
-@ActiveProfiles("test")
+@ContextConfiguration(classes = TestConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class MovimientoBancarioJpaDaoImplTest {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     private MovimientoBancarioJpaDao movimientoBancarioJpaDao;
     
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Test
     @DisplayName("Find movimiento bancario by id")
     void findMovimientoBancarioById() {
-        TarjetaCreditoJpaEntity tarjetaCredito = new TarjetaCreditoJpaEntity();
-        tarjetaCredito.setNumeroTarjeta("1234567890123456");
-        tarjetaCredito.setFechaCaducidad("12/25");
-        tarjetaCredito.setCvv("123");
-        tarjetaCredito.setNombreCompleto("nombre");
-        entityManager.persist(tarjetaCredito);
-        entityManager.flush();
-        
-        MovimientoBancarioJpaEntity movimientoBancarioJpaEntity = new MovimientoBancarioJpaEntity();
-        movimientoBancarioJpaEntity.setTipoMovimiento(null);
-        movimientoBancarioJpaEntity.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity.setTarjetaCredito(tarjetaCredito);
-        movimientoBancarioJpaEntity.setFecha(new Date());
-        movimientoBancarioJpaEntity.setImporte(new BigDecimal(100.0));
-        movimientoBancarioJpaEntity.setConcepto("concepto");
-        movimientoBancarioJpaEntity.setCuenta(null);
-        entityManager.persist(movimientoBancarioJpaEntity);
-        entityManager.flush();
-
         Long id = 1L;
         MovimientoBancarioJpaEntity movimiento = movimientoBancarioJpaDao.findById(id);
         assertEquals(id, movimiento.getId());
@@ -61,47 +47,14 @@ public class MovimientoBancarioJpaDaoImplTest {
     @Test
     @DisplayName("Find all movimientos bancarios")
     void findAllMovimientosBancarios() {
-        MovimientoBancarioJpaEntity movimientoBancarioJpaEntity1 = new MovimientoBancarioJpaEntity();
-        movimientoBancarioJpaEntity1.setTipoMovimiento(null);
-        movimientoBancarioJpaEntity1.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity1.setTarjetaCredito(null);
-        movimientoBancarioJpaEntity1.setFecha(new Date());
-        movimientoBancarioJpaEntity1.setImporte(new BigDecimal(100.0));
-        movimientoBancarioJpaEntity1.setConcepto("concepto");
-        movimientoBancarioJpaEntity1.setCuenta(null);
-        entityManager.persist(movimientoBancarioJpaEntity1);
-        entityManager.flush();
-        
-        MovimientoBancarioJpaEntity movimientoBancarioJpaEntity2 = new MovimientoBancarioJpaEntity();
-        movimientoBancarioJpaEntity2.setTipoMovimiento(null);
-        movimientoBancarioJpaEntity2.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity2.setTarjetaCredito(null);
-        movimientoBancarioJpaEntity2.setFecha(new Date());
-        movimientoBancarioJpaEntity2.setImporte(new BigDecimal(200.0));
-        movimientoBancarioJpaEntity2.setConcepto("concepto2");
-        movimientoBancarioJpaEntity2.setCuenta(null);
-        entityManager.persist(movimientoBancarioJpaEntity2);
-        entityManager.flush();
-        
         List<MovimientoBancarioJpaEntity> movimientos = movimientoBancarioJpaDao.findAll();
-        assertEquals(2, movimientos.size());
+        assertEquals(3, movimientos.size());
     }
 
     @Test
     @DisplayName("Find movimiento bancario by importe")
     void findMovimientoBancarioByImporte() {
-        MovimientoBancarioJpaEntity movimientoBancarioJpaEntity = new MovimientoBancarioJpaEntity();
-        movimientoBancarioJpaEntity.setTipoMovimiento(null);
-        movimientoBancarioJpaEntity.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity.setTarjetaCredito(null);
-        movimientoBancarioJpaEntity.setFecha(new Date());
-        movimientoBancarioJpaEntity.setImporte(new BigDecimal(100.0));
-        movimientoBancarioJpaEntity.setConcepto("concepto");
-        movimientoBancarioJpaEntity.setCuenta(null);
-        entityManager.persist(movimientoBancarioJpaEntity);
-        entityManager.flush();
-
-        BigDecimal importe = new BigDecimal(100.0);
+        BigDecimal importe = new BigDecimal("100.00");
         MovimientoBancarioJpaEntity movimiento = movimientoBancarioJpaDao.findByImporte(importe);
         assertEquals(importe, movimiento.getImporte());
     }
@@ -109,18 +62,7 @@ public class MovimientoBancarioJpaDaoImplTest {
     @Test
     @DisplayName("Find movimiento bancario by concepto")
     void findMovimientoBancarioByConcepto() {
-        MovimientoBancarioJpaEntity movimientoBancarioJpaEntity = new MovimientoBancarioJpaEntity();
-        movimientoBancarioJpaEntity.setTipoMovimiento(null);
-        movimientoBancarioJpaEntity.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity.setTarjetaCredito(null);
-        movimientoBancarioJpaEntity.setFecha(new Date());
-        movimientoBancarioJpaEntity.setImporte(new BigDecimal(100.0));
-        movimientoBancarioJpaEntity.setConcepto("concepto");
-        movimientoBancarioJpaEntity.setCuenta(null);
-        entityManager.persist(movimientoBancarioJpaEntity);
-        entityManager.flush();
-
-        String concepto = "concepto";
+        String concepto = "ingreso";
         MovimientoBancarioJpaEntity movimiento = movimientoBancarioJpaDao.findByConcepto(concepto);
         assertEquals(concepto, movimiento.getConcepto());
     }
@@ -128,66 +70,36 @@ public class MovimientoBancarioJpaDaoImplTest {
     @Test
     @DisplayName("Find movimiento bancario by cuenta id")
     void findMovimientoBancarioByCuentaId() {
-        CuentaJpaEntity cuentaJpaEntity = new CuentaJpaEntity();
-        cuentaJpaEntity.setSaldo(new BigDecimal(100.0));
-        cuentaJpaEntity.setIban("iban");
-        cuentaJpaEntity.setCliente(null);
-        cuentaJpaEntity.setTarjetas(List.of());
-        cuentaJpaEntity.setMovimientos(List.of());
-        entityManager.persist(cuentaJpaEntity);
-        entityManager.flush();
-
-        MovimientoBancarioJpaEntity movimientoBancarioJpaEntity = new MovimientoBancarioJpaEntity();
-        movimientoBancarioJpaEntity.setTipoMovimiento(null);
-        movimientoBancarioJpaEntity.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity.setTarjetaCredito(null);
-        movimientoBancarioJpaEntity.setFecha(new Date());
-        movimientoBancarioJpaEntity.setImporte(new BigDecimal(100.0));
-        movimientoBancarioJpaEntity.setConcepto("concepto");
-        movimientoBancarioJpaEntity.setCuenta(cuentaJpaEntity);
-        entityManager.persist(movimientoBancarioJpaEntity);
-        entityManager.flush();
-
-        List<MovimientoBancarioJpaEntity> movimientos = movimientoBancarioJpaDao.findByCuentaId(cuentaJpaEntity.getId());
-        assertEquals(cuentaJpaEntity.getId(), movimientos.get(0).getCuenta().getId());
+        List<MovimientoBancarioJpaEntity> movimientos = movimientoBancarioJpaDao.findByCuentaId(1L);
+        assertEquals(1L, movimientos.get(0).getCuenta().getId());
     }
 
     @Test
     @DisplayName("Insert movimiento bancario")
     void insertMovimientoBancario() {
-        MovimientoBancarioJpaEntity movimientoBancarioJpaEntity = new MovimientoBancarioJpaEntity();
-        movimientoBancarioJpaEntity.setTipoMovimiento(null);
-        movimientoBancarioJpaEntity.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity.setTarjetaCredito(null);
-        movimientoBancarioJpaEntity.setFecha(new Date());
-        movimientoBancarioJpaEntity.setImporte(new BigDecimal(100.0));
-        movimientoBancarioJpaEntity.setConcepto("concepto");
-        movimientoBancarioJpaEntity.setCuenta(null);
-        entityManager.persist(movimientoBancarioJpaEntity);
-        entityManager.flush();
+        TarjetaCreditoJpaEntity tarjetaCredito = entityManager.find(TarjetaCreditoJpaEntity.class, 1L);
+        MovimientoBancarioJpaEntity movimientoBancarioJpaEntity = new MovimientoBancarioJpaEntity(null, TipoMovimiento.DEBE, OrigenMovimiento.TARJETABANCARIA, tarjetaCredito, new Date(), new BigDecimal(100.00), "concepto");
 
-        MovimientoBancarioJpaEntity movimiento = movimientoBancarioJpaDao.findById(1L);
-        assertEquals(1L, movimiento.getId());
+        MovimientoBancarioJpaEntity movimiento = movimientoBancarioJpaDao.insert(movimientoBancarioJpaEntity, 1L);
+        assertEquals(4L, movimiento.getId());
+    }
+
+    @Test
+    @DisplayName("Should throw resource not found exception if cuenta doesn't exist")
+    void insertMovimientoBancario_shouldThrowResourceNotFoundException_WhenCuentaNotExists() {
+        MovimientoBancarioJpaEntity movimiento = movimientoBancarioJpaDao.findById(4L);
+        assertThrows(ResourceNotFoundException.class, () -> movimientoBancarioJpaDao.insert(movimiento, 4L));
     }
 
     @Test
     @DisplayName("Update movimiento bancario")
     void updateMovimientoBancario() {
-        MovimientoBancarioJpaEntity movimientoBancarioJpaEntity = new MovimientoBancarioJpaEntity();
-        movimientoBancarioJpaEntity.setTipoMovimiento(null);
-        movimientoBancarioJpaEntity.setOrigenMovimiento(null);
-        movimientoBancarioJpaEntity.setTarjetaCredito(null);
-        movimientoBancarioJpaEntity.setFecha(new Date());
-        movimientoBancarioJpaEntity.setImporte(new BigDecimal(100.0));
-        movimientoBancarioJpaEntity.setConcepto("concepto");
-        movimientoBancarioJpaEntity.setCuenta(null);
-        entityManager.persist(movimientoBancarioJpaEntity);
-        entityManager.flush();
+        MovimientoBancarioJpaEntity movimientoBancario = movimientoBancarioJpaDao.findById(1L);
 
-        movimientoBancarioJpaEntity.setConcepto("concepto2");
-        movimientoBancarioJpaDao.update(movimientoBancarioJpaEntity);
+        movimientoBancario.setImporte(new BigDecimal(100.0));
 
-        MovimientoBancarioJpaEntity movimiento = movimientoBancarioJpaDao.findById(1L);
-        assertEquals("concepto2", movimiento.getConcepto());
+        MovimientoBancarioJpaEntity movimientoBancarioJpaEntity = movimientoBancarioJpaDao.update(movimientoBancario);
+
+        assertEquals(movimientoBancarioJpaEntity.getImporte(), new BigDecimal(100.0));
     }
 }

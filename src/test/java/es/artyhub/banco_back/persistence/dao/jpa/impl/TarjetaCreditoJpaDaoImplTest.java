@@ -2,8 +2,6 @@ package es.artyhub.banco_back.persistence.dao.jpa.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -11,36 +9,29 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 
+import es.artyhub.banco_back.persistence.TestConfig;
 import es.artyhub.banco_back.persistence.dao.jpa.TarjetaCreditoJpaDao;
-import es.artyhub.banco_back.persistence.dao.jpa.entity.CuentaJpaEntity;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.TarjetaCreditoJpaEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 @DataJpaTest
-@ActiveProfiles("test")
+@ContextConfiguration(classes = TestConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class TarjetaCreditoJpaDaoImplTest {
 
+    @PersistenceContext
+    private EntityManager entityManager;
+    
     @Autowired
     private TarjetaCreditoJpaDao tarjetaCreditoJpaDao;
     
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Test
     @DisplayName("Find tarjeta by id")
     public void findTarjetaById() {
-        TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity = new TarjetaCreditoJpaEntity();
-        tarjetaCreditoJpaEntity.setNumeroTarjeta("numeroTarjeta");
-        tarjetaCreditoJpaEntity.setFechaCaducidad("fechaCaducidad");
-        tarjetaCreditoJpaEntity.setCvv("cvv");
-        tarjetaCreditoJpaEntity.setNombreCompleto("nombreCompleto");
-        entityManager.persist(tarjetaCreditoJpaEntity);
-        entityManager.flush();
-
         Long id = 1L;
         TarjetaCreditoJpaEntity tarjeta = tarjetaCreditoJpaDao.findById(id);
         assertEquals(id, tarjeta.getId());
@@ -49,38 +40,14 @@ public class TarjetaCreditoJpaDaoImplTest {
     @Test
     @DisplayName("Find all tarjetas")
     void findAllTarjetas() {
-        TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity = new TarjetaCreditoJpaEntity();
-        tarjetaCreditoJpaEntity.setNumeroTarjeta("numeroTarjeta");
-        tarjetaCreditoJpaEntity.setFechaCaducidad("fechaCaducidad");
-        tarjetaCreditoJpaEntity.setCvv("cvv");
-        tarjetaCreditoJpaEntity.setNombreCompleto("nombreCompleto");
-        entityManager.persist(tarjetaCreditoJpaEntity);
-        entityManager.flush();
-
-        TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity2 = new TarjetaCreditoJpaEntity();
-        tarjetaCreditoJpaEntity.setNumeroTarjeta("numeroTarjeta2");
-        tarjetaCreditoJpaEntity.setFechaCaducidad("fechaCaducidad2");
-        tarjetaCreditoJpaEntity.setCvv("cvv2");
-        tarjetaCreditoJpaEntity.setNombreCompleto("nombreCompleto2");
-        entityManager.persist(tarjetaCreditoJpaEntity2);
-        entityManager.flush();
-
         List<TarjetaCreditoJpaEntity> tarjetas = tarjetaCreditoJpaDao.findAll();
-        assertEquals(2, tarjetas.size());
+        assertEquals(3, tarjetas.size());
     }
 
     @Test
     @DisplayName("Find tarjeta by numero tarjeta")
     public void findTarjetaByNumeroTarjeta() {
-        TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity = new TarjetaCreditoJpaEntity();
-        tarjetaCreditoJpaEntity.setNumeroTarjeta("numeroTarjeta");
-        tarjetaCreditoJpaEntity.setFechaCaducidad("fechaCaducidad");
-        tarjetaCreditoJpaEntity.setCvv("cvv");
-        tarjetaCreditoJpaEntity.setNombreCompleto("nombreCompleto");
-        entityManager.persist(tarjetaCreditoJpaEntity);
-        entityManager.flush();
-
-        String nTarjeta = "numeroTarjeta";
+        String nTarjeta = "4532123456789012";
         TarjetaCreditoJpaEntity tarjeta = tarjetaCreditoJpaDao.findByNumeroTarjeta(nTarjeta);
         assertEquals(nTarjeta, tarjeta.getNumeroTarjeta());
     }
@@ -88,40 +55,38 @@ public class TarjetaCreditoJpaDaoImplTest {
     @Test
     @DisplayName("Find tarjeta by cuenta id")
     public void findTarjetaByCuentaId() {
-        CuentaJpaEntity cuentaJpaEntity = new CuentaJpaEntity();
-        cuentaJpaEntity.setSaldo(new BigDecimal(100.0));
-        cuentaJpaEntity.setIban("iban");
-        cuentaJpaEntity.setCliente(null);
-        cuentaJpaEntity.setTarjetas(List.of());
-        cuentaJpaEntity.setMovimientos(List.of());
-        entityManager.persist(cuentaJpaEntity);
-        entityManager.flush();
-
-        TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity = new TarjetaCreditoJpaEntity();
-        tarjetaCreditoJpaEntity.setNumeroTarjeta("numeroTarjeta");
-        tarjetaCreditoJpaEntity.setFechaCaducidad("fechaCaducidad");
-        tarjetaCreditoJpaEntity.setCvv("cvv");
-        tarjetaCreditoJpaEntity.setNombreCompleto("nombreCompleto");
-        tarjetaCreditoJpaEntity.setCuenta(cuentaJpaEntity);
-        entityManager.persist(tarjetaCreditoJpaEntity);
-        entityManager.flush();
-
-        List<TarjetaCreditoJpaEntity> tarjetas = tarjetaCreditoJpaDao.findByCuentaId(cuentaJpaEntity.getId());
-        assertEquals(cuentaJpaEntity.getId(), tarjetas.get(0).getCuenta().getId());
+        Long id = 1L;
+        List<TarjetaCreditoJpaEntity> tarjetas = tarjetaCreditoJpaDao.findByCuentaId(id);
+        assertEquals(2, tarjetas.size());
     }
 
     @Test
     @DisplayName("Save tarjeta")
     public void saveTarjeta() {
         TarjetaCreditoJpaEntity tarjetaCreditoJpaEntity = new TarjetaCreditoJpaEntity();
-        tarjetaCreditoJpaEntity.setNumeroTarjeta("numeroTarjeta");
-        tarjetaCreditoJpaEntity.setFechaCaducidad("fechaCaducidad");
-        tarjetaCreditoJpaEntity.setCvv("cvv");
-        tarjetaCreditoJpaEntity.setNombreCompleto("nombreCompleto");
-        entityManager.persist(tarjetaCreditoJpaEntity);
-        entityManager.flush();
-
+        tarjetaCreditoJpaEntity.setNumeroTarjeta("1234567890123456");
+        tarjetaCreditoJpaEntity.setFechaCaducidad("12/25");
+        tarjetaCreditoJpaEntity.setCvv("123");
+        tarjetaCreditoJpaEntity.setNombreCompleto("John Dere");
+        
         TarjetaCreditoJpaEntity tarjeta = tarjetaCreditoJpaDao.save(tarjetaCreditoJpaEntity);
-        assertEquals(tarjetaCreditoJpaEntity.getId(), tarjeta.getId());
+        assertEquals(4L, tarjeta.getId());
+    }
+
+    @Test
+    @DisplayName("Find all tarjetas of user")
+    public void findAllTarjetasOfUser() {
+        String token = "token_juan_123";
+        List<TarjetaCreditoJpaEntity> tarjetas = tarjetaCreditoJpaDao.findAllOfUser(token);
+        assertEquals(2, tarjetas.size());
+    }
+
+    @Test
+    @DisplayName("Tarjeta pertenece a usuario")
+    public void tarjetaPerteneceAUsuario() {
+        Long tarjetaId = 1L;
+        String token = "token_juan_123";
+        Boolean tarjeta = tarjetaCreditoJpaDao.tarjetaPerteneceAUsuario(tarjetaId, token);
+        assertEquals(true, tarjeta);
     }
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.artyhub.banco_back.domain.model.Cuenta;
-import es.artyhub.banco_back.domain.model.MovimientoBancario;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.CuentaJpaEntity;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.MovimientoBancarioJpaEntity;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.TarjetaCreditoJpaEntity;
@@ -23,7 +22,7 @@ public class CuentaMapper {
     }
 
     public Cuenta fromCuentaJpaEntityToCuenta(CuentaJpaEntity cuentaJpaEntity) {
-        if (cuentaJpaEntity.getId() == null) {
+        if (cuentaJpaEntity == null) {
             return null;
         }
 

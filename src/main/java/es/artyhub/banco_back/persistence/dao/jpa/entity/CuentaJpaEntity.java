@@ -13,7 +13,9 @@ public class CuentaJpaEntity implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private BigDecimal saldo;
+    
     private String iban;
     
     @ManyToOne

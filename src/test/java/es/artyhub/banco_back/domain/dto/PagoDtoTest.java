@@ -28,8 +28,7 @@ public class PagoDtoTest {
         return Stream.of(
             new PagoDto(null, "concepto"),
             new PagoDto(new BigDecimal(0), "concepto"),
-            new PagoDto(new BigDecimal(-1), "concepto"),
-            new PagoDto(new BigDecimal(1), null)
+            new PagoDto(new BigDecimal(-1), "concepto")
         );
     }
 

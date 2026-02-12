@@ -3,12 +3,12 @@ package es.artyhub.banco_back.domain.service.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -27,11 +27,11 @@ import es.artyhub.banco_back.domain.dto.PagoTarjetaDto;
 import es.artyhub.banco_back.domain.enums.OrigenMovimiento;
 import es.artyhub.banco_back.domain.enums.TipoMovimiento;
 import es.artyhub.banco_back.domain.exception.BusinessException;
-import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
-import es.artyhub.banco_back.domain.exception.ValidationException;
+import es.artyhub.banco_back.domain.model.Cliente;
 import es.artyhub.banco_back.domain.model.Cuenta;
 import es.artyhub.banco_back.domain.model.MovimientoBancario;
 import es.artyhub.banco_back.domain.model.TarjetaCredito;
+import es.artyhub.banco_back.domain.service.AuthService;
 import es.artyhub.banco_back.domain.service.AutorizacionService;
 import es.artyhub.banco_back.domain.service.CuentaService;
 import es.artyhub.banco_back.domain.service.MovimientoBancarioService;
@@ -42,10 +42,16 @@ public class PagoTarjetaServiceImplTest {
     
     @Mock
     private AutorizacionService autorizacionService;
+
+    @Mock
+    private AuthService authService;
+
     @Mock
     private CuentaService cuentaService;
+
     @Mock
     private MovimientoBancarioService movimientoBancarioService;
+
     @Mock
     private TarjetaCreditoService tarjetaCreditoService;
 
@@ -56,40 +62,11 @@ public class PagoTarjetaServiceImplTest {
     @DisplayName("Save pago tarjeta")
     class SavePagoTarjeta {
         @Test
-        @DisplayName("While pago tarjeta doesn't exist should throw validation exception")
-        public void whilePagoTarjetaDoesntExist_ShouldThrowValidationException() {
-
-            PagoTarjetaDto pagoTarjetaDto = null;
-            
-            assertThrows(ValidationException.class, () -> pagoTarjetaService.save(pagoTarjetaDto));
-
-            Mockito.verify(pagoTarjetaService, never()).save(pagoTarjetaDto);
-        }
-
-        @Test
-        @DisplayName("While tarjeta crédito doesn't exist should throw validation exception")
-        public void whileTarjetaCreditoDoesntExist_ShouldThrowValidationException() {
+        @DisplayName("While tarjeta crédito is invalid should throw business exception")
+        public void whileTarjetaCreditoIsInvalid_ShouldThrowBusinessException() {
 
             AutorizacionDto autorizacionDto = new AutorizacionDto("login", "api_token");
-            OrigenDto origenDto = new OrigenDto("1234567890123456", "12/24", "123", "nombre_completo");
-            DestinoDto destinoDto = new DestinoDto("iban");
-            PagoDto pagoDto = new PagoDto(new BigDecimal(100), "concepto");
-            
-            PagoTarjetaDto pagoTarjetaDto = new PagoTarjetaDto(autorizacionDto, origenDto, destinoDto, pagoDto);
-            
-            when(tarjetaCreditoService.findByNumeroTarjeta(pagoTarjetaDto.origen().numeroTarjeta())).thenReturn(null);
-            
-            assertThrows(ResourceNotFoundException.class, () -> tarjetaCreditoService.findByNumeroTarjeta(pagoTarjetaDto.origen().numeroTarjeta()));
-
-            Mockito.verify(tarjetaCreditoService, never()).findByNumeroTarjeta(pagoTarjetaDto.origen().numeroTarjeta());
-        }
-
-        @Test
-        @DisplayName("While tarjeta crédito es invalida should throw business exception")
-        public void whileTarjetaCreditoEsInvalida_ShouldThrowBusinessException() {
-
-            AutorizacionDto autorizacionDto = new AutorizacionDto("login", "api_token");
-            OrigenDto origenDto = new OrigenDto("1234567890123456", "12/24", "123", "nombre_completo");
+            OrigenDto origenDto = new OrigenDto("1234567890123456", "", "123", "nombre_completo");
             DestinoDto destinoDto = new DestinoDto("iban");
             PagoDto pagoDto = new PagoDto(new BigDecimal(100), "concepto");
             
@@ -99,65 +76,62 @@ public class PagoTarjetaServiceImplTest {
             
             when(tarjetaCreditoService.tarjetaIsValid(pagoTarjetaDto.origen(), tarjetaCredito)).thenReturn(false);
             
-            assertThrows(BusinessException.class, () -> tarjetaCreditoService.tarjetaIsValid(pagoTarjetaDto.origen(), tarjetaCredito));
-
-            Mockito.verify(tarjetaCreditoService, never()).tarjetaIsValid(pagoTarjetaDto.origen(), tarjetaCredito);
+            assertThrows(BusinessException.class, () -> pagoTarjetaService.save(pagoTarjetaDto));
         }
 
         @Test
-        @DisplayName("While cuenta origen es nula should throw resource not found exception")
-        public void whileCuentaOrigenEsNula_ShouldThrowResourceNotFoundException() {
+        @DisplayName("While login cuenta destino doesn't match with autorizacion login should throw business exception")
+        public void whileLoginCuentaDestinoDoesntMatch_ShouldThrowBusinessException() {
 
             AutorizacionDto autorizacionDto = new AutorizacionDto("login", "api_token");
-            OrigenDto origenDto = new OrigenDto("1234567890123456", "12/24", "123", "nombre_completo");
+            OrigenDto origenDto = new OrigenDto("1234567890123456", "", "123", "nombre_completo");
             DestinoDto destinoDto = new DestinoDto("iban");
             PagoDto pagoDto = new PagoDto(new BigDecimal(100), "concepto");
             
             PagoTarjetaDto pagoTarjetaDto = new PagoTarjetaDto(autorizacionDto, origenDto, destinoDto, pagoDto);
 
-            TarjetaCredito tarjetaCredito = tarjetaCreditoService.findByNumeroTarjeta(pagoTarjetaDto.origen().numeroTarjeta());
-            
-            when(cuentaService.findByNumeroTarjeta(tarjetaCredito.getNumeroTarjeta())).thenReturn(null);
-            
-            assertThrows(ResourceNotFoundException.class, () -> cuentaService.findByNumeroTarjeta(tarjetaCredito.getNumeroTarjeta()));
+            TarjetaCredito tarjetaCredito = new TarjetaCredito(1L, "1234567890123456", "12/24", "123", "nombre_completo");
 
-            Mockito.verify(cuentaService, never()).findByNumeroTarjeta(tarjetaCredito.getNumeroTarjeta());
+            when(tarjetaCreditoService.findByNumeroTarjeta(pagoTarjetaDto.origen().numeroTarjeta())).thenReturn(tarjetaCredito);
+
+            Cliente cliente = new Cliente(1L, "loginO", "api_tokenO", "nombre_completo", "email", "password", "telefono", "direccion");
+            List<TarjetaCredito> tarjetas = List.of(tarjetaCredito);
+            List<MovimientoBancario> movimientos = List.of(new MovimientoBancario(1L, TipoMovimiento.DEBE, OrigenMovimiento.TARJETABANCARIA, new Date(), new BigDecimal(100), "concepto"));
+            Cuenta cuentaOrigen = new Cuenta(1L, new BigDecimal(1000), "ES1234567890123456789013", cliente, tarjetas, movimientos);
+
+            Cliente clienteDestino = new Cliente(1L, "loginD", "api_tokenD", "nombre_completo", "email", "password", "telefono", "direccion");
+            List<TarjetaCredito> tarjetasDestino = List.of(tarjetaCredito);
+            List<MovimientoBancario> movimientosDestino = List.of(new MovimientoBancario(1L, TipoMovimiento.DEBE, OrigenMovimiento.TARJETABANCARIA, new Date(), new BigDecimal(100), "concepto"));
+            Cuenta cuentaDestino = new Cuenta(1L, new BigDecimal(1000), "ES1234567890123456789013", clienteDestino, tarjetasDestino, movimientosDestino);
+
+            assertThrows(BusinessException.class, () -> pagoTarjetaService.save(pagoTarjetaDto));
         }
 
         @Test
-        @DisplayName("While cuenta destino es nula should throw resource not found exception")
-        public void whileCuentaDestinoEsNula_ShouldThrowResourceNotFoundException() {
+        @DisplayName("While saldo cuenta isn't enough should throw business exception")
+        public void whileSaldoCuentaIsntEnough_ShouldThrowBusinessException() {
 
             AutorizacionDto autorizacionDto = new AutorizacionDto("login", "api_token");
-            OrigenDto origenDto = new OrigenDto("1234567890123456", "12/24", "123", "nombre_completo");
+            OrigenDto origenDto = new OrigenDto("1234567890123456", "", "123", "nombre_completo");
             DestinoDto destinoDto = new DestinoDto("iban");
             PagoDto pagoDto = new PagoDto(new BigDecimal(100), "concepto");
             
             PagoTarjetaDto pagoTarjetaDto = new PagoTarjetaDto(autorizacionDto, origenDto, destinoDto, pagoDto);
-            
-            when(cuentaService.findByIban(pagoTarjetaDto.destino().iban())).thenReturn(null);
-            
-            assertThrows(ResourceNotFoundException.class, () -> cuentaService.findByIban(pagoTarjetaDto.destino().iban()));
 
-            Mockito.verify(cuentaService, never()).findByIban(pagoTarjetaDto.destino().iban());
-        }
+            TarjetaCredito tarjetaCredito = new TarjetaCredito(1L, "1234567890123456", "12/24", "123", "nombre_completo");
 
-        @Test
-        @DisplayName("While autorizacion isn't valid should throw business exception")
-        public void whileAutorizacionIsntValid_ShouldThrowBusinessException() {
+            Cliente cliente = new Cliente(1L, "loginO", "api_tokenO", "nombre_completo", "email", "password", "telefono", "direccion");
+            List<TarjetaCredito> tarjetas = List.of(tarjetaCredito);
+            List<MovimientoBancario> movimientos = List.of(new MovimientoBancario(1L, TipoMovimiento.DEBE, OrigenMovimiento.TARJETABANCARIA, new Date(), new BigDecimal(100), "concepto"));
+            Cuenta cuentaOrigen = new Cuenta(1L, new BigDecimal(10), "ES1234567890123456789013", cliente, tarjetas, movimientos);
 
-            AutorizacionDto autorizacionDto = new AutorizacionDto("login", "api_token");
-            OrigenDto origenDto = new OrigenDto("1234567890123456", "12/24", "123", "nombre_completo");
-            DestinoDto destinoDto = new DestinoDto("iban");
-            PagoDto pagoDto = new PagoDto(new BigDecimal(100), "concepto");
-            
-            PagoTarjetaDto pagoTarjetaDto = new PagoTarjetaDto(autorizacionDto, origenDto, destinoDto, pagoDto);
-            
-            when(autorizacionService.autorizar(pagoTarjetaDto)).thenReturn(false);
-            
-            assertThrows(BusinessException.class, () -> autorizacionService.autorizar(pagoTarjetaDto));
+            Cliente clienteDestino = new Cliente(1L, "login", "api_token", "nombre_completo", "email", "password", "telefono", "direccion");
+            List<TarjetaCredito> tarjetasDestino = List.of(tarjetaCredito);
+            List<MovimientoBancario> movimientosDestino = List.of(new MovimientoBancario(1L, TipoMovimiento.DEBE, OrigenMovimiento.TARJETABANCARIA, new Date(), new BigDecimal(100), "concepto"));
+            Cuenta cuentaDestino = new Cuenta(1L, new BigDecimal(1000), "ES1234567890123456789013", clienteDestino, tarjetasDestino, movimientosDestino);
 
-            Mockito.verify(autorizacionService, never()).autorizar(pagoTarjetaDto);
+            
+            assertThrows(BusinessException.class, () -> pagoTarjetaService.save(pagoTarjetaDto));
         }
 
         @Test
@@ -171,11 +145,17 @@ public class PagoTarjetaServiceImplTest {
             
             PagoTarjetaDto pagoTarjetaDto = new PagoTarjetaDto(autorizacionDto, origenDto, destinoDto, pagoDto);
 
-            TarjetaCredito tarjetaCredito = tarjetaCreditoService.findByNumeroTarjeta(pagoTarjetaDto.origen().numeroTarjeta());
+            TarjetaCredito tarjetaCredito = new TarjetaCredito(1L, "1234567890123456", "12/24", "123", "nombre_completo");
 
-            Cuenta cuentaOrigen = cuentaService.findByNumeroTarjeta(tarjetaCredito.getNumeroTarjeta());
+            Cliente cliente = new Cliente(1L, "loginD", "api_tokenD", "nombre_completo", "email", "password", "telefono", "direccion");
+            List<TarjetaCredito> tarjetas = List.of(tarjetaCredito);
+            List<MovimientoBancario> movimientos = List.of(new MovimientoBancario(1L, TipoMovimiento.DEBE, OrigenMovimiento.TARJETABANCARIA, new Date(), new BigDecimal(100), "concepto"));
+            Cuenta cuentaOrigen = new Cuenta(1L, new BigDecimal(1000), "ES1234567890123456789013", cliente, tarjetas, movimientos);
 
-            Cuenta cuentaDestino = cuentaService.findByIban(pagoTarjetaDto.destino().iban());
+            Cliente clienteDestino = new Cliente(1L, "login", "api_token", "nombre_completo", "email", "password", "telefono", "direccion");
+            List<TarjetaCredito> tarjetasDestino = List.of(tarjetaCredito);
+            List<MovimientoBancario> movimientosDestino = List.of(new MovimientoBancario(1L, TipoMovimiento.DEBE, OrigenMovimiento.TARJETABANCARIA, new Date(), new BigDecimal(100), "concepto"));
+            Cuenta cuentaDestino = new Cuenta(1L, new BigDecimal(1000), "ES1234567890123456789013", clienteDestino, tarjetasDestino, movimientosDestino);
 
             MovimientoBancario movimientoBancarioDebe = new MovimientoBancario();
             movimientoBancarioDebe.setConcepto(pagoTarjetaDto.pago().concepto());

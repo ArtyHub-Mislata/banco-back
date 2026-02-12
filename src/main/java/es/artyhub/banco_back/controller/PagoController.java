@@ -5,6 +5,9 @@ import es.artyhub.banco_back.domain.dto.PagoTransferenciaDto;
 import es.artyhub.banco_back.domain.service.PagoTarjetaService;
 
 import es.artyhub.banco_back.domain.service.PagoTransferenciaService;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,14 +26,15 @@ public class PagoController {
 
     @RequestMapping("/pago_tarjeta")
     @PostMapping
-    public void pagarConTarjeta(@RequestBody PagoTarjetaDto pagoTarjetaDto){
-        
+    public ResponseEntity<Void> pagarConTarjeta(@RequestBody PagoTarjetaDto pagoTarjetaDto){
         pagoTarjetaService.save(pagoTarjetaDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     @RequestMapping("/transferencia")
     @PostMapping
-    public void hacerTransferencia(@RequestBody PagoTransferenciaDto pagoTransferenciaDto){
+    public ResponseEntity<Void> hacerTransferencia(@RequestBody PagoTransferenciaDto pagoTransferenciaDto){
         pagoTransferenciaService.save(pagoTransferenciaDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

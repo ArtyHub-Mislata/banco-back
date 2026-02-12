@@ -11,7 +11,6 @@ import es.artyhub.banco_back.domain.service.*;
 import es.artyhub.banco_back.domain.validation.DtoValidator;
 import jakarta.transaction.Transactional;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class PagoTarjetaServiceImpl implements PagoTarjetaService {

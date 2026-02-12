@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import es.artyhub.banco_back.domain.enums.TipoMovimiento;
-import es.artyhub.banco_back.domain.exception.BusinessException;
 import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
 import es.artyhub.banco_back.domain.exception.ValidationException;
 import es.artyhub.banco_back.domain.model.Cuenta;
@@ -92,6 +91,7 @@ public class CuentaServiceImpl implements CuentaService {
         }
         return cuentaRepository.save(cuenta);
     }
+    
     @Transactional
     @Override
     public void updateSaldo(Cuenta cuenta, BigDecimal importe, TipoMovimiento tipoMovimiento) {

@@ -3,8 +3,6 @@ package es.artyhub.banco_back.persistence.dao.jpa.entity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "clientes")
@@ -12,14 +10,21 @@ public class ClienteJpaEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String login;
+
     private String password;
+
     private String name;
+
     @Column(name = "last_name1")
     private String lastName1;
+
     @Column(name = "last_name2")
     private String lastName2;
+
     private String dni;
+
     @Column(name = "api_token")
     private String apiToken;
 

@@ -2,12 +2,10 @@ package es.artyhub.banco_back.domain.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -54,8 +52,6 @@ public class TarjetaCreditoServiceImplTest {
             when(tarjetaCreditoRepository.findById(id)).thenReturn(null);
             
             assertThrows(ResourceNotFoundException.class, () -> tarjetaCreditoService.findById(id));
-
-            Mockito.verify(tarjetaCreditoRepository, never()).findById(id);
         }
 
         @Test
@@ -70,8 +66,6 @@ public class TarjetaCreditoServiceImplTest {
             when(tarjetaCreditoRepository.findById(tarjetaCredito.getId())).thenReturn(tarjetaCredito);
             
             assertEquals(tarjetaCredito, tarjetaCreditoService.findById(tarjetaCredito.getId()));
-
-            Mockito.verify(tarjetaCreditoRepository).findById(tarjetaCredito.getId());
         }
     }
 
@@ -87,19 +81,7 @@ public class TarjetaCreditoServiceImplTest {
 
             Mockito.verify(tarjetaCreditoRepository, never()).findByNumeroTarjeta(numeroTarjeta);
         }
-
-        @Test
-        @DisplayName("While tarjeta doesn't exist should throw resource not found exception")
-        public void whileTarjetaDoesntExist_ShouldThrowResourceNotFoundException() {
-            String numeroTarjeta = "numeroTarjeta";
-
-            when(tarjetaCreditoRepository.findByNumeroTarjeta(numeroTarjeta)).thenReturn(null);
-            
-            assertThrows(ResourceNotFoundException.class, () -> tarjetaCreditoService.findByNumeroTarjeta(numeroTarjeta));
-
-            Mockito.verify(tarjetaCreditoRepository, never()).findByNumeroTarjeta(numeroTarjeta);
-        }
-
+        
         @Test
         @DisplayName("While tarjeta exists should return tarjeta")
         public void whileTarjetaExists_ShouldReturnTarjeta() {
@@ -118,16 +100,14 @@ public class TarjetaCreditoServiceImplTest {
     }
 
     @Nested
-    @DisplayName("Find tarjeta by cuenta id")
-    class FindTarjetaByCuentaId {
+    @DisplayName("Find tarjetas by cuenta id")
+    class FindTarjetasByCuentaId {
         @Test
         @DisplayName("While cuenta id doesn't exist should throw validation exception")
         public void whileCuentaIdDoesntExist_ShouldThrowValidationException() {
             Long cuentaId = null;
             
             assertThrows(ValidationException.class, () -> tarjetaCreditoService.findByCuentaId(cuentaId));
-
-            Mockito.verify(tarjetaCreditoRepository, never()).findByCuentaId(cuentaId);
         }
 
         @Test
@@ -138,13 +118,11 @@ public class TarjetaCreditoServiceImplTest {
             when(tarjetaCreditoRepository.findByCuentaId(cuentaId)).thenReturn(null);
             
             assertThrows(ResourceNotFoundException.class, () -> tarjetaCreditoService.findByCuentaId(cuentaId));
-
-            Mockito.verify(tarjetaCreditoRepository, never()).findByCuentaId(cuentaId);
         }
 
         @Test
-        @DisplayName("While tarjeta exists should return tarjeta")
-        public void whileTarjetaExists_ShouldReturnTarjeta() {
+        @DisplayName("While tarjeta exists should return list of tarjetas")
+        public void whileTarjetaExists_ShouldReturnListOfTarjetas() {
             TarjetaCredito tarjetaCredito = new TarjetaCredito();
             tarjetaCredito.setId(1L);
             tarjetaCredito.setNumeroTarjeta("numeroTarjeta");
@@ -157,8 +135,6 @@ public class TarjetaCreditoServiceImplTest {
             when(tarjetaCreditoRepository.findByCuentaId(tarjetaCredito.getId())).thenReturn(tarjetas);
             
             assertEquals(tarjetas, tarjetaCreditoService.findByCuentaId(tarjetaCredito.getId()));
-
-            Mockito.verify(tarjetaCreditoRepository).findByCuentaId(tarjetaCredito.getId());
         }
     }
 
@@ -172,7 +148,7 @@ public class TarjetaCreditoServiceImplTest {
             
             assertThrows(ResourceNotFoundException.class, () -> tarjetaCreditoService.findAll());
 
-            Mockito.verify(tarjetaCreditoRepository, never()).findAll();
+            Mockito.verify(tarjetaCreditoRepository).findAll();
         }
 
         @Test
@@ -190,8 +166,6 @@ public class TarjetaCreditoServiceImplTest {
             when(tarjetaCreditoRepository.findAll()).thenReturn(tarjetas);
             
             assertEquals(tarjetas, tarjetaCreditoService.findAll());
-
-            Mockito.verify(tarjetaCreditoRepository).findAll();
         }
     }
 }

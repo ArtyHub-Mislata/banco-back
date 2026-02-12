@@ -14,9 +14,12 @@ public class MovimientoBancarioJpaEntity implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_movimiento")
     private TipoMovimiento tipoMovimiento;
+    
+    @Enumerated(EnumType.STRING)
     @Column(name = "origen_movimiento")
     private OrigenMovimiento origenMovimiento;
 

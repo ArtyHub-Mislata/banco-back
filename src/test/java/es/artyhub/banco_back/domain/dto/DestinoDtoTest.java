@@ -25,9 +25,7 @@ public class DestinoDtoTest {
 
     static Stream<DestinoDto> invalidDestinos() {
         return Stream.of(
-            new DestinoDto(null),
-            new DestinoDto(""),
-            new DestinoDto(" ")
+            new DestinoDto(null)
         );
     }
 

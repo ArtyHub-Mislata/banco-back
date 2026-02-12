@@ -1,6 +1,5 @@
 package es.artyhub.banco_back.persistence.repository.impl;
 
-import es.artyhub.banco_back.domain.exception.ResourceNotFoundException;
 import es.artyhub.banco_back.domain.model.Cliente;
 import es.artyhub.banco_back.domain.repository.SesionRepository;
 import es.artyhub.banco_back.persistence.dao.jpa.SesionJpaDao;

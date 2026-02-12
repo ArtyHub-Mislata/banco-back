@@ -1,10 +1,8 @@
 package es.artyhub.banco_back.persistence.dao.jpa.impl;
 
-import es.artyhub.banco_back.domain.exception.BusinessException;
 import es.artyhub.banco_back.persistence.dao.jpa.SesionJpaDao;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.ClienteJpaEntity;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.SesionJpaEntity;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
@@ -20,15 +18,13 @@ public class SesionJpaDaoImpl implements SesionJpaDao {
     @Override
     public String createSession(Long userId) {
         ClienteJpaEntity clienteJpaEntity = entityManager.find(ClienteJpaEntity.class, userId);
-        if (userId == null) {
-            throw new BusinessException("Nonononoo");
-        }
+
         String uuid = UUID.randomUUID().toString();
+
         SesionJpaEntity sesionJpaEntity = new SesionJpaEntity();
         sesionJpaEntity.setDateCreate(new Date());
         sesionJpaEntity.setToken(uuid);
         sesionJpaEntity.setCliente(clienteJpaEntity);
-
 
         entityManager.persist(sesionJpaEntity);
         return uuid;

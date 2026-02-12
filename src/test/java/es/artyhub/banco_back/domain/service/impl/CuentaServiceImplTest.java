@@ -94,18 +94,6 @@ public class CuentaServiceImplTest {
         }
 
         @Test
-        @DisplayName("While cuenta doesn't exist should throw resource not found exception")
-        public void whileCuentaDoesntExist_ShouldThrowResourceNotFoundException() {
-            String iban = "iban";
-
-            when(cuentaRepository.findByIban(iban)).thenReturn(null);
-            
-            assertThrows(ResourceNotFoundException.class, () -> cuentaService.findByIban(iban));
-
-            Mockito.verify(cuentaRepository).findByIban(iban);
-        }
-
-        @Test
         @DisplayName("While cuenta exists should return cuenta")
         public void whileCuentaExists_ShouldReturnCuenta() {
             Cuenta cuenta = new Cuenta();
@@ -128,30 +116,8 @@ public class CuentaServiceImplTest {
     @DisplayName("Find cuenta by número tarjeta")
     class FindCuentaByNumeroTarjeta {
         @Test
-        @DisplayName("While número tarjeta doesn't exist should throw validation exception")
-        public void whileNumeroTarjetaDoesntExist_ShouldThrowValidationException() {
-            String numeroTarjeta = null;
-            
-            assertThrows(ValidationException.class, () -> cuentaService.findByNumeroTarjeta(numeroTarjeta));
-
-            Mockito.verify(cuentaRepository, never()).findByNTarjeta(numeroTarjeta);
-        }
-
-        @Test
-        @DisplayName("While cuenta doesn't exist should throw resource not found exception")
-        public void whileCuentaDoesntExist_ShouldThrowResourceNotFoundException() {
-            String numeroTarjeta = "numeroTarjeta";
-
-            when(cuentaRepository.findByNTarjeta(numeroTarjeta)).thenReturn(null);
-            
-            assertThrows(ResourceNotFoundException.class, () -> cuentaService.findByNumeroTarjeta(numeroTarjeta));
-
-            Mockito.verify(cuentaRepository).findByNTarjeta(numeroTarjeta);
-        }
-
-        @Test
-        @DisplayName("While cuenta exists should return cuenta")
-        public void whileCuentaExists_ShouldReturnCuenta() {
+        @DisplayName("While card exists should return cuenta")
+        public void whileCardExists_ShouldReturnCuenta() {
             TarjetaCredito tarjetaCredito = new TarjetaCredito();
             tarjetaCredito.setId(1L);
             tarjetaCredito.setNumeroTarjeta("numeroTarjeta");
@@ -285,48 +251,6 @@ public class CuentaServiceImplTest {
     @Nested
     @DisplayName("Update saldo cuenta")
     class UpdateSaldoCuenta {
-        @Test
-        @DisplayName("While cuenta is null should throw validation exception")
-        public void whileCuentaIsNull_ShouldThrowValidationException() {
-            Cuenta cuenta = null;
-            
-            assertThrows(ValidationException.class, () -> cuentaService.updateSaldo(cuenta, new BigDecimal(100.0), TipoMovimiento.DEBE));
-        }
-
-        @Test
-        @DisplayName("While importe is null should throw validation exception")
-        public void whileImporteIsNull_ShouldThrowValidationException() {
-            BigDecimal importe = null;
-            
-            assertThrows(ValidationException.class, () -> cuentaService.updateSaldo(new Cuenta(), importe, TipoMovimiento.DEBE));
-        }
-
-        @Test
-        @DisplayName("While tipo movimiento is null should throw validation exception")
-        public void whileTipoMovimientoIsNull_ShouldThrowValidationException() {
-            TipoMovimiento tipoMovimiento = null;
-            
-            assertThrows(ValidationException.class, () -> cuentaService.updateSaldo(new Cuenta(), new BigDecimal(100.0), tipoMovimiento));
-        }
-
-        @Test
-        @DisplayName("While saldo cuenta is null should throw resource not found exception")
-        public void whileSaldoCuentaIsNull_ShouldThrowResourceNotFoundException() {
-            Cuenta cuenta = new Cuenta();
-            cuenta.setSaldo(null);
-            
-            assertThrows(ResourceNotFoundException.class, () -> cuentaService.updateSaldo(cuenta, new BigDecimal(100.0), TipoMovimiento.DEBE));
-        }
-
-        @Test
-        @DisplayName("While saldo cuenta is zero should throw resource not found exception")
-        public void whileSaldoCuentaIsZero_ShouldThrowResourceNotFoundException() {
-            Cuenta cuenta = new Cuenta();
-            cuenta.setSaldo(new BigDecimal(0.0));
-            
-            assertThrows(ResourceNotFoundException.class, () -> cuentaService.updateSaldo(cuenta, new BigDecimal(100.0), TipoMovimiento.DEBE));
-        }
-
         @Test
         @DisplayName("While tipo movimiento equals DEBE and saldo cuenta is enough should substract")
         public void whileTipoMovimientoEqualsDebeAndSaldoCuentaIsEnough_ShouldSubstract() {

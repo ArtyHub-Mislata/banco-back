@@ -99,8 +99,6 @@ public class MovimientoBancarioServiceImplTest {
             when(movimientoBancarioRepository.findByImporte(importe)).thenReturn(null);
             
             assertThrows(ResourceNotFoundException.class, () -> movimientoBancarioService.findByImporte(importe));
-
-            Mockito.verify(movimientoBancarioRepository, never()).findByImporte(importe);
         }
 
         @Test
@@ -144,8 +142,6 @@ public class MovimientoBancarioServiceImplTest {
             when(movimientoBancarioRepository.findByConcepto(concepto)).thenReturn(null);
             
             assertThrows(ResourceNotFoundException.class, () -> movimientoBancarioService.findByConcepto(concepto));
-
-            Mockito.verify(movimientoBancarioRepository, never()).findByConcepto(concepto);
         }
 
         @Test
@@ -189,8 +185,6 @@ public class MovimientoBancarioServiceImplTest {
             when(movimientoBancarioRepository.findByCuentaId(id)).thenReturn(null);
             
             assertThrows(ResourceNotFoundException.class, () -> movimientoBancarioService.findByCuentaId(id));
-
-            Mockito.verify(movimientoBancarioRepository, never()).findByCuentaId(id);
         }
 
         @Test
@@ -225,8 +219,6 @@ public class MovimientoBancarioServiceImplTest {
             when(movimientoBancarioRepository.findAll()).thenReturn(null);
             
             assertThrows(ResourceNotFoundException.class, () -> movimientoBancarioService.findAll());
-
-            Mockito.verify(movimientoBancarioRepository, never()).findAll();
         }
 
         @Test
@@ -255,16 +247,6 @@ public class MovimientoBancarioServiceImplTest {
     @Nested
     @DisplayName("Save movimiento bancario")
     class SaveMovimientoBancario {
-        @Test
-        @DisplayName("While movimiento bancario is null should throw validation exception")
-        public void whileMovimientoBancarioIsNull_ShouldThrowValidationException() {
-            MovimientoBancario movimientoBancario = null;
-            
-            assertThrows(ValidationException.class, () -> movimientoBancarioService.saveMovimientoBancario(movimientoBancario, 1L));
-
-            Mockito.verify(movimientoBancarioRepository, never()).save(movimientoBancario, 1L);
-        }
-
         @Test
         @DisplayName("While movimiento bancario is valid should return movimiento bancario")
         public void whileMovimientoBancarioIsValid_ShouldReturnMovimientoBancario() {

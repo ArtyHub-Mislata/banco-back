@@ -18,6 +18,7 @@ public class AuthServiceImpl implements AuthService {
         this.sesionRepository = sesionRepository;
         this.clienteRepository = clienteRepository;
     }
+    
     @Transactional
     @Override
     public String login(CredentialsDto credentialsDto) {
@@ -32,6 +33,7 @@ public class AuthServiceImpl implements AuthService {
 
         return sesionRepository.insertSesion(cliente.getId());
     }
+
     @Transactional
     @Override
     public void logout(String token) {

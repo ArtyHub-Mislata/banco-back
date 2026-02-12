@@ -4,13 +4,13 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 
 @Entity
 @Table(name = "sesions")
 public class SesionJpaEntity implements Serializable{
     @Id
     private String token;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
     private ClienteJpaEntity cliente;

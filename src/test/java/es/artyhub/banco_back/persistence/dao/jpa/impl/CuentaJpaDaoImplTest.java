@@ -10,49 +10,29 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-
+import es.artyhub.banco_back.persistence.TestConfig;
 import es.artyhub.banco_back.persistence.dao.jpa.CuentaJpaDao;
-import es.artyhub.banco_back.persistence.dao.jpa.entity.ClienteJpaEntity;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.CuentaJpaEntity;
 
 @DataJpaTest
-@ActiveProfiles("test")
+@ContextConfiguration(classes = TestConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class CuentaJpaDaoImplTest {
     
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Autowired
     private CuentaJpaDao cuentaJpaDao;
 
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Test
     @DisplayName("Find cuenta by id")
     public void findCuentaById() {
-        ClienteJpaEntity clienteJpaEntity = new ClienteJpaEntity();
-        clienteJpaEntity.setLogin("login");
-        clienteJpaEntity.setPassword("password");
-        clienteJpaEntity.setName("name");
-        clienteJpaEntity.setLastName1("lastName1");
-        clienteJpaEntity.setLastName2("lastName2");
-        clienteJpaEntity.setDni("dni");
-        clienteJpaEntity.setApiToken("api_token");
-        entityManager.persist(clienteJpaEntity);
-        entityManager.flush();
-
-        CuentaJpaEntity cuentaJpaEntity = new CuentaJpaEntity();
-        cuentaJpaEntity.setSaldo(new BigDecimal(100.0));
-        cuentaJpaEntity.setIban("iban");
-        cuentaJpaEntity.setCliente(clienteJpaEntity);
-        cuentaJpaEntity.setTarjetas(null);
-        cuentaJpaEntity.setMovimientos(null);
-        entityManager.persist(cuentaJpaEntity);
-        entityManager.flush();
-
         Long id = 1L;
         CuentaJpaEntity cuenta = cuentaJpaDao.findById(id);
         assertEquals(id, cuenta.getId());
@@ -61,63 +41,14 @@ public class CuentaJpaDaoImplTest {
     @Test
     @DisplayName("Find all cuentas")
     public void findAllCuentas() {
-        ClienteJpaEntity clienteJpaEntity = new ClienteJpaEntity();
-        clienteJpaEntity.setLogin("login");
-        clienteJpaEntity.setPassword("password");
-        clienteJpaEntity.setName("name");
-        clienteJpaEntity.setLastName1("lastName1");
-        clienteJpaEntity.setLastName2("lastName2");
-        clienteJpaEntity.setDni("dni");
-        clienteJpaEntity.setApiToken("api_token");
-        entityManager.persist(clienteJpaEntity);
-        entityManager.flush();
-
-        CuentaJpaEntity cuentaJpaEntity1 = new CuentaJpaEntity();
-        cuentaJpaEntity1.setSaldo(new BigDecimal(100.0));
-        cuentaJpaEntity1.setIban("iban");
-        cuentaJpaEntity1.setCliente(clienteJpaEntity);
-        cuentaJpaEntity1.setTarjetas(null);
-        cuentaJpaEntity1.setMovimientos(null);
-        entityManager.persist(cuentaJpaEntity1);
-        entityManager.flush();
-        
-        CuentaJpaEntity cuentaJpaEntity2 = new CuentaJpaEntity();
-        cuentaJpaEntity2.setSaldo(new BigDecimal(200.0));
-        cuentaJpaEntity2.setIban("iban2");
-        cuentaJpaEntity2.setCliente(clienteJpaEntity);
-        cuentaJpaEntity2.setTarjetas(null);
-        cuentaJpaEntity2.setMovimientos(null);
-        entityManager.persist(cuentaJpaEntity2);    
-        entityManager.flush();
-        
         List<CuentaJpaEntity> cuentas = cuentaJpaDao.findAll();
-        assertEquals(2, cuentas.size());
+        assertEquals(3, cuentas.size());
     }
 
     @Test
     @DisplayName("Find cuenta by iban")
     public void findCuentaByIban() {
-        ClienteJpaEntity clienteJpaEntity = new ClienteJpaEntity();
-        clienteJpaEntity.setLogin("login");
-        clienteJpaEntity.setPassword("password");
-        clienteJpaEntity.setName("name");
-        clienteJpaEntity.setLastName1("lastName1");
-        clienteJpaEntity.setLastName2("lastName2");
-        clienteJpaEntity.setDni("dni");
-        clienteJpaEntity.setApiToken("api_token");
-        entityManager.persist(clienteJpaEntity);
-        entityManager.flush();
-
-        CuentaJpaEntity cuentaJpaEntity = new CuentaJpaEntity();
-        cuentaJpaEntity.setSaldo(new BigDecimal(100.0));
-        cuentaJpaEntity.setIban("iban");
-        cuentaJpaEntity.setCliente(clienteJpaEntity);
-        cuentaJpaEntity.setTarjetas(null);
-        cuentaJpaEntity.setMovimientos(null);
-        entityManager.persist(cuentaJpaEntity);
-        entityManager.flush();
-
-        String iban = "iban";
+        String iban = "ES9121000418450200051332";
         CuentaJpaEntity cuenta = cuentaJpaDao.findByIban(iban);
         assertEquals(iban, cuenta.getIban());
     }
@@ -125,55 +56,36 @@ public class CuentaJpaDaoImplTest {
     @Test
     @DisplayName("Find cuenta by cliente id")
     public void findCuentaByClienteId() {
-        ClienteJpaEntity clienteJpaEntity = new ClienteJpaEntity();
-        clienteJpaEntity.setId(1L);
-        clienteJpaEntity.setLogin("login");
-        clienteJpaEntity.setPassword("password");
-        clienteJpaEntity.setName("name");
-        clienteJpaEntity.setLastName1("lastName1");
-        clienteJpaEntity.setLastName2("lastName2");
-        clienteJpaEntity.setDni("dni");
-        clienteJpaEntity.setApiToken("api_token");
-        entityManager.persist(clienteJpaEntity);
-        entityManager.flush();
-
-        CuentaJpaEntity cuentaJpaEntity = new CuentaJpaEntity();
-        cuentaJpaEntity.setSaldo(new BigDecimal(100.0));
-        cuentaJpaEntity.setIban("iban");
-        cuentaJpaEntity.setCliente(clienteJpaEntity);
-        cuentaJpaEntity.setTarjetas(null);
-        cuentaJpaEntity.setMovimientos(null);
-        entityManager.persist(cuentaJpaEntity);
-        entityManager.flush();
-
-        List<CuentaJpaEntity> cuentas = cuentaJpaDao.findByClienteId(clienteJpaEntity.getId());
-        assertEquals(clienteJpaEntity.getId(), cuentas.get(0).getCliente().getId());
+        Long id = 1L;
+        List<CuentaJpaEntity> cuentas = cuentaJpaDao.findByClienteId(id);
+        assertEquals(id, cuentas.get(0).getCliente().getId());
     }
 
     @Test
-    @DisplayName("Save cuenta")
-    public void saveCuenta() {
-        ClienteJpaEntity clienteJpaEntity = new ClienteJpaEntity();
-        clienteJpaEntity.setLogin("login");
-        clienteJpaEntity.setPassword("password");
-        clienteJpaEntity.setName("name");
-        clienteJpaEntity.setLastName1("lastName1");
-        clienteJpaEntity.setLastName2("lastName2");
-        clienteJpaEntity.setDni("dni");
-        clienteJpaEntity.setApiToken("api_token");
-        entityManager.persist(clienteJpaEntity);
-        entityManager.flush();
+    @DisplayName("Find cuenta by token")
+    public void findCuentaByToken() {
+        String token = "token_juan_123";
+        List<CuentaJpaEntity> cuentas = cuentaJpaDao.findByToken(token);
+        assertEquals(1, cuentas.size());
+    }
 
-        CuentaJpaEntity cuentaJpaEntity = new CuentaJpaEntity();
-        cuentaJpaEntity.setSaldo(new BigDecimal(100.0));
-        cuentaJpaEntity.setIban("iban");
-        cuentaJpaEntity.setCliente(clienteJpaEntity);
-        cuentaJpaEntity.setTarjetas(null);
-        cuentaJpaEntity.setMovimientos(null);
-        entityManager.persist(cuentaJpaEntity);
-        entityManager.flush();
+    @Test
+    @DisplayName("Find cuenta by n de tarjeta")
+    public void findCuentaByNDeTarjeta() {
+        String nTarjeta = "4532123456789012";
+        CuentaJpaEntity cuenta = cuentaJpaDao.findByNDeTarjeta(nTarjeta);
+        assertEquals(nTarjeta, cuenta.getTarjetas().get(0).getNumeroTarjeta());
+    }
 
-        CuentaJpaEntity cuenta = cuentaJpaDao.insert(cuentaJpaEntity);
-        assertEquals(cuentaJpaEntity.getId(), cuenta.getId());
+    @Test
+    @DisplayName("Update cuenta")
+    public void updateCuenta() {
+        CuentaJpaEntity cuenta = cuentaJpaDao.findById(1L);
+        
+        cuenta.setSaldo(new BigDecimal(100.0));
+        
+        CuentaJpaEntity cuentaJpaEntity = cuentaJpaDao.update(cuenta);
+        
+        assertEquals(cuentaJpaEntity.getSaldo(), new BigDecimal(100.0));
     }
 }

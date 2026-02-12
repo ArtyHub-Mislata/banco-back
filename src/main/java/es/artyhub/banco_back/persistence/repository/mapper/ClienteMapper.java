@@ -1,7 +1,5 @@
 package es.artyhub.banco_back.persistence.repository.mapper;
 
-import java.util.List;
-
 import es.artyhub.banco_back.domain.model.Cliente;
 
 import es.artyhub.banco_back.persistence.dao.jpa.entity.ClienteJpaEntity;

@@ -91,6 +91,4 @@ public class SpringConfig {
     public SesionJpaDao sesionJpaDao(){
         return new SesionJpaDaoImpl();
     }
-
-
 }

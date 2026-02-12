@@ -9,38 +9,30 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 
+import es.artyhub.banco_back.domain.dto.AutorizacionDto;
+import es.artyhub.banco_back.persistence.TestConfig;
 import es.artyhub.banco_back.persistence.dao.jpa.ClienteJpaDao;
 import es.artyhub.banco_back.persistence.dao.jpa.entity.ClienteJpaEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 @DataJpaTest
-@ActiveProfiles("test")
+@ContextConfiguration(classes = TestConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ClienteJpaDaoImplTest {
     
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Autowired
     private ClienteJpaDao clienteJpaDao;
 
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Test
     @DisplayName("Find cliente by id")
     public void findClienteById() {
-        ClienteJpaEntity clienteJpaEntity = new ClienteJpaEntity();
-        clienteJpaEntity.setLogin("login");
-        clienteJpaEntity.setPassword("password");
-        clienteJpaEntity.setName("name");
-        clienteJpaEntity.setLastName1("lastName1");
-        clienteJpaEntity.setLastName2("lastName2");
-        clienteJpaEntity.setDni("dni");
-        clienteJpaEntity.setApiToken("api_token");
-        entityManager.persist(clienteJpaEntity);
-        entityManager.flush();
-
         Long id = 1L;
         ClienteJpaEntity cliente = clienteJpaDao.findById(id);
         assertEquals(id, cliente.getId());
@@ -49,48 +41,31 @@ public class ClienteJpaDaoImplTest {
     @Test
     @DisplayName("Find all clientes")
     public void findAllClientes() {
-        ClienteJpaEntity clienteJpaEntity1 = new ClienteJpaEntity();
-        clienteJpaEntity1.setLogin("login");
-        clienteJpaEntity1.setPassword("password");
-        clienteJpaEntity1.setName("name");
-        clienteJpaEntity1.setLastName1("lastName1");
-        clienteJpaEntity1.setLastName2("lastName2");
-        clienteJpaEntity1.setDni("dni");
-        clienteJpaEntity1.setApiToken("api_token");
-        entityManager.persist(clienteJpaEntity1);
-        entityManager.flush();
-        
-        ClienteJpaEntity clienteJpaEntity2 = new ClienteJpaEntity();
-        clienteJpaEntity2.setLogin("login2");
-        clienteJpaEntity2.setPassword("password2");
-        clienteJpaEntity2.setName("name2");
-        clienteJpaEntity2.setLastName1("lastName12");
-        clienteJpaEntity2.setLastName2("lastName22");
-        clienteJpaEntity2.setDni("dni2");
-        clienteJpaEntity2.setApiToken("api_token2");
-        entityManager.persist(clienteJpaEntity2);
-        entityManager.flush();
-        
         List<ClienteJpaEntity> clientes = clienteJpaDao.findAll();
-        assertEquals(2, clientes.size());
+        assertEquals(3, clientes.size());
     }
 
     @Test
     @DisplayName("Find cliente by login")
     public void findClienteByLogin() {
-        ClienteJpaEntity clienteJpaEntity = new ClienteJpaEntity();
-        clienteJpaEntity.setLogin("login");
-        clienteJpaEntity.setPassword("password");
-        clienteJpaEntity.setName("name");
-        clienteJpaEntity.setLastName1("lastName1");
-        clienteJpaEntity.setLastName2("lastName2");
-        clienteJpaEntity.setDni("dni");
-        clienteJpaEntity.setApiToken("api_token");
-        entityManager.persist(clienteJpaEntity);
-        entityManager.flush();
-    
-        String login = "login";
+        String login = "juan.perez";
         ClienteJpaEntity cliente = clienteJpaDao.findByLogin(login);
         assertEquals(login, cliente.getLogin());
+    }
+
+    @Test
+    @DisplayName("User and api token correct")
+    public void userAndApiTokenCorrect() {
+        AutorizacionDto autorizacionDto = new AutorizacionDto("juan.perez", "token_juan_123");
+        Boolean result = clienteJpaDao.userAndApiTokenCorrect(autorizacionDto);
+        assertEquals(true, result);
+    }
+
+    @Test
+    @DisplayName("User and api token incorrect")
+    public void userAndApiTokenIncorrect() {
+        AutorizacionDto autorizacionDto = new AutorizacionDto("juan.perez", "token_juan");
+        Boolean result = clienteJpaDao.userAndApiTokenCorrect(autorizacionDto);
+        assertEquals(false, result);
     }
 }
