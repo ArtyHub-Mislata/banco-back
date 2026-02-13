@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>es.artyhub</groupId>
-	<artifactId>banco-back</artifactId>
+	<artifactId>artyhub-banco-back</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>banco-back</name>
 	<description>Demo project for Spring Boot</description>
